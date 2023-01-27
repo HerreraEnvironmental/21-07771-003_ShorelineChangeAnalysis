@@ -28,12 +28,19 @@ names(dfs.list) = all.dfs
 dfs.filtered <- dfs.list[sapply(dfs.list, nrow) > 1]
 
 ## Do a test run: how has profile 13 changed over time?
-prof13 <- dfs.filtered[1:12]
-prof13.df <- rbindlist(prof13, idcol = TRUE, fill = FALSE)
+prof13 <- dfs.filtered[1:12] # fix this
+prof13 <- rbindlist(prof13, idcol = TRUE, fill = FALSE)
+prof13 <- prof13 %>%
+  separate_wider_delim(.id, "_", names = c("drop", "profile", "season")) %>%
+  separate_wider_delim(season, ".", names = c("season", "out"))
+
+t <- prof13 %>%
+  separate(season, 
+           into = c("season", "year"), 
+           sep = "(?<=[A-Za-z])(?=[0-9])"
+  )
 
 
-oneprofile <- read.table("data_raw/crlc_prof_xyz_out_files_sp19-s22/prof_13_f19.out",
-                         col.names = c("x", "y", "z"))
 
 
 scatter3d(oneprofile)
