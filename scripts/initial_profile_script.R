@@ -4,6 +4,7 @@
 
 library(car)
 library(data.table)
+library(plotly)
 library(rgl)
 library(scatterplot3d)
 library(tidyverse)
@@ -30,30 +31,27 @@ dfs.filtered <- dfs.list[sapply(dfs.list, nrow) > 1]
 ## Do a test run: how has profile 13 changed over time?
 prof13 <- dfs.filtered[1:12] # fix this
 prof13 <- rbindlist(prof13, idcol = TRUE, fill = FALSE)
-prof13 <- prof13 %>%
+prof13.df <- prof13 %>%
   separate_wider_delim(.id, "_", names = c("drop", "profile", "season")) %>%
-  separate_wider_delim(season, ".", names = c("season", "out"))
-
-t <- prof13 %>%
+  separate_wider_delim(season, ".", names = c("season", "out")) %>%
   separate(season, 
            into = c("season", "year"), 
-           sep = "(?<=[A-Za-z])(?=[0-9])"
+           sep = "(?<=[A-Za-z])(?=[0-9])") %>%
+  select(profile:year, x:z)
+
+## First plot
+scatterplot3d(x = prof13.df$x, y = prof13.df$y, z = prof13.df$z)
+
+## 
+marker <- list(color = ~year, colorscale = c('#FFE1A1', '#683531'), 
+               showscale = TRUE)
+# Create the plot
+p <- plot_ly(prof13.df, x = ~x, y = ~y, z = ~z, marker = marker) %>%
+  add_markers() %>%
+  layout(
+    scene = list(xaxis = list(title = "x"),
+                 yaxis = list(title = "y"),
+                 zaxis = list(title = "accretion"))
   )
 
-
-
-
-scatter3d(oneprofile)
-
-
-
-
-
-
-
-
-
-
-
-
-
+p
