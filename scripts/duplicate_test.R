@@ -18,7 +18,7 @@ prof_17_s21_s97sp19 <- read.table("data_raw/crlc_prof_xyz_out_files_s97-sp19/pro
 prof_17_s21_sp19s22 <- read.table("data_raw/crlc_prof_xyz_out_files_sp19-s22/prof_17_s21.out",
                                   header = FALSE, col.names = c("x", "y", "z"))
 
-all.equal(prof_17_f20_s97sp19, prof_17_f20_sp19s22)
+all.equal(prof_17_s21_s97sp19, prof_17_s21_sp19s22)
 
 
 
