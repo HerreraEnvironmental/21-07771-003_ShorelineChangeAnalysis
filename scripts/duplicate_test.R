@@ -1,9 +1,8 @@
-## prof 17 f20 out
-## prof 17 s21 out
 
+# Duplicates, look like a tiny difference, rounding error of some kind. 
+# Question is, when did this date actually occur?
 
 ## Profile 17, f20 
-# Duplicates, look like a tiny difference, rounding error of some kind. Question is, when did this date actually occur?
 prof_17_f20_s97sp19 <- read.table("data_raw/crlc_prof_xyz_out_files_s97-sp19/prof_17_f20.out",
                           header = FALSE, col.names = c("x", "y", "z"))
 

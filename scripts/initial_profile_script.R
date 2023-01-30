@@ -25,13 +25,13 @@ dfs.list <- lapply(paste("data_raw/crlc_prof_xyz_out_files_sp19-s22/", all.dfs, 
                    read.table, header = FALSE, col.names = c("x", "y", "z"))
 names(dfs.list) = all.dfs
 
-## Remove empty dataframes from list (need to figure out how to include these)
+## Remove empty dataframes from list according to row number (1 or fewer means empty)
 dfs.filtered <- dfs.list[sapply(dfs.list, nrow) > 1]
+removed.profiles <- dfs.list[!(dfs.list %in% dfs.filtered)]
+print(names(removed.profiles))
 
-## Do a test run: how has profile 13 changed over time?
-prof13 <- dfs.filtered[1:12] # fix this
-prof13 <- rbindlist(prof13, idcol = TRUE, fill = FALSE)
-prof13.df <- prof13 %>%
+## Isolate profile 17 (find better selection than below)
+prof17 <- rbindlist(dfs.filtered[29:39], idcol = TRUE, fill = FALSE) %>%
   separate_wider_delim(.id, "_", names = c("drop", "profile", "season")) %>%
   separate_wider_delim(season, ".", names = c("season", "out")) %>%
   separate(season, 
@@ -39,19 +39,21 @@ prof13.df <- prof13 %>%
            sep = "(?<=[A-Za-z])(?=[0-9])") %>%
   select(profile:year, x:z)
 
-## First plot
-scatterplot3d(x = prof13.df$x, y = prof13.df$y, z = prof13.df$z)
+## Isolate one season, one year
+prof17.fall19 <- prof17 %>%
+  filter(season == "f" & year == "19")
 
-## 
-marker <- list(color = ~year, colorscale = c('#FFE1A1', '#683531'), 
+
+## Plot
+marker <- list(color = ~season, colorscale = "viridis",
                showscale = TRUE)
-# Create the plot
-p <- plot_ly(prof13.df, x = ~x, y = ~y, z = ~z, marker = marker) %>%
+
+p <- plot_ly(prof17.fall19, x = ~x, y = ~y, z = ~z, marker = marker) %>%
   add_markers() %>%
   layout(
     scene = list(xaxis = list(title = "x"),
                  yaxis = list(title = "y"),
-                 zaxis = list(title = "accretion"))
+                 zaxis = list(title = "z"))
   )
 
 p
