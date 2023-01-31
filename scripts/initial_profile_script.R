@@ -16,10 +16,10 @@ library(tidyverse)
 profile.pattern <- regex("*.out")
 
 # Import all files --------------------------------------------------
-all.dfs <- list.files(path = "data_raw/crlc_prof_xyz_out_files_sp19-s22/", pattern=profile.pattern)
+all.dfs <- list.files(path = "data_raw/all_prof_xyz_s97-s22/", pattern=profile.pattern)
 print(paste("Total number of files:", length(all.dfs)))
 
-dfs.list <- lapply(paste("data_raw/crlc_prof_xyz_out_files_sp19-s22/", all.dfs, sep = ""), 
+dfs.list <- lapply(paste("data_raw/all_prof_xyz_s97-s22/", all.dfs, sep = ""), 
                    read.table, header = FALSE, col.names = c("x", "y", "z"))
 names(dfs.list) = all.dfs
 
