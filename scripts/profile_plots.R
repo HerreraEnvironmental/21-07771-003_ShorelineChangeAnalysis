@@ -10,10 +10,12 @@ library(tidyverse)
 ## Shoreline profiles in x y z format (easting northing elevation). 
 ## Named prof_X_ttYY.out where X is the profile number, tt is a season code (e.g. f = fall) and YY is the year. 
 
-## At least some of these are null and will be removed (should be noted?)
-## We have two duplicates, see accompanying script 
+## At least some of these are null and will be removed and noted
+## We have two duplicates, see accompanying script "duplicate_test.R"
+## Check on non-conforming files: beachface? dunes?
 
-profile.pattern <- regex("prof_6")
+# Set pattern to select files from directory
+profile.pattern <- regex("prof_6", ignore_case = TRUE)
 
 # Import all files --------------------------------------------------
 all.dfs <- list.files(path = "data_raw/all_prof_xyz_s97-s22/", pattern=profile.pattern)
@@ -26,7 +28,7 @@ names(dfs.list) = all.dfs
 ## Remove empty dataframes from list according to row number (1 or fewer means empty)
 dfs.filtered <- dfs.list[sapply(dfs.list, nrow) > 1]
 removed.profiles <- dfs.list[!(dfs.list %in% dfs.filtered)]
-print(names(removed.profiles))
+print(paste("Number of removed (NULL) files:", length(names(removed.profiles))))
 
 ## Isolate and bind profiles
 prof.df <- rbindlist(dfs.filtered, idcol = TRUE, fill = FALSE) %>%

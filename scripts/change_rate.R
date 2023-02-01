@@ -38,26 +38,27 @@ ggplot(data = prof6, aes(x = x, y = y, group = season)) +
   theme(axis.text = element_blank())
 
 
-# 3D Regression Line ------------------------------------------------------
-x <- prof6$x
-y <- prof6$y
-z <- prof6$z
+# 3D Regression Line #2 ------------------------------------------------------
 
-xyz <- data.frame(x = x, y = y, z = z)
-N <- nrow(xyz) 
+N <- nrow(prof6) 
 
-mean_xyz <- apply(xyz, 2, mean)
-xyz_pca   <- princomp(xyz) 
-dirVector <- xyz_pca$loadings[, 1]
+mean_profile <- apply(prof6[, 4:6], 2, mean)
+pca_profile  <- princomp(prof6[, 4:6]) 
+vector_profile <- pca_profile$loadings[, 1] # why 1?
 
-xyz_fit <- matrix(rep(mean_xyz, each = N), ncol=3) + xyz_pca$score[, 1] %*% t(dirVector) 
+profile_fit <- matrix(rep(mean_profile, each = N), ncol=3) + 
+  pca_profile$score[, 1] %*% t(vector_profile) 
 
-t_ends <- c(min(xyz_pca$score[,1]) - 0.2, max(xyz_pca$score[,1]) + 0.2)  
-endpts <- rbind(mean_xyz + t_ends[1]*dirVector, mean_xyz + t_ends[2]*dirVector)
+t_ends <- c(min(pca_profile$score[,1]) - 0.2, max(pca_profile$score[,1]) + 0.2)  
+endpoints <- rbind(mean_profile + t_ends[1]*vector_profile, mean_profile + t_ends[2]*vector_profile)
 
-s3d <- scatterplot3d(xyz, pch=20, main = "Profile 6, 1997")
-s3d$points3d(endpts, type="l", col="blue", lwd=1)
-for(i in 1:N) s3d$points3d(rbind(xyz[i,], xyz_fit[i,]), type="l", col="green3", lty=2)
+profile3D <- scatterplot3d(prof6[, 4:6], pch=20, main = "Profile 6, 1997")
+profile3D$points3d(endpoints, type="l", col="blue", lwd=1)
+
+for (i in 1:N){
+  profile3D$points3d(rbind(prof6[, 4:6][i, ], profile_fit[i, ]), type="l", col="green3", lty=2)
+} 
+
 
 
 # Polygon + spatial geoplots ------------------------------------------------------------
