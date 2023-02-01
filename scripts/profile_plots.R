@@ -13,7 +13,7 @@ library(tidyverse)
 ## At least some of these are null and will be removed (should be noted?)
 ## We have two duplicates, see accompanying script 
 
-profile.pattern <- regex("prof_17")
+profile.pattern <- regex("prof_6")
 
 # Import all files --------------------------------------------------
 all.dfs <- list.files(path = "data_raw/all_prof_xyz_s97-s22/", pattern=profile.pattern)
@@ -41,43 +41,24 @@ prof.df <- rbindlist(dfs.filtered, idcol = TRUE, fill = FALSE) %>%
 prof.data <- prof.df %>%
   drop_na() %>%
   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
-                                            "04", "05", "06", "07", "08", "09", "10",
-                                            "11", "12", "13", "14", "15", "16", "17",
-                                            "18", "19", "20", "21", "22")))
+                                         "04", "05", "06", "07", "08", "09", "10",
+                                         "11", "12", "13", "14", "15", "16", "17",
+                                         "18", "19", "20", "21", "22")))
 
 
 ## Plot
 marker <- list(color = ~year, showscale = TRUE,
-               size = 2, shape = 1, showlabel = TRUE)
+               size = 2, shape = 1)
 
-profileplot <- plot_ly(prof.data, x = ~x, y = ~y, z = ~z, marker = marker) %>%
+profileplot <- plot_ly(prof.data, x = ~x, y = ~y, z = ~z,
+                       marker = marker) %>%
   add_markers() %>%
   layout(
     scene = list(xaxis = list(title = "x"),
                  yaxis = list(title = "y"),
                  zaxis = list(title = "z")),
     title = list(text = paste("Profile:", profile.pattern, "Years: 1997-2022"), y = 0.9),
-    legend = list("year"))
+    legend = levels(year))
 
 profileplot
 
-
-## Duplicating John's graph
-prof22s18 <- read.table("data_raw/all_prof_xyz_s97-s22/prof_22_s18.out",
-                        header = FALSE, col.names = c("x", "y", "z"))
-
-
-## Plot
-marker2 <- list(size = 2, color = "orange")
-
-p2 <- plot_ly(prof22s18, x = ~x, y = ~y, z = ~z, name = "spring18", marker = marker2) %>%
-  add_markers() %>%
-  layout(
-    scene = list(xaxis = list(title = "x"),
-                 yaxis = list(title = "y"),
-                 zaxis = list(title = "z")),
-    title = ("Profile 22, Spring '18")
-  )
-
-
-p2

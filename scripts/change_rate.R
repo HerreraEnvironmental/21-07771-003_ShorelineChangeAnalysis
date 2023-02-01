@@ -1,8 +1,10 @@
 library(ggmap)
 library(data.table)
+library(rgl)
+library(scatterplot3d)
 library(tidyverse)
 
-profile.pattern <- c("prof_6_s18|prof_6_s97|prof_7_s18|prof_7_s97|prof_8_s18|prof_8_s97")
+#profile.pattern <- c("prof_6_s18|prof_6_s97|prof_7_s18|prof_7_s97|prof_8_s18|prof_8_s97")
 profile.pattern <- "prof_6"
 
 # Import all files --------------------------------------------------
@@ -27,25 +29,45 @@ prof.df <- rbindlist(prof.list, idcol = TRUE, fill = FALSE) %>%
 
 ## Take a look only at profile 6
 prof6 <- prof.df %>%
-  filter(profile == 6 & year %in% c("18"))
+  filter(profile == 6 & year %in% c("97"))
 
 ggplot(data = prof6, aes(x = x, y = y, group = season)) +
+  facet_wrap(~year) +
   geom_point(aes(color = season)) +
-  geom_smooth(method = "lm", formula = y~x, color = "red")
-
-## Visual layout
-PugetSound <- c(left = -125, bottom = 47, right = -110, top = 49)
-get_stamenmap(PugetSound, zoom = 5, maptype = "toner-lite") %>%
-  ggmap()
+  geom_smooth(method = "lm", formula = y~x, color = "blue") +
+  theme(axis.text = element_blank())
 
 
-b <- bbox(prof6)
-b[1, ] <- (b[1, ] - mean(b[1, ])) * 1.05 + mean(b[1, ])
-b[2, ] <- (b[2, ] - mean(b[2, ])) * 1.05 + mean(b[2, ])
-# scale longitude and latitude (increase bb by 5% for plot) replace 1.05
-# with 1.xx for an xx% increase in the plot size
+# 3D Regression Line ------------------------------------------------------
+x <- prof6$x
+y <- prof6$y
+z <- prof6$z
+
+xyz <- data.frame(x = x, y = y, z = z)
+N <- nrow(xyz) 
+
+mean_xyz <- apply(xyz, 2, mean)
+xyz_pca   <- princomp(xyz) 
+dirVector <- xyz_pca$loadings[, 1]
+
+xyz_fit <- matrix(rep(mean_xyz, each = N), ncol=3) + xyz_pca$score[, 1] %*% t(dirVector) 
+
+t_ends <- c(min(xyz_pca$score[,1]) - 0.2, max(xyz_pca$score[,1]) + 0.2)  
+endpts <- rbind(mean_xyz + t_ends[1]*dirVector, mean_xyz + t_ends[2]*dirVector)
+
+s3d <- scatterplot3d(xyz, pch=20, main = "Profile 6, 1997")
+s3d$points3d(endpts, type="l", col="blue", lwd=1)
+for(i in 1:N) s3d$points3d(rbind(xyz[i,], xyz_fit[i,]), type="l", col="green3", lty=2)
+
+
+# Polygon + spatial geoplots ------------------------------------------------------------
 ggplot(prof.df, aes(x, y, group = year, fill = year)) + 
   geom_polygon() +
-  #coord_equal() +
   labs(x = "Easting", y = "Northing", fill = "year") +
   ggtitle("Profile 6")
+
+
+## Visual layout of PS, for later
+PugetSound <- c(left = -124.5, bottom = 46, right = -123.5, top = 47.75)
+get_stamenmap(PugetSound, zoom = 10, maptype = "terrain-background") %>%
+  ggmap()
