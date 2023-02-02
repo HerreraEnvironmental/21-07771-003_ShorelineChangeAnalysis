@@ -29,7 +29,7 @@ prof.df <- rbindlist(prof.list, idcol = TRUE, fill = FALSE) %>%
 
 ## Take a look only at profile 6
 prof6 <- prof.df %>%
-  filter(profile == 6 & year %in% c("18", "97"))
+  filter(profile == 6 & year %in% c("97"))
 
 ggplot(data = prof6, aes(x = x, y = y)) +
   facet_wrap(~year) +
@@ -48,13 +48,10 @@ df <- cbind(df18, df97)
 ggplot() +
   geom_jitter(df18, aes(x18, y18), colour = "red") +
   geom_smooth(aes(x18, y19, col = "red"), method = "lm", se = FALSE) +
-  +
-  geom_jitter(aes(x2,y2),colour="green")+geom_smooth(aes(x2,y2,col="green"),metho
-                                                     d="lm",se=FALSE)
+  geom_jitter(aes(x2,y2),colour="green")+geom_smooth(aes(x2,y2,col="green"),method="lm",se=FALSE)
 
 
 # 3D Regression Line #2 ------------------------------------------------------
-
 N <- nrow(prof6) 
 
 mean_profile <- apply(prof6[, 4:6], 2, mean)
