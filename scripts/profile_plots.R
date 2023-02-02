@@ -15,7 +15,7 @@ library(tidyverse)
 ## Check on non-conforming files: beachface? dunes?
 
 # Set pattern to select files from directory
-profile.pattern <- regex("prof_6", ignore_case = TRUE)
+profile.pattern <- regex("prof_7", ignore_case = TRUE)
 
 # Import all files --------------------------------------------------
 all.dfs <- list.files(path = "data_raw/all_prof_xyz_s97-s22/", pattern=profile.pattern)

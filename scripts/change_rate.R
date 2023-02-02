@@ -29,13 +29,28 @@ prof.df <- rbindlist(prof.list, idcol = TRUE, fill = FALSE) %>%
 
 ## Take a look only at profile 6
 prof6 <- prof.df %>%
-  filter(profile == 6 & year %in% c("97"))
+  filter(profile == 6 & year %in% c("18", "97"))
 
-ggplot(data = prof6, aes(x = x, y = y, group = season)) +
+ggplot(data = prof6, aes(x = x, y = y)) +
   facet_wrap(~year) +
-  geom_point(aes(color = season)) +
-  geom_smooth(method = "lm", formula = y~x, color = "blue") +
+  geom_point(aes(color = year)) +
+  geom_smooth(method = "lm", formula = y~x, color = "blue", linewidth = 1) +
   theme(axis.text = element_blank())
+
+##testd TODO START HERE
+x97 <- prof6[1:57, 4]
+y97 <- prof6[5, 1:57]
+df97 <- prof6 %>%
+  filter(year == 97) %>%
+  select(x97 = x, y97 = y, z97 = z)
+
+df <- cbind(df18, df97)
+ggplot() +
+  geom_jitter(df18, aes(x18, y18), colour = "red") +
+  geom_smooth(aes(x18, y19, col = "red"), method = "lm", se = FALSE) +
+  +
+  geom_jitter(aes(x2,y2),colour="green")+geom_smooth(aes(x2,y2,col="green"),metho
+                                                     d="lm",se=FALSE)
 
 
 # 3D Regression Line #2 ------------------------------------------------------
@@ -60,6 +75,44 @@ for (i in 1:N){
 } 
 
 
+# Plotly 3D attempt -------------------------------------------------------
+
+
+plot_ly() %>%
+  add_trace(x = danc.x, 
+            y = danc.y,
+            z = danc.z, 
+            type = "scatter3d", 
+            mode = "markers",
+            color = coh$dance,
+            colors = c("gray70", '#6d98f3'),
+            opacity = 1) %>%
+  add_trace(x = danc.x[which(coh$dance == 1)], 
+            y = danc.y[which(coh$dance == 1)],
+            z = danc.z[which(coh$dance == 1)], 
+            type = "scatter3d",
+            mode = "markers",
+            marker = list(color = "black", symbol = "circle-open")) %>%
+  add_trace(x = l1.x,
+            y = l1.y,
+            z = l1.z,
+            type = "scatter3d",
+            mode = "lines",
+            line = list(color = "black", width = 5, dash = 'dash')) %>%
+  layout(title = '"...used for dancing"',
+         scene = list(xaxis = list(title = 'India', range = c(1,6), ticktype = "array", tickvals = ticks),
+                      yaxis = list(title = 'World', range = c(1,6), ticktype = "array", tickvals = ticks),
+                      zaxis = list(title = 'USA', range = c(1,6), ticktype = "array", tickvals = ticks),
+                      camera = list(eye = list(x
+
+## Jon's Profile 6
+JonProf6 <- data.frame(x = c(218818.1, 218543.0, 218450.8),
+                       y = c(218527.6, 218477.1, 218466.0),
+                       row.names = c("basepoint", "start", "end"))
+
+ggplot(JonProf6, aes(x, y), group=location) +
+  geom_point() +
+  geom_text(label=rownames(JonProf6))
 
 # Polygon + spatial geoplots ------------------------------------------------------------
 ggplot(prof.df, aes(x, y, group = year, fill = year)) + 
