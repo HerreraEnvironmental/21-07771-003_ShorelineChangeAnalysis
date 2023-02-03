@@ -29,17 +29,16 @@ prof.df <- rbindlist(prof.list, idcol = TRUE, fill = FALSE) %>%
 
 ## Take a look only at profile 6
 prof6 <- prof.df %>%
-  filter(profile == 6 & year %in% c("97"))
+  filter(profile == 6 & year %in% c("97", "18"))
 
-ggplot(data = prof6, aes(x = x, y = y)) +
-  facet_wrap(~year) +
-  geom_point(aes(color = year)) +
-  geom_smooth(method = "lm", formula = y~x, color = "blue", linewidth = 1) +
+ggplot(data = prof6, aes(x = x, y = y, color = year)) +
+ # geom_point() +
+  geom_smooth(method = "lm", linewidth = 1) +
   theme(axis.text = element_blank())
 
 ##testd TODO START HERE
 x97 <- prof6[1:57, 4]
-y97 <- prof6[5, 1:57]
+y97 <- prof6[1:57, 4]
 df97 <- prof6 %>%
   filter(year == 97) %>%
   select(x97 = x, y97 = y, z97 = z)
