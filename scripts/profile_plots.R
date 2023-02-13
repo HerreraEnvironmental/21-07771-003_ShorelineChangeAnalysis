@@ -10,6 +10,8 @@ library(tidyverse)
 
 ## Shoreline profiles in x y z format (easting northing elevation). 
 ## Named prof_X_ttYY.out where X is the profile number, tt is a season code (e.g. f = fall) and YY is the year. 
+## The vertical datum is NAVD88.
+## The horizontal is WA State Plane South. All of the units are in meters.
 
 ## At least some of these are null and will be removed and noted
 ## We have two duplicates, see accompanying script "duplicate_test.R"

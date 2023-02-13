@@ -31,23 +31,10 @@ prof.df <- rbindlist(prof.list, idcol = TRUE, fill = FALSE) %>%
 prof6 <- prof.df %>%
   filter(profile == 6 & year %in% c("97", "18"))
 
-ggplot(data = prof6, aes(x = x, y = y, color = year)) +
- # geom_point() +
+ggplot(data = prof6, aes(x = x, y = y, group = year)) +
+  geom_point() +
   geom_smooth(method = "lm", linewidth = 1) +
   theme(axis.text = element_blank())
-
-##testd TODO START HERE
-x97 <- prof6[1:57, 4]
-y97 <- prof6[1:57, 4]
-df97 <- prof6 %>%
-  filter(year == 97) %>%
-  select(x97 = x, y97 = y, z97 = z)
-
-df <- cbind(df18, df97)
-ggplot() +
-  geom_jitter(df18, aes(x18, y18), colour = "red") +
-  geom_smooth(aes(x18, y19, col = "red"), method = "lm", se = FALSE) +
-  geom_jitter(aes(x2,y2),colour="green")+geom_smooth(aes(x2,y2,col="green"),method="lm",se=FALSE)
 
 
 # 3D Regression Line #2 ------------------------------------------------------
