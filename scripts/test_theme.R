@@ -1,5 +1,6 @@
 library(ggplot2)
 library(flextable) ## check this out!!
+
 iris <- iris
 ggplot(data = iris, aes(Sepal.Length)) + geom_bar(color="grey", fill="red") +
   labs(x = "Length of Sepal", 
