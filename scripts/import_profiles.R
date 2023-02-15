@@ -1,6 +1,7 @@
+source("scripts/load_packages.R")
 
 # Set pattern to select files from directory
-profile.pattern <- regex("prof_7|prof8", ignore_case = TRUE)
+profile.pattern <- regex("prof_6|prof_7|prof_8", ignore_case = TRUE)
 
 # Import all files --------------------------------------------------
 all.dfs <- list.files(path = "data_raw/all_prof_xyz_s97-s22/", pattern=profile.pattern)
@@ -22,4 +23,5 @@ prof.df <- rbindlist(dfs.filtered, idcol = TRUE, fill = FALSE) %>%
   separate(season, 
            into = c("season", "year"), 
            sep = "(?<=[A-Za-z])(?=[0-9])") %>%
-  select(profile:year, x:z)
+  select(profile:year, x:z) %>%
+  mutate(profile = as.numeric(profile))
