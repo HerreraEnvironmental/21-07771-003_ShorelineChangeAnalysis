@@ -5,7 +5,7 @@
 
 source("scripts/load_packages.R")
 
-profile.pattern <- "prof_16|prof_17"
+profile.pattern <- "prof_6|prof_7|prof_8|prof_9"
 source("scripts/import_profiles.R")
 
 ## Import erosion file for Base Point data
@@ -38,7 +38,7 @@ g
 
 # With color by year and best fit
 partial.visual <- complete.profile %>%
-  filter(profile %in% c(16, 17))
+  filter(profile %in% c(6, 7, 8, 9))
 
 ggplot(data = partial.visual) +
   geom_point(aes(x = x, y = y), alpha = 0.2) +
@@ -61,16 +61,33 @@ euclidean$year <- factor(euclidean$year, levels =  c("97", "98", "99","00", "01"
                                                      "11", "12", "13", "14", "15", "16", "17",
                                                      "18", "19", "20", "21", "22"))
 
+
 ## Visualize euclidean distance from average Euclidean distance of each year
-ggplot(euclidean, aes(year, euc_dist)) +
+ggplot(euclidean, aes(year, euc_dist, group = profile)) +
   facet_wrap(~profile) +
-  geom_bar(stat = "identity") +
-  geom_smooth(method = "lm", weight = 3) +
+  geom_col(position = position_dodge(width = 1)) +
+  geom_line(aes(group = profile), position = position_dodge(width = 1), size = 2) +
+  geom_smooth(method = "lm") +
   theme(legend.position = "none") +
   ggtitle(paste("Profile", profile.pattern, ": Midpoint Euclidean Distance from Base Point"))
 
-ggplot(euclidean, aes(year, euc_dist, group = profile, color = factor(profile))) +
+## Line plot overlay
+ggplot(euclidean, aes(year, euc_dist, 
+                      group = profile, color = factor(profile))) +
   geom_point() +
   geom_line()
+
+
+#### CHECK OUT LATER
+library(healthyR.ts)
+data_tbl <- ts_to_tbl(AirPassengers) |>
+  select(-index)
+output <- ts_ma_plot(
+  .data = data_tbl,
+  .date_col = date_col,
+  .value_col = value
+)
+output$pgrid
+output$xts_plt
 
                             
