@@ -5,6 +5,9 @@
 
 source("scripts/load_packages.R")
 
+## Would need to interpolate Base Point data from John's CAD to get a complete picture for all profiles.
+## The quality of data is variable- does midpoint euclidean gloss over the data too much?
+
 #profile.pattern <- "prof_6|prof_7|prof_8|prof_9|prof_17|prof_41"
 profile.pattern <- "prof"
 source("scripts/import_profiles.R")
@@ -36,17 +39,17 @@ complete.profile <- profile.erosion %>%
   drop_na()
 
 ## Prelim visual of data vs BasePoint
-g <- ggplot(data = complete.profile) +
+g <- ggplot(data = complete.profile %>% group_by(profile, year) %>% slice(500)) +
   geom_point(aes(x = x, y = y, color = profile)) +
   geom_point(aes(x = BasePoint_X, y = BasePoint_Y), color = "black", size = 3) +
   ggtitle(paste("Profile:", profile.pattern))
 g
 
 # With color by year and best fit
-partial.visual <- complete.profile #%>%
-  #filter(profile %in% c(6, 7, 8, 9, 17, 41))
+partial.visual <- complete.profile %>%
+  filter(profile %in% c(6, 7, 8, 9, 17, 41))
 
-ggplot(data = partial.visual) +
+ggplot(data = partial.visual%>% group_by(profile, year) %>% slice(500)) +
   geom_point(aes(x = x, y = y), alpha = 0.2) +
   geom_point(aes(x = BasePoint_X, y = BasePoint_Y), color = "black", size = 3) +
   geom_point(aes(x = X_midpoint, y = Y_midpoint), color = "blue", size = 3) +
@@ -93,15 +96,15 @@ ggplot(dat %>% group_by(pairs) %>%
 
 
 #### CHECK OUT LATER
-library(healthyR.ts)
-data_tbl <- ts_to_tbl(AirPassengers) |>
-  select(-index)
-output <- ts_ma_plot(
-  .data = data_tbl,
-  .date_col = date_col,
-  .value_col = value
-)
-output$pgrid
-output$xts_plt
+# library(healthyR.ts)
+# data_tbl <- ts_to_tbl(AirPassengers) |>
+#   select(-index)
+# output <- ts_ma_plot(
+#   .data = data_tbl,
+#   .date_col = date_col,
+#   .value_col = value
+# )
+# output$pgrid
+# output$xts_plt
 
                             
