@@ -64,7 +64,18 @@ change <- complete.profile %>%
          ymid_rate = 100 * (y_midpoint - lag(y_midpoint))/lag(y_midpoint),
          mid_rate = xmid_rate/ymid_rate)
 
-ggplot(change, mapping=aes(x=year, y=min_rate)) +
-  geom_col() +
+change.plot <- change %>%
+  ungroup() %>%
+  select(year, min_rate, mid_rate) %>%
+  unique()
+
+
+ggplot(change, aes(x=year, y=min_rate)) +
+  geom_col(position = "dodge") +
   ggtitle(paste("Profile", profile.pattern))
+
+## 3xample
+mtcars.long <- mtcars %>% 
+  select("mpg","disp", "hp", "wt") %>% 
+  pivot_longer(-mpg, names_to = "variable", values_to = "value")
 
