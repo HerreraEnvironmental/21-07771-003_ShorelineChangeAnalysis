@@ -3,12 +3,22 @@
 ## February 
 ## Shoreline Conservation Areas, Washington State Parks
 
-source("scripts/load_packages.R")
+
+CalculateChangeRates <- function(x, y) {
+  xval = (x - lag(x))/lag(x)
+  yval = (y - lag(y))/lag(y)
+  rate = xval/yval
+  
+  return(rate)
+}
+
 
 ## Take n Euclidean points along profiles and use that as the change rate.
 
-profile.pattern <- "prof_6"
-year.pattern <- "00"
+profile.pattern <- "prof_41"
+year.pattern <- c("00", "17")
+
+source("scripts/load_packages.R")
 source("scripts/import_profiles.R")
 
 ## Import erosion file for Base Point data
@@ -43,7 +53,8 @@ complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "
                                                      "18", "19", "20", "21", "22"))
 
 ## Plot
-ggplot(data = complete.profile %>% filter(year == year.pattern)) +
+ggplot(data = complete.profile %>% filter(year %in% year.pattern)) +
+  facet_wrap(~year) +
   geom_point(aes(x = x, y = y), alpha = 0.5) +
   geom_point(aes(x = x_min, y = y_min), color = "red", size = 3) +
   geom_point(aes(x = x_quartile1, y = y_quartile1), color = "orange", size = 3) +
@@ -54,28 +65,36 @@ ggplot(data = complete.profile %>% filter(year == year.pattern)) +
 
 # Change rates?...
 change <- complete.profile %>% 
-  select(-c(x, y, z)) %>%
+  select(profile, Park, year, everything(), -c(x, y, z, season)) %>%
   unique() %>%
   group_by(profile) %>% 
-  mutate(xmin_rate = 100 * (x_min - lag(x_min))/lag(x_min),
-         ymin_rate = 100 * (y_min - lag(y_min))/lag(y_min),
-         min_rate = xmin_rate/ymin_rate) %>%
-  mutate(xmid_rate = 100 * (x_midpoint - lag(x_midpoint))/lag(x_midpoint),
-         ymid_rate = 100 * (y_midpoint - lag(y_midpoint))/lag(y_midpoint),
-         mid_rate = xmid_rate/ymid_rate)
+  mutate(min_rate = CalculateChangeRates(x_min, y_min)) %>%
+  mutate(quart1_rate = CalculateChangeRates(x_quartile1, y_quartile1)) %>%
+  mutate(mid_rate = CalculateChangeRates(x_midpoint, y_midpoint)) %>%
+  mutate(quart3_rate = CalculateChangeRates(x_quartile3, y_quartile3)) %>%
+  mutate(max_rate = CalculateChangeRates(x_max, y_max))
 
-change.plot <- change %>%
-  ungroup() %>%
-  select(year, min_rate, mid_rate) %>%
-  unique()
+MakeRateDF <- function(df, description) {
+  rate_df <- df %>%
+    select(profile, year, rate = paste(description, "_rate", sep = "")) %>%
+    mutate(position = description)
+  
+  return(rate_df)
+}
 
+min_df <- MakeRateDF(change, "min")
+quart1_df <- MakeRateDF(change, "quart1")
+mid_df <- MakeRateDF(change, "mid")
+quart3_df <- MakeRateDF(change, "quart3")
+max_df <- MakeRateDF(change, "max")
+  
+change.plot <- min_df %>%
+  rbind(quart1_df) %>%
+  rbind(mid_df) %>%
+  rbind(quart3_df) %>%
+  rbind(max_df) 
+  
 
-ggplot(change, aes(x=year, y=min_rate)) +
-  geom_col(position = "dodge") +
+ggplot(change.plot, aes(x=year, y=rate, fill = position)) +
+  geom_col(position = "dodge", stat = "identity") +
   ggtitle(paste("Profile", profile.pattern))
-
-## 3xample
-mtcars.long <- mtcars %>% 
-  select("mpg","disp", "hp", "wt") %>% 
-  pivot_longer(-mpg, names_to = "variable", values_to = "value")
-
