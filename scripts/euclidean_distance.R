@@ -40,7 +40,7 @@ g
 
 # With color by year and euclidean midpoint
 partial.visual <- complete.profile %>%
-  filter(profile %in% c(6))
+  filter(profile %in% c(6) & year == "98")
 
 ggplot(data = partial.visual %>% group_by(profile, year)) +
   geom_point(aes(x = x, y = y), alpha = 0.5) +
@@ -75,7 +75,7 @@ ggplot(euclidean %>% drop_na(),
 ## Rate of change
 change <- euclidean %>% 
   group_by(profile) %>% 
-  mutate(rate = 100 * (euc_dist_to_BP - lag(euc_dist_to_BP))/lag(euc_dist_to_BP)) %>%
+  mutate(rate = 100 * (euc_dist_to_BP - stats::lag(euc_dist_to_BP))/stats::lag(euc_dist_to_BP)) %>%
   ungroup() %>%
   filter(profile == 41)
 
