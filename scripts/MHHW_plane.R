@@ -25,9 +25,21 @@ profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv",
 ## Combine
 complete.profile <- profile.erosion %>%
   full_join(profiles.df, by = "profile") %>%
-  select(profile, Park, MHHW, BasePoint_X, BasePoint_Y, season:z) %>%
+  select(profile, Park, MHHW, BasePoint_X, BasePoint_Y, season:z) # %>%
   ## Specific filters
-  filter(year == "99")
+  # filter(year == "99")
+
+# For all years
+
+fitted_models <- complete.profile %>%
+  group_by(year) %>% 
+  do(model = lm(z + y ~ x, data = .))
+
+fitted_models%>%
+  tidy(model)
+
+
+
 
 ## xyz Linear model
 N <- nrow(complete.profile) 
@@ -41,16 +53,17 @@ profile_fit <- matrix(rep(mean_profile, each = N), ncol=3) +
 fitted.values <- as_tibble(profile_fit) %>%
   rename(x_fit = x, y_fit = y, z_fit = z)
 
-plot_ly(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit, type="scatter3d", mode="markers")
+plot_ly(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit,
+        type="scatter3d", mode="markers")
 
 
 ## Plot
-marker <- list(#color = ~year, showscale = TRUE,
+marker <- list(color = ~year, showscale = TRUE,
                size = 2, shape = 1)
 
 profileplot <- plot_ly(complete.profile, x = ~x, y = ~y, z = ~z,
       marker = marker) %>%
-  add_markers() %>%
+  #add_markers() %>%
   add_trace(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit, 
             type = "scatter3d", mode = "markers") %>%
   add_mesh(complete.profile, x = ~x, y = ~y, z = ~MHHW, opacity = 0.5) %>%

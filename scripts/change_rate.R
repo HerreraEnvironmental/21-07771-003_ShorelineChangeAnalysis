@@ -54,8 +54,8 @@ euclidean <- complete.profile %>%
   unique() %>%
   group_by(profile) %>%
   mutate(euc_dist_to_BP = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) %>%
-  #mutate(profile_slope = ((Y_BasePoint -  y_midpoint) / (X_BasePoint - x_midpoint))) %>%
-  #mutate(slope_dir = ifelse(profile_slope > 0, "positive", "negative"))
+  mutate(profile_slope = ((Y_BasePoint -  y_midpoint) / (X_BasePoint - x_midpoint))) %>%
+  mutate(slope_dir = ifelse(profile_slope > 0, "positive", "negative"))
 euclidean$year <- factor(euclidean$year, levels =  c("97", "98", "99","00", "01", "02", "03",
                                                      "04", "05", "06", "07", "08", "09", "10",
                                                      "11", "12", "13", "14", "15", "16", "17",

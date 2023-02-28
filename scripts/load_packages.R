@@ -3,7 +3,8 @@
 ## January 2023
 ## Shoreline Conservation Areas, Washington State Parks
 
-required_Packages_Install <- c("data.table",
+required_Packages_Install <- c("broom",
+  "data.table",
                                "ggmap",
                                "rgl",
                                "scatterplot3d",
