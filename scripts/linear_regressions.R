@@ -27,8 +27,6 @@ ggplot(data = single.profile, aes(x = x, y = y, group = year)) +
 plot_ly(x=fitted_values$x, y=fitted_values$y, z=fitted_values$z, type="scatter3d", mode="markers")
 
 
-
-
 # 3D Regression Line #2 ------------------------------------------------------
 N <- nrow(single.profile) 
 

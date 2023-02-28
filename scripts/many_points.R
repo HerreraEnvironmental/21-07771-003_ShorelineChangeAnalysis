@@ -1,12 +1,21 @@
 ## RLionheart
 ## 21-0771-001
-## February 
+## February 2023
 ## Shoreline Conservation Areas, Washington State Parks
 
 
+# CalculateChangeRates <- function(x, y) {
+#   xval = (x - lag(x))/lag(x)
+#   yval = (y - lag(y))/lag(y)
+#   rate = xval/yval
+#   
+#   return(rate)
+# }
+
+
 CalculateChangeRates <- function(x, y) {
-  xval = (x - lag(x))/lag(x)
-  yval = (y - lag(y))/lag(y)
+  xval = (max(x) - min(x)/min(x))
+  yval = (max(y) - min(y)/min(y))
   rate = xval/yval
   
   return(rate)
@@ -15,8 +24,8 @@ CalculateChangeRates <- function(x, y) {
 
 ## Take n Euclidean points along profiles and use that as the change rate.
 
-profile.pattern <- "prof_41"
-year.pattern <- c("00", "17")
+profile.pattern <- "prof_22"
+year.pattern <- c("00")
 
 source("scripts/load_packages.R")
 source("scripts/import_profiles.R")
@@ -32,11 +41,32 @@ profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv",
                             skip = 3,  show_col_types = FALSE) %>%
    filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]]))
 
+
 ## Combine and add euclidean distance
 complete.profile <- profile.erosion %>%
   full_join(profiles.df, by = "profile") %>%
-  select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
-  group_by(profile, year) %>% # probably not season?
+  select(profile, Park, X_BasePoint, Y_BasePoint, season:z)
+complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "99","00", "01", "02", "03",
+                                                     "04", "05", "06", "07", "08", "09", "10",
+                                                     "11", "12", "13", "14", "15", "16", "17",
+                                                     "18", "19", "20", "21", "22"))
+
+gg1 <- ggplot(data = complete.profile %>% filter(year %in% year.pattern),
+       aes(x = x, y = y, group = year)) +
+  facet_wrap(~year) +
+  geom_point() +
+  stat_smooth(method = lm, se = FALSE) +
+  theme(axis.text = element_blank()) +
+  ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
+gg1
+
+t <-ggplot_build(gg1)$data[[2]][, c("x","y")]
+ggplot(data = t, aes(x = x, y = y)) +
+  geom_point() 
+
+
+## for rates and shit
+group_by(profile, year) %>% # probably not season?
   mutate(x_min = min(x),
          y_min = min(y)) %>%
   mutate(x_max = max(x),
@@ -47,15 +77,13 @@ complete.profile <- profile.erosion %>%
          y_quartile1 = ((min(y) + y_midpoint)/2)) %>%
   mutate(x_quartile3 = ((x_midpoint + max(x))/2),
          y_quartile3 = ((y_midpoint + max(y))/2)) 
-complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "99","00", "01", "02", "03",
-                                                     "04", "05", "06", "07", "08", "09", "10",
-                                                     "11", "12", "13", "14", "15", "16", "17",
-                                                     "18", "19", "20", "21", "22"))
+
+
 
 ## Plot
 ggplot(data = complete.profile %>% filter(year %in% year.pattern)) +
   facet_wrap(~year) +
-  geom_point(aes(x = x, y = y), alpha = 0.5) +
+  geom_point(aes(x = x, y = y), alpha = 0.5, fill = season) +
   geom_point(aes(x = x_min, y = y_min), color = "red", size = 3) +
   geom_point(aes(x = x_quartile1, y = y_quartile1), color = "orange", size = 3) +
   geom_point(aes(x = x_midpoint, y = y_midpoint), color = "green", size = 3) +

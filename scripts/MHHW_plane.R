@@ -8,7 +8,7 @@ source("scripts/load_packages.R")
 ## Where does the "shore" line cross the MHHW plane? 
 
 #profile.pattern <- "prof_6|prof_7|prof_8|prof_9|prof_17|prof_41"
-profile.pattern <- "prof_6"
+profile.pattern <- "prof_22"
 source("scripts/import_profiles.R")
 
 ## Import erosion file for Base Point data
@@ -28,15 +28,6 @@ complete.profile <- profile.erosion %>%
   select(profile, Park, MHHW, BasePoint_X, BasePoint_Y, season:z) # %>%
   ## Specific filters
   # filter(year == "99")
-
-# For all years
-
-# fitted_models <- complete.profile %>%
-#   group_by(year) %>% 
-#   do(model = lm(z + y ~ x, data = .))
-# 
-# fitted_models%>%
-#   tidy(model)
 
 
 ## xyz Linear model
@@ -59,9 +50,34 @@ plot_ly(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit,
 marker <- list(color = ~year, showscale = TRUE,
                size = 2, shape = 1)
 
-profileplot <- plot_ly(complete.profile, x = ~x, y = ~y, z = ~z,
+profileplot <- plot_ly(complete.profile %>% drop_na(), x = ~x, y = ~y, z = ~z,
       marker = marker, hoverinfo = "text", 
       text = ~paste('</br> Year: ', year)) %>%
+  #add_markers() %>%
+  add_trace(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit, 
+            type = "scatter3d", mode = "markers") %>%
+  add_mesh(complete.profile, x = ~x, y = ~y, z = ~MHHW, opacity = 0.5) %>%
+  layout(
+    scene = list(xaxis = list(title = "x"),
+                 yaxis = list(title = "y"),
+                 zaxis = list(title = "z")),
+    title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
+    legend = levels(year))
+
+profileplot
+
+## Where does it cross MHHW?
+
+MHHW <- complete.profile %>%
+  group_by(year) %>%
+  filter(z == MHHW)
+
+marker <- list(color = ~year, showscale = TRUE,
+               size = 5, shape = 1)
+
+MHHWplot <- plot_ly(MHHW %>% drop_na(), x = ~x, y = ~y, z = ~z,
+                       marker = marker, hoverinfo = "text", 
+                       text = ~paste('</br> Year: ', year)) %>%
   add_markers() %>%
   # add_trace(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit, 
   #           type = "scatter3d", mode = "markers") %>%
@@ -73,5 +89,8 @@ profileplot <- plot_ly(complete.profile, x = ~x, y = ~y, z = ~z,
     title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
     legend = levels(year))
 
-profileplot
+MHHWplot
+
+ggplot(data = MHHW, aes(x = year, y = z)) +
+  geom_point(size = 5)
 
