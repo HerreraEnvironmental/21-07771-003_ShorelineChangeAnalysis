@@ -9,7 +9,7 @@ source("scripts/load_packages.R")
 ## The quality of data is variable- does midpoint euclidean gloss over the data too much?
 
 #profile.pattern <- "prof_6|prof_7|prof_8|prof_9|prof_17|prof_41"
-profile.pattern <- "prof"
+profile.pattern <- "prof_6"
 source("scripts/import_profiles.R")
 
 ## Import erosion file for Base Point data
@@ -38,7 +38,7 @@ g <- ggplot(data = complete.profile %>% group_by(profile, year) %>% slice(750)) 
   ggtitle(paste("Profile:", profile.pattern))
 g
 
-# With color by year and best fit
+# With color by year and euclidean midpoint
 partial.visual <- complete.profile %>%
   filter(profile %in% c(6))
 

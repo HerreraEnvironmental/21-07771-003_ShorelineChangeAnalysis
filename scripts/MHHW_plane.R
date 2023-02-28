@@ -22,25 +22,43 @@ profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv",
                             skip = 3, show_col_types = FALSE) %>%
   filter(profile %in% str_extract_all(profile.pattern,"\\(?[0-9,.]+\\)?")[[1]])
 
-## Combine and add euclidean distance
+## Combine
 complete.profile <- profile.erosion %>%
   full_join(profiles.df, by = "profile") %>%
-  select(profile, Park, MHHW, BasePoint_X, BasePoint_Y, season:z)
+  select(profile, Park, MHHW, BasePoint_X, BasePoint_Y, season:z) %>%
+  ## Specific filters
+  filter(year == "99")
+
+## xyz Linear model
+N <- nrow(complete.profile) 
+
+mean_profile <- apply(complete.profile[, 8:10], 2, mean)
+pca_profile  <- princomp(complete.profile[, 8:10]) 
+vector_profile <- pca_profile$loadings[, 1]
+
+profile_fit <- matrix(rep(mean_profile, each = N), ncol=3) + 
+  pca_profile$score[, 1] %*% t(vector_profile) 
+fitted.values <- as_tibble(profile_fit) %>%
+  rename(x_fit = x, y_fit = y, z_fit = z)
+
+plot_ly(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit, type="scatter3d", mode="markers")
 
 
 ## Plot
-marker <- list(color = ~year, showscale = TRUE,
+marker <- list(#color = ~year, showscale = TRUE,
                size = 2, shape = 1)
 
 profileplot <- plot_ly(complete.profile, x = ~x, y = ~y, z = ~z,
       marker = marker) %>%
   add_markers() %>%
-  add_mesh(x = ~x, y = ~y, z = ~MHHW, data = complete.profile, opacity = 0.3) %>%
+  add_trace(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit, 
+            type = "scatter3d", mode = "markers") %>%
+  add_mesh(complete.profile, x = ~x, y = ~y, z = ~MHHW, opacity = 0.5) %>%
   layout(
     scene = list(xaxis = list(title = "x"),
                  yaxis = list(title = "y"),
                  zaxis = list(title = "z")),
-    title = list(text = paste("Profile:", profile.pattern, "Years: 1997-2022"), y = 0.9),
+    title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
     legend = levels(year))
 
 profileplot

@@ -4,7 +4,7 @@
 ## Shoreline Conservation Areas, Washington State Parks
 
 
-profile.pattern <- "prof_6|prof_7|prof_8|prof_9|prof_17|prof_41"
+profile.pattern <- "prof_6"
 
 source("scripts/load_packages.R")
 
@@ -28,7 +28,8 @@ prof.data <- profiles.df %>%
   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
                                          "04", "05", "06", "07", "08", "09", "10",
                                          "11", "12", "13", "14", "15", "16", "17",
-                                         "18", "19", "20", "21", "22")))
+                                         "18", "19", "20", "21", "22"))) %>%
+  filter(year == "99")
 
 
 ## Plot
@@ -39,7 +40,7 @@ profileplot <- plot_ly(prof.data, x = ~x, y = ~y, z = ~z,
                        marker = marker) %>%
   add_markers() %>%
   layout(
-    scene = list(xaxis = list(title = "x"),
+    scene = list(xaxis = list(title = "y"),
                  yaxis = list(title = "y"),
                  zaxis = list(title = "z")),
     title = list(text = paste("Profile:", profile.pattern, "Years: 1997-2022"), y = 0.9),

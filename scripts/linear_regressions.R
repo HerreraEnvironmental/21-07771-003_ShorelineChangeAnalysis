@@ -6,7 +6,7 @@
 source("scripts/load_packages.R")
 
 ## Set profile pattern to import files
-profile.pattern <- regex("prof_17", ignore_case = TRUE)
+profile.pattern <- regex("prof_6", ignore_case = TRUE)
 year.pattern <- "97"
 
 ## Import files
@@ -24,16 +24,21 @@ ggplot(data = single.profile, aes(x = x, y = y, group = year)) +
   theme(axis.text = element_blank()) +
   ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
 
+plot_ly(x=fitted_values$x, y=fitted_values$y, z=fitted_values$z, type="scatter3d", mode="markers")
+
+
+
 
 # 3D Regression Line #2 ------------------------------------------------------
 N <- nrow(single.profile) 
 
 mean_profile <- apply(single.profile[, 4:6], 2, mean)
 pca_profile  <- princomp(single.profile[, 4:6]) 
-vector_profile <- pca_profile$loadings[, 1] # why 1?
+vector_profile <- pca_profile$loadings[, 1]
 
 profile_fit <- matrix(rep(mean_profile, each = N), ncol=3) + 
   pca_profile$score[, 1] %*% t(vector_profile) 
+fitted_values <- as_tibble(profile_fit)
 
 t_ends <- c(min(pca_profile$score[,1]) - 0.2, max(pca_profile$score[,1]) + 0.2)  
 endpoints <- rbind(mean_profile + t_ends[1]*vector_profile, mean_profile + t_ends[2]*vector_profile)
