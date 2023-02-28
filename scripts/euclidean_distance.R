@@ -63,7 +63,7 @@ euclidean$year <- factor(euclidean$year, levels =  c("97", "98", "99","00", "01"
 
 ## Visualize euclidean distance from average Euclidean distance of each year
 ggplot(euclidean %>% drop_na(), 
-       aes(year, euc_dist_to_BP)) + #, fill=slope_dir, group = slope_dir)) +
+       aes(year, euc_dist_to_BP, fill=slope_dir, group = slope_dir)) +
   facet_wrap(~profile, scales = "free") +
   geom_col(position = position_dodge(width = 0.5)) +
   # geom_line(aes(group = slope_dir), position = position_dodge(width = 1),
@@ -72,30 +72,20 @@ ggplot(euclidean %>% drop_na(),
   theme(axis.text = element_blank()) +
   ggtitle(paste("Profile", profile.pattern, ": Midpoint Euclidean Distance from Base Point"))
 
+## Rate of change
+change <- euclidean %>% 
+  group_by(profile) %>% 
+  mutate(rate = 100 * (euc_dist_to_BP - lag(euc_dist_to_BP))/lag(euc_dist_to_BP)) %>%
+  ungroup() %>%
+  filter(profile == 41)
 
-#### CHECK OUT LATER
-# library(healthyR.ts)
-# data_tbl <- ts_to_tbl(AirPassengers) |>
-#   select(-index)
-# output <- ts_ma_plot(
-#   .data = data_tbl,
-#   .date_col = date_col,
-#   .value_col = value
-# )
-# output$pgrid
-# output$xts_plt
 
-# Negative slope test
-# neg <- complete.profile %>%
-#   filter(profile == 6 | profile == 41) %>% 
-#   select(profile, year, x, y) %>%
-#   group_by(profile) %>%
-#   mutate(profile_slope = ((max(y) - min(y)) / (max(x) - min(x)))) %>%
-#   mutate(slope_dir = ifelse(profile_slope > 0, "positive", "negative"))
-# 
-# ggplot(neg, aes(x = x, y = y)) +
-#   facet_wrap(~ profile, scales = "free") +
-#   geom_point() +
-#   geom_smooth(method = "lm", se = TRUE, color="red")
+ggplot(change, mapping=aes(x=year, y=rate)) +
+  geom_col()
 
-                            
+## Dumbbell graph... useful?
+dumbbell <- complete.profile %>%
+  select(-x_midpoint, -y_midpoint) %>%
+  filter(year == 97 | year == 18) 
+t <- setDT(dumbbell)[ , .SD[which.max(x)], by = profile]
+t <- setDT(dumbbell)[ , .SD[which.max(x)], by = profile]

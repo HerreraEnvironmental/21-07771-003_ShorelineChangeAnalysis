@@ -31,14 +31,12 @@ complete.profile <- profile.erosion %>%
 
 # For all years
 
-fitted_models <- complete.profile %>%
-  group_by(year) %>% 
-  do(model = lm(z + y ~ x, data = .))
-
-fitted_models%>%
-  tidy(model)
-
-
+# fitted_models <- complete.profile %>%
+#   group_by(year) %>% 
+#   do(model = lm(z + y ~ x, data = .))
+# 
+# fitted_models%>%
+#   tidy(model)
 
 
 ## xyz Linear model
