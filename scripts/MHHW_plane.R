@@ -60,10 +60,11 @@ marker <- list(color = ~year, showscale = TRUE,
                size = 2, shape = 1)
 
 profileplot <- plot_ly(complete.profile, x = ~x, y = ~y, z = ~z,
-      marker = marker) %>%
-  #add_markers() %>%
-  add_trace(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit, 
-            type = "scatter3d", mode = "markers") %>%
+      marker = marker, hoverinfo = "text", 
+      text = ~paste('</br> Year: ', year)) %>%
+  add_markers() %>%
+  # add_trace(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit, 
+  #           type = "scatter3d", mode = "markers") %>%
   add_mesh(complete.profile, x = ~x, y = ~y, z = ~MHHW, opacity = 0.5) %>%
   layout(
     scene = list(xaxis = list(title = "x"),
