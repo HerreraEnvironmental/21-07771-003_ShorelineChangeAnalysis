@@ -8,10 +8,10 @@
 
 # -------------------------------------------------------------------------
 
-year.pattern <- c("00")
-profile.pattern <- "prof_6"
-source("scripts/load_packages.R")
-source("scripts/import_profiles.R")
+# year.pattern <- c("00")
+# profile.pattern <- "prof_6"
+# source("scripts/load_packages.R")
+# source("scripts/import_profiles.R")
 
 ## Import erosion file for Base Point data
 profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 

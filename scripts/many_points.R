@@ -24,11 +24,11 @@ CalculateChangeRates <- function(x, y) {
 
 ## Take n Euclidean points along profiles and use that as the change rate.
 
-profile.pattern <- "prof_6"
+profile.pattern <- "prof_22"
 year.pattern <- c("00")
 
-source("scripts/load_packages.R")
-source("scripts/import_profiles.R")
+source("scripts/src/load_packages.R")
+source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
 profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
@@ -52,32 +52,75 @@ complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "
                                                      "11", "12", "13", "14", "15", "16", "17",
                                                      "18", "19", "20", "21", "22"))
 
+
+# Linear model plot and df for one profile and year -----------------------
+
 ## Plot a single profile and year with a regression line. 
 lm.profile <- ggplot(data = complete.profile %>% filter(year %in% year.pattern),
        aes(x = x, y = y, group = year)) +
   facet_wrap(~year) +
   geom_point() +
   stat_smooth(method = lm, se = FALSE) +
-  #theme(axis.text = element_blank()) +
   ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
 lm.profile
 
-## Create a df of xy coordinates for each profile and year grouping
-test <- complete.profile %>%
-  group_by(profile, year) %>%
-  do(model = lm(y ~ x, data = .)) %>%
-  mutate(intercept = coef(model)[1],
-         slope = coef(model)[2])
+# Extract xy coordinates for the above graph's recession line
+profile.lm.df <- ggplot_build(lm.profile)$data[[2]][, c("x","y")]
 
-
-
-# Small sanity check: Doing it for one profile
-profile.lm.df <- ggplot_build(lm.profile)$data[[2]][, c("x","y")] 
-# Quick model: find y at x position
+# Quick linear model: find y at x position
 linear.model <- lm(data = profile.lm.df, y ~ x)
 intercept <- coef(linear.model)[1] # Intercept
 slope <- coef(linear.model)[2] # slope
 y <- (slope*min(profile.lm.df$x)) + intercept
+
+plot(profile.lm.df$x, profile.lm.df$y)
+points(x = min(profile.lm.df$x), y = y, col = "red", pch = 20)
+
+# Use lm for all years in a profile -----------------------
+
+## Create a df of xy coordinates for each profile and year grouping
+model.df <- complete.profile %>%
+  group_by(profile, year) %>%
+  do(model = lm(y ~ x, data = .)) %>%
+  mutate(intercept = coef(model)[1],
+         slope = coef(model)[2]) %>%
+  ##
+  filter(year == "00")
+
+
+test <- complete.profile %>%
+  left_join(model.df %>% select(-model), by = c("profile", "year")) %>%
+  ##
+  filter(year == "00") %>%
+  ##
+  group_by(profile, year) %>%
+  mutate(x_min = min(x),
+         y_min = (slope*min(x)) + intercept) %>%
+  mutate(x_max = max(x),
+         y_max = (slope*max(x)) + intercept) %>%
+  mutate(x_midpoint = ((x_min + x_max)/2),
+         y_midpoint = (((slope*min(x)) + intercept) + ((slope*max(x)) + intercept))/2) #%>%
+#   mutate(x_quartile1 = ((min(x) + x_midpoint)/2),
+#          y_quartile1 = ((min(y) + y_midpoint)/2)) %>%
+#   mutate(x_quartile3 = ((x_midpoint + max(x))/2),
+#          y_quartile3 = ((y_midpoint + max(y))/2))
+
+testplot <- ggplot(data = test) +
+  facet_wrap(~year) +
+  geom_point(aes(x = x, y = y), alpha = 0.5) +
+  geom_point(aes(x = x_min, y = y_min), color = "red", size = 3) +
+  #geom_point(aes(x = x_quartile1, y = y_quartile1), color = "orange", size = 3) +
+  geom_point(aes(x = x_midpoint, y = y_midpoint), color = "green", size = 3) +
+  # geom_point(aes(x = x_quartile3, y = y_quartile3), color = "blue", size = 3) +
+  geom_point(aes(x = x_max, y =  y_max), color = "purple", size = 3) +
+  ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
+testplot
+
+
+  
+
+
+
 
 
 ## Add points of interest on the regression lines

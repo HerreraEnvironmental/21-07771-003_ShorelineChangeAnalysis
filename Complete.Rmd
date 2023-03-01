@@ -1,0 +1,45 @@
+---
+title: 'NANOOS Profiles: SCA Shoreline Characterization'
+author: "Regina Lionheart"
+date: "2023-03-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Shoreline profiles in x y z format (easting northing elevation).
+Named prof_X_ttYY.out where X is the profile number, tt is a season code (e.g. f = fall) and YY is the year.
+The vertical datum is NAVD88.
+The horizontal is WA State Plane South. All of the units are in meters.
+
+Quite a few profiles are null and will be removed and noted.
+We have two duplicates, see accompanying script "duplicate_test.R"
+Check on non-conforming files: beachface? dunes?
+
+
+Load packages
+```{r prep, echo=FALSE}
+source("scripts/src/load_packages.R")
+```
+
+## View individual profile and year.
+Select a profile of interest by entering "prof_N" below. 
+
+Select a year of interest by entering the last two digits of the year (from 98 to 18).
+```{r prep, echo=FALSE}
+profile.pattern <- "prof_6"
+year.pattern <- c("00")
+
+source("scripts/src/import_profiles.R")
+```
+
+Visualize the single profile/year.
+```{r prep, echo=FALSE}
+source("scripts/single_profile_3D.R")
+profileplot
+```
+
+
+View complete profile including all years.
