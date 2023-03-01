@@ -51,32 +51,39 @@ complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "
                                                      "11", "12", "13", "14", "15", "16", "17",
                                                      "18", "19", "20", "21", "22"))
 
-gg1 <- ggplot(data = complete.profile %>% filter(year %in% year.pattern),
+## Make a linear model and extract slope and intercept 
+mydata <- complete.profile %>% filter(year %in% year.pattern)
+linear.model <- lm(data = mydata, x ~ y)
+
+intercept <- coef(linear.model)[1] # Intercept
+slope <- coef(linear.model)[2] # slope
+
+y <- (slope*min(mydata$x)) + intercept
+
+
+## Plot a single profile and year with a regression line. 
+profile.lm <- ggplot(data = complete.profile %>% filter(year %in% year.pattern),
        aes(x = x, y = y, group = year)) +
   facet_wrap(~year) +
   geom_point() +
   stat_smooth(method = lm, se = FALSE) +
-  theme(axis.text = element_blank()) +
+  #theme(axis.text = element_blank()) +
   ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
-gg1
+profile.lm
 
-t <-ggplot_build(gg1)$data[[2]][, c("x","y")]
-ggplot(data = t, aes(x = x, y = y)) +
-  geom_point() 
+profile.lm.df <- ggplot_build(profile.lm)$data[[2]][, c("x","y")]
 
 
-## for rates and shit
-group_by(profile, year) %>% # probably not season?
-  mutate(x_min = min(x),
-         y_min = min(y)) %>%
-  mutate(x_max = max(x),
-         y_max = max(y)) %>%
-  mutate(x_midpoint = ((min(x) + max(x))/2),
-         y_midpoint = ((min(y) + max(y))/2)) %>%
-  mutate(x_quartile1 = ((min(x) + x_midpoint)/2),
-         y_quartile1 = ((min(y) + y_midpoint)/2)) %>%
-  mutate(x_quartile3 = ((x_midpoint + max(x))/2),
-         y_quartile3 = ((y_midpoint + max(y))/2)) 
+
+# %>%
+#   mutate(x_max = max(x),
+#          y_max = max(y)) %>%
+#   mutate(x_midpoint = ((min(x) + max(x))/2),
+#          y_midpoint = ((min(y) + max(y))/2)) %>%
+#   mutate(x_quartile1 = ((min(x) + x_midpoint)/2),
+#          y_quartile1 = ((min(y) + y_midpoint)/2)) %>%
+#   mutate(x_quartile3 = ((x_midpoint + max(x))/2),
+#          y_quartile3 = ((y_midpoint + max(y))/2)) 
 
 
 
