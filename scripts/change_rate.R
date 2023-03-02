@@ -178,41 +178,50 @@ ggplot(data = euclidean.distances, aes(x = year, y = min_euc_BP)) +
 
 ## Calculate rates of change  
 euclidean.rates <- euclidean.distances %>%
-  mutate(min_rate = (min_euc_BP/lag(min_euc_BP) - 1) * 100) #%>%
-  # mutate(min_rate = 100 * (min_euc_BP - lag(min_euc_BP))/lag(min_euc_BP)) %>%
-  # mutate(q1_rate = 100 * (q1_euc_BP - lag(q1_euc_BP))/lag(q1_euc_BP)) %>%
-  # mutate(mid_rate = 100 * (mid_euc_BP - lag(mid_euc_BP))/lag(mid_euc_BP)) %>%
-  # mutate(q3_rate = 100 * (q3_euc_BP - lag(q3_euc_BP))/lag(q3_euc_BP)) %>%
-  # mutate(max_rate = 100 * (max_euc_BP - lag(max_euc_BP))/lag(max_euc_BP))
+  mutate(min_rate = (min_euc_BP/lag(min_euc_BP) - 1) * 100) %>%
+  mutate(min_rate = 100 * (min_euc_BP - lag(min_euc_BP))/lag(min_euc_BP)) %>%
+  mutate(q1_rate = 100 * (q1_euc_BP - lag(q1_euc_BP))/lag(q1_euc_BP)) %>%
+  mutate(mid_rate = 100 * (mid_euc_BP - lag(mid_euc_BP))/lag(mid_euc_BP)) %>%
+  mutate(q3_rate = 100 * (q3_euc_BP - lag(q3_euc_BP))/lag(q3_euc_BP)) %>%
+  mutate(max_rate = 100 * (max_euc_BP - lag(max_euc_BP))/lag(max_euc_BP))
 
 ## Change rates to dfs for plot
 min_rate_df <- euclidean.rates %>%
   select(profile, year, rate = min_rate) %>%
   mutate(position = "min")
 
-# q1_rate_df <- euclidean.distances %>%
-#   select(profile, year, rate = q1_rate) %>%
-#   mutate(position = "q1")
-# 
-# mid_rate_df <- euclidean.distances %>%
-#   select(profile, year, rate = mid_rate) %>%
-#   mutate(position = "mid")
-# 
-# q3_rate_df <- euclidean.distances %>%
-#   select(profile, year, rate = q3_rate) %>%
-#   mutate(position = "q3")
-# 
-# max_rate_df <- euclidean.distances %>%
-#   select(profile, year, rate = max_rate) %>%
-#   mutate(position = "max")
+q1_rate_df <- euclidean.rates %>%
+  select(profile, year, rate = q1_rate) %>%
+  mutate(position = "q1")
+
+mid_rate_df <- euclidean.rates %>%
+  select(profile, year, rate = mid_rate) %>%
+  mutate(position = "mid")
+
+q3_rate_df <- euclidean.rates %>%
+  select(profile, year, rate = q3_rate) %>%
+  mutate(position = "q3")
+
+max_rate_df <- euclidean.rates %>%
+  select(profile, year, rate = max_rate) %>%
+  mutate(position = "max")
+
+mean_rate_df <- euclidean.rates %>%
+  drop_na() %>%
+  group_by(year) %>%
+  mutate(mean_rate = mean(min_rate:max_rate)) %>%
+  select(profile, year, rate = mean_rate) %>%
+  mutate(position = "mean")
 
 ## Combine
 euc.plot <- min_rate_df %>%
   rbind(q1_rate_df) %>%
   rbind(mid_rate_df) %>%
   rbind(q3_rate_df) %>%
-  rbind(max_rate_df)
+  rbind(max_rate_df) %>%
+  rbind(mean_rate_df) 
 
 ggplot(data = euc.plot, aes(x = year, y = rate, fill = position)) +
   geom_bar(position = "dodge", stat = "identity", alpha = 0.5) +
-  ggtitle(paste("Profile", profile.pattern))
+  gghighlight(position == "mean") +
+  ggtitle(paste("Profile", profile.pattern, "Rate of Change")) 
