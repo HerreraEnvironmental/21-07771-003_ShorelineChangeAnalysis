@@ -8,10 +8,11 @@
 
 # -------------------------------------------------------------------------
 
+# profile.pattern <- "prof_22"
 # year.pattern <- c("00")
-# profile.pattern <- "prof_6"
-# source("scripts/load_packages.R")
-# source("scripts/import_profiles.R")
+# 
+# source("scripts/src/load_packages.R")
+# source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
 profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
@@ -29,20 +30,17 @@ complete.profile <- profile.erosion %>%
   full_join(profiles.df, by = "profile") %>%
   select(profile, Park, MHHW, BasePoint_X, BasePoint_Y, season:z) 
 
-# Complete profile and MHHW plot -------------------------------------------------
-marker <- list(color = ~year, showscale = TRUE,
-               size = 2, shape = 1)
+# How far are those points from the Base Point? -------------------------------------------------
+MHHW_dist <- complete.profile %>%
+  filter(z == MHHW) %>%
+  group_by(year) %>%
+  mutate(x = mean(x),
+         y = mean(y)) %>%
+  select(profile, year, BasePoint_X, BasePoint_Y, x, y, z) %>%
+  unique() %>%
+  group_by(profile, year) %>%
+  mutate(euc_dist_to_BP = sqrt(((BasePoint_X - x)^2) + ((BasePoint_Y -  y)^2)))
 
-complete.profile.plot <- plot_ly(complete.profile %>% drop_na(), x = ~x, y = ~y, z = ~z,
-                       marker = marker, hoverinfo = "text", 
-                       text = ~paste('</br> Year: ', year)) %>%
-  add_markers() %>%
-  add_mesh(complete.profile, x = ~x, y = ~y, z = ~MHHW, opacity = 0.5) %>%
-  layout(
-    scene = list(xaxis = list(title = "x"),
-                 yaxis = list(title = "y"),
-                 zaxis = list(title = "z")),
-    title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
-    legend = levels(year))
-
-complete.profile.plot
+MHHW.dist <- ggplot(MHHW_dist, aes(x = year, y = euc_dist_to_BP)) +
+  geom_bar(position = "dodge", stat = "identity")
+MHHW.dist

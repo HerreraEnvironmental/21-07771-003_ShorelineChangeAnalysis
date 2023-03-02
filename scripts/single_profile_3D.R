@@ -26,8 +26,8 @@ prof.data <- profiles.df %>%
 marker <- list(size = 2, shape = 1)
 
 profileplot <- plot_ly(prof.data, x = ~x, y = ~y, z = ~z,
-                       color = ~season, marker = marker, hoverinfo = "text", 
-                      text = ~paste('</br> Season: ', season)) %>%
+                       color = ~year, marker = marker, hoverinfo = "text", 
+                      text = ~paste("</br> Season: ", season)) %>%
   add_markers() %>%
   layout(
     scene = list(xaxis = list(title = "y"),

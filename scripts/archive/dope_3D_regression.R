@@ -3,29 +3,19 @@
 ## January 2023
 ## Shoreline Conservation Areas, Washington State Parks
 
-source("scripts/load_packages.R")
+source("scripts/src/load_packages.R")
 
 ## Set profile pattern to import files
 profile.pattern <- regex("prof_6", ignore_case = TRUE)
 year.pattern <- "97"
 
 ## Import files
-source("scripts/import_profiles.R")
+source("scripts/src/import_profiles.R")
 
 
 ## Take a look only at a single profile
 single.profile <- profiles.df %>%
   filter(year %in% c("97"))
-
-## Linear Regression
-ggplot(data = single.profile, aes(x = x, y = y, group = year)) +
-  geom_point() +
-  geom_smooth(method = "lm", linewidth = 1) +
-  theme(axis.text = element_blank()) +
-  ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
-
-plot_ly(x=fitted_values$x, y=fitted_values$y, z=fitted_values$z, type="scatter3d", mode="markers")
-
 
 # 3D Regression Line #2 ------------------------------------------------------
 N <- nrow(single.profile) 
@@ -48,15 +38,23 @@ for (i in 1:N){
   profile3D$points3d(rbind(single.profile[, 4:6][i, ], profile_fit[i, ]), type="l", col="green3", lty=2)
 } 
 
+# xyz linear model plot -------------------------------------------------
+complete.profile <- profiles.df
+N <- nrow(complete.profile) 
 
-# Polygon + spatial geoplots ------------------------------------------------------------
-ggplot(profiles.df, aes(x, y, group = year, fill = year)) + 
-  geom_polygon() +
-  labs(x = "Easting", y = "Northing", fill = "year") +
-  ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
+mean_profile <- apply(complete.profile[, 4:6], 2, mean)
+pca_profile  <- princomp(complete.profile[, 4:6]) 
+vector_profile <- pca_profile$loadings[, 1]
 
+profile_fit <- matrix(rep(mean_profile, each = N), ncol=3) + 
+  pca_profile$score[, 1] %*% t(vector_profile) 
+fitted.values <- as_tibble(profile_fit) %>%
+  rename(x_fit = x, y_fit = y, z_fit = z)
 
-# Visual ------------------------------------------------------------
-# PugetSound <- c(left = -124.5, bottom = 46, right = -123.5, top = 47.75)
-# get_stamenmap(PugetSound, zoom = 10, maptype = "terrain-background") %>%
-#   ggmap()
+plot_ly(x=fitted.values$x_fit, y=fitted.values$y_fit, z=fitted.values$z_fit,
+        type="scatter3d", mode="markers") %>%
+  layout(
+    scene = list(xaxis = list(title = "x"),
+                 yaxis = list(title = "y"),
+                 zaxis = list(title = "z")),
+    title = list(text = paste("Profile:", profile.pattern), y = 0.9))
