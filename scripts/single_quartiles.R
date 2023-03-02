@@ -5,11 +5,11 @@
 
 ## Take quartile points along profiles and use euclidean distance to BP as the change rate.
 
-profile.pattern <- "prof_17"
-year.pattern <- c("00")
+# profile.pattern <- "prof_17"
+# year.pattern <- c("00")
 
-source("scripts/src/load_packages.R")
-source("scripts/src/import_profiles.R")
+# source("scripts/src/load_packages.R")
+# source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
 complete.profile <- read_csv("data_raw/ProfilesForErosion.csv", 
@@ -63,8 +63,8 @@ single.POI.df <- complete.profile %>%
 single.quartiles.plot <- ggplot(data = single.POI.df) +
   facet_wrap(~year) +
   geom_point(aes(x = x, y = y), alpha = 0.5) +
-  geom_point(aes(x = X_BasePoint, y = Y_BasePoint), color = "black", size = 5) + 
-  geom_point(aes(x = x_min, y = y_min), color = "red", size = 3) +
+  geom_point(aes(x = X_BasePoint, y = Y_BasePoint), color = "red", size = 5) + 
+  geom_point(aes(x = x_min, y = y_min), color = "darkred", size = 3) +
   geom_point(aes(x = x_quartile1, y = y_quartile1), color = "orange", size = 3) +
   geom_point(aes(x = x_midpoint, y = y_midpoint), color = "green", size = 3) +
   geom_point(aes(x = x_quartile3, y = y_quartile3), color = "blue", size = 3) +

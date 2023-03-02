@@ -23,13 +23,25 @@ Load packages
 source("scripts/src/load_packages.R")
 ```
 
+## Explore profiles
+```{r prep, echo=FALSE}
+
+source("scripts/examine_profiles.R")
+```
+
+
+## View profiles and their locations
+```{r prep, echo=FALSE}
+kable(complete.geo.profiles, caption = "Profiles with matching geographic location")
+```
+
 ## View individual profile and year.
 Select a profile of interest by entering "prof_N" below. 
 
 Select a year of interest by entering the last two digits of the year (from 98 to 18).
 ```{r prep, echo=FALSE}
-profile.pattern <- "prof_6"
-year.pattern <- c("19", "20")
+profile.pattern <- "prof_16|prof_17"
+year.pattern <- c("98", "18")
 
 source("scripts/src/import_profiles.R")
 ```
@@ -43,13 +55,13 @@ profileplot
 
 Import data for all years, single profile.
 ```{r, echo=FALSE}
-profile.pattern <- "prof_17"
+profile.pattern <- "prof_17|prof_16"
 source("scripts/src/import_profiles.R")
 ```
 
 Create visual for complete profile, all years. Horizontal plane is the MHHW mark. 
 ```{r, echo=FALSE}
-source("scripts/MHHW_plane.R")
+source("scripts/complete_profile_plane.R")
 complete.profile.plot
 ```
 
@@ -57,10 +69,10 @@ complete.profile.plot
 
 Import a selection of profiles, all years. The more you select, the longer this will take.
 ```{r, echo=FALSE}
-profile.pattern <- "prof_6|prof_7|prof_8|prof_9|prof_17|prof_22|prof_41"
+profile.pattern <- "prof_6|prof_7|prof_16|prof_17|prof_22|prof_41"
 source("scripts/src/import_profiles.R")
 ```
-Take a preliminary look at the profiles compared to the BasePoint as a reference for Euclidean distance change. 
+Take a preliminary look at the profiles compared to the BasePoint as a 2D reference for Euclidean distance change. 
 
 ```{r, echo=FALSE}
 source("scripts/profiles_and_BasePoint.R")
@@ -80,7 +92,7 @@ Take linear regressions for only xy data
 
 Look at a single profile and year to see the linear regression
 ```{r, echo=FALSE}
-profile.pattern <- "prof_6"
+profile.pattern <- "prof_21"
 year.pattern <- "00"
 source("scripts/src/import_profiles.R")
 ```
@@ -111,5 +123,5 @@ MHHW.to.BasePoint
 How do those points change with time?
 ```{r, echo=FALSE}
 source("scripts/MHHW_ROC.R")
-MHHW.dist
+MHHW.ROC.plot
 ```

@@ -8,7 +8,7 @@
 
 # -------------------------------------------------------------------------
 
-# profile.pattern <- "prof_22"
+# profile.pattern <- "prof_16"
 # year.pattern <- c("00")
 # 
 # source("scripts/src/load_packages.R")
@@ -31,7 +31,7 @@ complete.profile <- profile.erosion %>%
   select(profile, Park, MHHW, BasePoint_X, BasePoint_Y, season:z) 
 
 # How far are those points from the Base Point? -------------------------------------------------
-MHHW_dist <- complete.profile %>%
+MHHW.dist <- complete.profile %>%
   filter(z == MHHW) %>%
   group_by(year) %>%
   mutate(x = mean(x),
@@ -41,6 +41,18 @@ MHHW_dist <- complete.profile %>%
   group_by(profile, year) %>%
   mutate(euc_dist_to_BP = sqrt(((BasePoint_X - x)^2) + ((BasePoint_Y -  y)^2)))
 
-MHHW.dist <- ggplot(MHHW_dist, aes(x = year, y = euc_dist_to_BP)) +
-  geom_bar(position = "dodge", stat = "identity")
-MHHW.dist
+MHHW.dist.plot <- ggplot(MHHW.dist, aes(x = year, y = euc_dist_to_BP)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  ggtitle(paste("Profile", profile.pattern, "MHHW Euclidean Distance from BP")) 
+
+MHHW.dist.plot
+
+MHHW.ROC <- MHHW.dist %>%
+  group_by(profile) %>% 
+  mutate(pct_change = (euc_dist_to_BP/lead(euc_dist_to_BP) - 1) * 100)
+
+MHHW.ROC.plot <- ggplot(MHHW.ROC, aes(x = year, y = pct_change)) +
+  geom_bar(position = "dodge", stat = "identity") + 
+  ggtitle(paste("Profile", profile.pattern, "MHHW Euclidean Rate of Change")) 
+
+MHHW.ROC.plot

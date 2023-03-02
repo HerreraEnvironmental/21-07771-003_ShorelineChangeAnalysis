@@ -4,10 +4,12 @@
 ## Shoreline Conservation Areas, Washington State Parks
 
 required_Packages_Install <- c("broom",
-  "data.table",
+                               "data.table",
+                               "gghighlight",
                                "ggmap",
                                "rgl",
                                "scatterplot3d",
+                               "stringr",
                                "plotly",
                                "tidyverse")
 

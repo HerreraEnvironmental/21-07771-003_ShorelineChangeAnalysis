@@ -29,16 +29,18 @@ complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "
                                                                    "11", "12", "13", "14", "15", "16", "17",
                                                                    "18", "19", "20", "21", "22"))
 
-toplot <- complete.profile %>% filter(year %in% year.pattern)
+toplot <- complete.profile %>%
+  filter(year %in% year.pattern) %>%
+  group_by(profile, year)
 
-boxplot(y~x,data=toplot, notch = FALSE, main="Car Milage Data",
-        xlab="Number of Cylinders", ylab="Miles Per Gallon")
 
-df <- toplot %>%
-  select(x, y, z)
-boxplot(df)
+boxplot(toplot[7:9])
 
-Summary<-boxplot(df)$stats
+Summary<-boxplot(toplot[7:9])$stats
 colnames(Summary)<-c("x","y","z")
 rownames(Summary)<-c("Min","First Quartile","Median","Third Quartile","Maximum")
-Summary
+quartiles <- as.data.frame(Summary)
+
+## Visual
+boxplot(y~x,data=toplot, notch = FALSE, main=paste("Profile:", profile.pattern),
+        xlab="x", ylab="y")

@@ -23,17 +23,17 @@ prof.data <- profiles.df %>%
 
 
 ## Plot
-marker <- list(size = 2, shape = 1)
+marker <- list(size = 3, shape = 1)
 
 profileplot <- plot_ly(prof.data, x = ~x, y = ~y, z = ~z,
                        color = ~year, marker = marker, hoverinfo = "text", 
                       text = ~paste("</br> Season: ", season)) %>%
   add_markers() %>%
   layout(
-    scene = list(xaxis = list(title = "y"),
+    scene = list(xaxis = list(title = "x"),
                  yaxis = list(title = "y"),
                  zaxis = list(title = "z")),
-    title = list(text = paste("Profile:", profile.pattern, "Years:", year.pattern), y = 0.9),
+    title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
     legend = levels(year))
 
 profileplot
