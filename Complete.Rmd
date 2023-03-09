@@ -32,7 +32,7 @@ source("scripts/examine_profiles.R")
 
 ## View profiles and their locations
 ```{r prep, echo=FALSE}
-kable(complete.geo.profiles, caption = "Profiles with matching geographic location")
+knitr::kable(complete.geo.profiles, caption = "Profiles with matching geographic location")
 ```
 
 ## View individual profile and year.
@@ -92,7 +92,7 @@ Take linear regressions for only xy data
 
 Look at a single profile and year to see the linear regression
 ```{r, echo=FALSE}
-profile.pattern <- "prof_21"
+profile.pattern <- "prof_16"
 year.pattern <- "00"
 source("scripts/src/import_profiles.R")
 ```
