@@ -5,11 +5,11 @@
 
 ## Take quartile points along profiles and use euclidean distance to BP as the change rate.
 
-# profile.pattern <- "prof_22"
-# year.pattern <- c("00")
-# 
-# source("scripts/src/load_packages.R")
-# source("scripts/src/import_profiles.R")
+profile.pattern <- "prof_22|prof_16"
+#year.pattern <- c("00")
+
+source("scripts/src/load_packages.R")
+source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
 complete.profile <- read_csv("data_raw/ProfilesForErosion.csv", 
@@ -68,9 +68,10 @@ euclidean.distances <- complete.POI.df %>%
   mutate(max_euc_BP = sqrt(((X_BasePoint - x_max)^2) + ((Y_BasePoint -  y_max)^2)))
 
 euc.dist.plot <- ggplot(data = euclidean.distances, aes(x = year, y = min_euc_BP)) +
+  facet_wrap(~profile) +
   geom_bar(position = "dodge", stat = "identity", alpha = 0.5) +
   ggtitle(paste("Profile", profile.pattern, "Euclidean Distance to BasePoint"))
-#euc.dist.plot
+euc.dist.plot
 
 ## Calculate rates of change  
 euclidean.rates <- euclidean.distances %>%
@@ -117,6 +118,7 @@ euc.plot <- min_rate_df %>%
   rbind(mean_rate_df) 
 
 quartile.ROC.plot <- ggplot(data = euc.plot, aes(x = year, y = rate, fill = position)) +
+  facet_wrap(~profile) +
   geom_bar(position = "dodge", stat = "identity") +
   gghighlight(position == "mean") +
   ggtitle(paste("Profile", profile.pattern, "Rate of Change")) 

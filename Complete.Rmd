@@ -40,8 +40,8 @@ Select a profile of interest by entering "prof_N" below.
 
 Select a year of interest by entering the last two digits of the year (from 98 to 18).
 ```{r prep, echo=FALSE}
-profile.pattern <- "prof_16|prof_17"
-year.pattern <- c("98", "18")
+profile.pattern <- "prof_22"
+year.pattern <- c("99")
 
 source("scripts/src/import_profiles.R")
 ```
@@ -55,7 +55,7 @@ profileplot
 
 Import data for all years, single profile.
 ```{r, echo=FALSE}
-profile.pattern <- "prof_17|prof_16"
+profile.pattern <- "prof_22"
 source("scripts/src/import_profiles.R")
 ```
 
@@ -69,7 +69,7 @@ complete.profile.plot
 
 Import a selection of profiles, all years. The more you select, the longer this will take.
 ```{r, echo=FALSE}
-profile.pattern <- "prof_6|prof_7|prof_16|prof_17|prof_22|prof_41"
+profile.pattern <- "prof"
 source("scripts/src/import_profiles.R")
 ```
 Take a preliminary look at the profiles compared to the BasePoint as a 2D reference for Euclidean distance change. 
@@ -92,7 +92,7 @@ Take linear regressions for only xy data
 
 Look at a single profile and year to see the linear regression
 ```{r, echo=FALSE}
-profile.pattern <- "prof_16"
+profile.pattern <- "prof_30|prof_22"
 year.pattern <- "00"
 source("scripts/src/import_profiles.R")
 ```

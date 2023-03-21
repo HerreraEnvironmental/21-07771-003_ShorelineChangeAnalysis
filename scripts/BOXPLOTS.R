@@ -30,16 +30,15 @@ complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "
                                                                    "18", "19", "20", "21", "22"))
 
 toplot <- complete.profile %>%
-  filter(year %in% year.pattern) %>%
+  select(profile, year, x, y, z) %>%
+  #filter(year %in% year.pattern) %>%
   group_by(profile, year)
 
 
-boxplot(toplot[7:9])
-
-Summary<-boxplot(toplot[7:9])$stats
-colnames(Summary)<-c("x","y","z")
+Summary <- boxplot(toplot[3:5])$stats %>%
+  as.data.frame() %>%
+  select(x = 1, y = 2, z = 3)
 rownames(Summary)<-c("Min","First Quartile","Median","Third Quartile","Maximum")
-quartiles <- as.data.frame(Summary)
 
 ## Visual
 boxplot(y~x,data=toplot, notch = FALSE, main=paste("Profile:", profile.pattern),
