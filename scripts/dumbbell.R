@@ -3,7 +3,7 @@
 ## shoreline change on x axis
 
 
-profile.pattern <- "prof_6|prof_7|prof_8|prof_9"
+profile.pattern <- "prof"
 year.pattern <- c("00")
 
 source("scripts/src/load_packages.R")
@@ -18,10 +18,16 @@ complete.profile <- read_csv("data_raw/ProfilesForErosion.csv",
                                            "Total_Change", "Years", "Change_per_Year",
                                            "Hannah", "2050", "Comments"), 
                              skip = 3,  show_col_types = FALSE) %>%
-  filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
+  #filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
   full_join(profiles.df, by = "profile", multiple = "all") %>%
   select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
   drop_na()
+# complete.profile$profile <- factor(complete.profile$profile, levels = c("1","2", "3", "4", "5", 
+#                                                                         "6", "7", "8", "9", "10",
+#                                                                         "11", "12", "13", "14", "15",
+#                                                                         16 17 18 19   20 21 22 23 24 25 26 27 28 29  30 31 32 33
+#                                    34 35 36 37 38 39, 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54
+
 
 ## Apply linear model 
 linear.model.df <- complete.profile %>%
@@ -88,15 +94,25 @@ landward.point <- dumbbell.df %>%
   filter(position == "east_east_dist")
 seaward.point <- dumbbell.df %>%
   filter(position == "west_west_dist")
+diff <- dumbbell.df %>% 
+  mutate(x_pos = euclidean_distance + (segment_dist/2)) %>%
+  filter(position == "west_west_dist")
 
+## Create plot
 dumbbell.plot <- ggplot(dumbbell.df)+
   geom_segment(data = landward.point,
                aes(x = euclidean_distance, y = profile,
-                   yend = seaward.point$profile, xend = seaward.point$euclidean_distance), #use the $ operator to fetch data from our "Females" tibble
+                   yend = seaward.point$profile, 
+                   xend = seaward.point$euclidean_distance),
                color = "#aeb6bf",
-               size = 4.5, #Note that I sized the segment to fit the points
+               linewidth = 4.5,
                alpha = .5) +
-  
-  geom_point(aes(x = euclidean_distance, y = profile, color = position), size = 4, show.legend = TRUE)+
+  geom_point(aes(x = euclidean_distance, y = profile, color = position), 
+             size = 4, show.legend = TRUE) +
+  geom_text(data = diff, aes(label = paste("Location: ", profile), 
+                x = x_pos, y = profile),
+            color = "#4a4e4d",
+            size = 2.5) +
+  scale_y_continuous(trans = "reverse") +
   ggtitle("Landward and Seaward Point Migration")
 dumbbell.plot
