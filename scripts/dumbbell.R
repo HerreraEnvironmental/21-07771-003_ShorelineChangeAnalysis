@@ -3,7 +3,7 @@
 ## shoreline change on x axis
 
 
-profile.pattern <- "prof_6|prof_7|prof_8|prof_9"
+profile.pattern <- "prof"
 year.pattern <- c("00")
 
 source("scripts/src/load_packages.R")
@@ -18,10 +18,11 @@ complete.profile <- read_csv("data_raw/ProfilesForErosion.csv",
                                            "Total_Change", "Years", "Change_per_Year",
                                            "Hannah", "2050", "Comments"), 
                              skip = 3,  show_col_types = FALSE) %>%
-  filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
+  # filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
   full_join(profiles.df, by = "profile", multiple = "all") %>%
   select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
-  drop_na()
+  drop_na() %>%
+  filter(year == year.pattern)
 
 ## Apply linear model 
 linear.model.df <- complete.profile %>%
@@ -33,21 +34,20 @@ linear.model.df <- complete.profile %>%
 
 quartile.df <- complete.profile %>%
   left_join(linear.model.df %>% select(-model), by = c("profile", "year")) %>%
-  filter(year == year.pattern) %>%
   group_by(profile, year) %>%
-  mutate(x_min = min(x),
-         y_min = (slope*min(x)) + intercept) %>%
-  mutate(x_max = max(x),
-         y_max = (slope*max(x)) + intercept) %>%
-  mutate(x_midpoint = ((x_min + x_max)/2),
+  mutate(x_west_west = min(x),
+         y_west_west = (slope*min(x)) + intercept) %>%
+  mutate(x_east_east = max(x),
+         y_east_east = (slope*max(x)) + intercept) %>%
+  mutate(x_midpoint = ((x_west_west + x_east_east)/2),
          y_midpoint = (((slope*min(x)) + intercept) +
                          ((slope*max(x)) + intercept))/2) %>%
-  mutate(x_quartile1 = ((min(x) + ((x_min + x_max)/2))/2),
-         y_quartile1 = (((slope*min(x)) + intercept) + 
+  mutate(x_west = ((min(x) + ((x_west_west + x_east_east)/2))/2),
+         y_west = (((slope*min(x)) + intercept) + 
                           (((slope*min(x)) + intercept) + 
                              ((slope*max(x)) + intercept))/2)/2) %>%
-  mutate(x_quartile3 = ((x_midpoint + max(x))/2),
-         y_quartile3 = ((((((slope*min(x)) + intercept) + 
+  mutate(x_east = ((x_midpoint + max(x))/2),
+         y_east = ((((((slope*min(x)) + intercept) + 
                              ((slope*max(x)) + intercept))/2)) + 
                           ((slope*max(x)) + intercept))/2) %>%
   unique()
@@ -56,11 +56,11 @@ quartiles.plot <- ggplot(data = quartile.df %>% filter(year %in% year.pattern)) 
   facet_wrap(~year) +
   geom_point(aes(x = x, y = y), alpha = 0.5) +
   geom_point(aes(x = X_BasePoint, y = Y_BasePoint), color = "red", size = 5) + 
-  geom_point(aes(x = x_min, y = y_min), color = "darkred", size = 3) +
-  geom_point(aes(x = x_quartile1, y = y_quartile1), color = "orange", size = 3) +
+  geom_point(aes(x = x_west_west, y = y_west_west), color = "darkred", size = 3) +
+  geom_point(aes(x = x_west, y = y_west), color = "orange", size = 3) +
   geom_point(aes(x = x_midpoint, y = y_midpoint), color = "green", size = 3) +
-  geom_point(aes(x = x_quartile3, y = y_quartile3), color = "blue", size = 3) +
-  geom_point(aes(x = x_max, y =  y_max), color = "purple", size = 3) +
+  geom_point(aes(x = x_east, y = y_east), color = "blue", size = 3) +
+  geom_point(aes(x = x_east_east, y =  y_east_east), color = "purple", size = 3) +
   ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
 quartiles.plot
 
@@ -69,49 +69,33 @@ euclidean.distances <- quartile.df %>%
   select(profile, Park, year, everything(), -c(x, y, z, season, slope, intercept)) %>%
   unique() %>%
   ungroup() %>%
-  mutate(min_euc_BP = sqrt(((X_BasePoint - x_min)^2) + ((Y_BasePoint -  y_min)^2))) %>%
-  mutate(q1_euc_BP = sqrt(((X_BasePoint - x_quartile1)^2) + ((Y_BasePoint -  y_quartile1)^2))) %>%
-  mutate(mid_euc_BP = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) %>%
-  mutate(q3_euc_BP = sqrt(((X_BasePoint - x_quartile3)^2) + ((Y_BasePoint -  y_quartile3)^2))) %>%
-  mutate(max_euc_BP = sqrt(((X_BasePoint - x_max)^2) + ((Y_BasePoint -  y_max)^2)))
-
-# sea.dist.plot <- ggplot(data = euclidean.distances, aes(x = year, y = min_euc_BP)) +
-#   facet_wrap(~profile) +
-#   geom_bar(position = "dodge", stat = "identity", alpha = 0.5) +
-#   ggtitle(paste("Profile", profile.pattern, "Seaward Euclidean Distance to BasePoint"))
-# sea.dist.plot
-# 
-# land.dist.plot <- ggplot(data = euclidean.distances, aes(x = year, y = max_euc_BP)) +
-#   facet_wrap(~profile) +
-#   geom_bar(position = "dodge", stat = "identity", alpha = 0.5) +
-#   ggtitle(paste("Profile", profile.pattern, "Landward Euclidean Distance to BasePoint"))
-# land.dist.plot
+  mutate(west_west_dist = sqrt(((X_BasePoint - x_west_west)^2) + ((Y_BasePoint -  y_west_west)^2))) %>%
+  mutate(west_dist = sqrt(((X_BasePoint - x_west)^2) + ((Y_BasePoint -  y_west)^2))) %>%
+  mutate(midpoint_dist = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) %>%
+  mutate(east_dist = sqrt(((X_BasePoint - x_east)^2) + ((Y_BasePoint -  y_east)^2))) %>%
+  mutate(east_east_dist = sqrt(((X_BasePoint - x_east_east)^2) + ((Y_BasePoint -  y_east_east)^2)))
 
 
 ## Begin dumbbell plot work
 dumbbell.df <- euclidean.distances %>%
-  select(profile, Park, year, min_euc_BP, max_euc_BP) %>% 
-  mutate(diff = max_euc_BP - min_euc_BP) %>%
-  pivot_longer(cols = c(max_euc_BP, min_euc_BP)) %>% #get into long format
-  rename(Position = name, #rename columns
-         Distance = value)
+  select(profile, Park, year, west_west_dist, east_east_dist) %>% 
+  mutate(total_dist = east_east_dist - west_west_dist) %>%
+  pivot_longer(cols = c(east_east_dist, west_west_dist)) %>%
+  rename(position = name,
+         euc_dist_to_BP = value)
 
-Max <- dumbbell.df %>%
-  filter(Position == "max_euc_BP")
-Min <- dumbbell.df %>%
-  filter(Position == "min_euc_BP")
-head(Min)
+landward.point <- dumbbell.df %>%
+  filter(position == "east_east_dist")
+seaward.point <- dumbbell.df %>%
+  filter(position == "west_west_dist")
 
-p <- ggplot(dumbbell.df)+
-  
-  geom_segment(data = Max,
-               aes(x = Distance, y = profile,
-                   yend = Min$profile, xend = Min$Distance), #use the $ operator to fetch data from our "Females" tibble
+dumbbell.plot <- ggplot(dumbbell.df) +
+  geom_segment(data = seaward.point,
+               aes(x = total_dist, y = profile,
+                   yend = landward.point$profile, xend = landward.point$total_dist), 
                color = "#aeb6bf",
-               size = 4.5, #Note that I sized the segment to fit the points
+               size = 4.5,
                alpha = .5) +
-  
-  geom_point(aes(x = Distance, y = profile, color = Position), size = 4, show.legend = TRUE)+
-  
+  geom_point(aes(x = total_dist, y = profile, color = position), size = 4, show.legend = TRUE)+
   ggtitle("Min and Max profile distances")
-p
+dumbbell.plot
