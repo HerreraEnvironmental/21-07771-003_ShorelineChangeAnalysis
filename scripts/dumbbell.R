@@ -3,7 +3,7 @@
 ## shoreline change on x axis
 
 
-profile.pattern <- "prof"
+profile.pattern <- "prof_6|prof_7|prof_8|prof_9"
 year.pattern <- c("00")
 
 source("scripts/src/load_packages.R")
@@ -18,11 +18,10 @@ complete.profile <- read_csv("data_raw/ProfilesForErosion.csv",
                                            "Total_Change", "Years", "Change_per_Year",
                                            "Hannah", "2050", "Comments"), 
                              skip = 3,  show_col_types = FALSE) %>%
-  # filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
+  filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
   full_join(profiles.df, by = "profile", multiple = "all") %>%
   select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
-  drop_na() %>%
-  filter(year == year.pattern)
+  drop_na()
 
 ## Apply linear model 
 linear.model.df <- complete.profile %>%
@@ -34,6 +33,7 @@ linear.model.df <- complete.profile %>%
 
 quartile.df <- complete.profile %>%
   left_join(linear.model.df %>% select(-model), by = c("profile", "year")) %>%
+  filter(year == year.pattern) %>%
   group_by(profile, year) %>%
   mutate(x_west_west = min(x),
          y_west_west = (slope*min(x)) + intercept) %>%
@@ -44,12 +44,12 @@ quartile.df <- complete.profile %>%
                          ((slope*max(x)) + intercept))/2) %>%
   mutate(x_west = ((min(x) + ((x_west_west + x_east_east)/2))/2),
          y_west = (((slope*min(x)) + intercept) + 
-                          (((slope*min(x)) + intercept) + 
-                             ((slope*max(x)) + intercept))/2)/2) %>%
+                     (((slope*min(x)) + intercept) + 
+                        ((slope*max(x)) + intercept))/2)/2) %>%
   mutate(x_east = ((x_midpoint + max(x))/2),
          y_east = ((((((slope*min(x)) + intercept) + 
-                             ((slope*max(x)) + intercept))/2)) + 
-                          ((slope*max(x)) + intercept))/2) %>%
+                        ((slope*max(x)) + intercept))/2)) + 
+                     ((slope*max(x)) + intercept))/2) %>%
   unique()
 
 quartiles.plot <- ggplot(data = quartile.df %>% filter(year %in% year.pattern)) +
@@ -79,23 +79,24 @@ euclidean.distances <- quartile.df %>%
 ## Begin dumbbell plot work
 dumbbell.df <- euclidean.distances %>%
   select(profile, Park, year, west_west_dist, east_east_dist) %>% 
-  mutate(total_dist = east_east_dist - west_west_dist) %>%
-  pivot_longer(cols = c(east_east_dist, west_west_dist)) %>%
+  mutate(segment_dist = east_east_dist - west_west_dist) %>%
+  pivot_longer(cols = c(east_east_dist, west_west_dist)) %>% 
   rename(position = name,
-         euc_dist_to_BP = value)
+         euclidean_distance = value)
 
 landward.point <- dumbbell.df %>%
   filter(position == "east_east_dist")
 seaward.point <- dumbbell.df %>%
   filter(position == "west_west_dist")
 
-dumbbell.plot <- ggplot(dumbbell.df) +
-  geom_segment(data = seaward.point,
-               aes(x = total_dist, y = profile,
-                   yend = landward.point$profile, xend = landward.point$total_dist), 
+dumbbell.plot <- ggplot(dumbbell.df)+
+  geom_segment(data = landward.point,
+               aes(x = euclidean_distance, y = profile,
+                   yend = seaward.point$profile, xend = seaward.point$euclidean_distance), #use the $ operator to fetch data from our "Females" tibble
                color = "#aeb6bf",
-               size = 4.5,
+               size = 4.5, #Note that I sized the segment to fit the points
                alpha = .5) +
-  geom_point(aes(x = total_dist, y = profile, color = position), size = 4, show.legend = TRUE)+
-  ggtitle("Min and Max profile distances")
+  
+  geom_point(aes(x = euclidean_distance, y = profile, color = position), size = 4, show.legend = TRUE)+
+  ggtitle("Landward and Seaward Point Migration")
 dumbbell.plot
