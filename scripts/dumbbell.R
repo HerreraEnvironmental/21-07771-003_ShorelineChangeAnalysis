@@ -18,15 +18,32 @@ complete.profile <- read_csv("data_raw/ProfilesForErosion.csv",
                                            "Total_Change", "Years", "Change_per_Year",
                                            "Hannah", "2050", "Comments"), 
                              skip = 3,  show_col_types = FALSE) %>%
-  #filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
   full_join(profiles.df, by = "profile", multiple = "all") %>%
   select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
   drop_na()
-# complete.profile$profile <- factor(complete.profile$profile, levels = c("1","2", "3", "4", "5", 
-#                                                                         "6", "7", "8", "9", "10",
-#                                                                         "11", "12", "13", "14", "15",
-#                                                                         16 17 18 19   20 21 22 23 24 25 26 27 28 29  30 31 32 33
-#                                    34 35 36 37 38 39, 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54
+
+
+## geo locations
+profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
+                            col_names = c("profile", "Park"), 
+                            col_select = (1:2),
+                            skip = 3, show_col_types = FALSE)
+profile.OBA <- read_csv("data_raw/OBAProfiles.csv", 
+                        col_names = c("OBA", "profile", "Notes"), 
+                        col_select = c("profile", "OBA", "Notes"),
+                        skip = 1, show_col_types = FALSE) %>%
+  separate_longer_delim(profile, ",") %>%
+  mutate(profile = as.numeric(gsub(" ", "", profile)))
+
+complete.geo.profiles <- profile.OBA %>% 
+  full_join(profile.erosion, by = "profile") %>%
+  arrange(profile)
+sequence <- complete.geo.profiles$profile 
+seq2 <- min(sequence, na.rm = TRUE):max(sequence, na.rm = TRUE)
+missing <- seq2[!seq2 %in% sequence]
+
+print("Profiles without a geographic location included:")
+print(missing)
 
 
 ## Apply linear model 
@@ -109,10 +126,10 @@ dumbbell.plot <- ggplot(dumbbell.df)+
                alpha = .5) +
   geom_point(aes(x = euclidean_distance, y = profile, color = position), 
              size = 4, show.legend = TRUE) +
-  geom_text(data = diff, aes(label = paste("Location: ", profile), 
+  geom_text(data = diff, aes(label = paste("Location: ", Park), 
                 x = x_pos, y = profile),
             color = "#4a4e4d",
             size = 2.5) +
   scale_y_continuous(trans = "reverse") +
-  ggtitle("Landward and Seaward Point Migration")
+  ggtitle(paste("Landward and Seaward Point Migration: Year", year.pattern))
 dumbbell.plot
