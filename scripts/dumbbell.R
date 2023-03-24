@@ -4,10 +4,12 @@
 
 
 profile.pattern <- "prof"
-year.pattern <- c("00")
+year.pattern <- c("00", "01", "02", "03", "04", "05")
 
 source("scripts/src/load_packages.R")
 source("scripts/src/import_profiles.R")
+
+
 
 ## Import erosion file for Base Point data
 complete.profile <- read_csv("data_raw/ProfilesForErosion.csv", 
@@ -22,8 +24,7 @@ complete.profile <- read_csv("data_raw/ProfilesForErosion.csv",
   select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
   drop_na()
 
-
-## geo locations
+## Geographic locations
 profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
                             col_names = c("profile", "Park"), 
                             col_select = (1:2),
@@ -38,17 +39,11 @@ profile.OBA <- read_csv("data_raw/OBAProfiles.csv",
 complete.geo.profiles <- profile.OBA %>% 
   full_join(profile.erosion, by = "profile") %>%
   arrange(profile)
-sequence <- complete.geo.profiles$profile 
-seq2 <- min(sequence, na.rm = TRUE):max(sequence, na.rm = TRUE)
-missing <- seq2[!seq2 %in% sequence]
-
-print("Profiles without a geographic location included:")
-print(missing)
 
 
 ## Apply linear model 
 linear.model.df <- complete.profile %>%
-  filter(year == year.pattern) %>%
+  filter(year %in% year.pattern) %>%
   group_by(profile, year) %>%
   do(model = lm(y ~ x, data = .)) %>%
   mutate(intercept = coef(model)[1],
@@ -56,7 +51,7 @@ linear.model.df <- complete.profile %>%
 
 quartile.df <- complete.profile %>%
   left_join(linear.model.df %>% select(-model), by = c("profile", "year")) %>%
-  filter(year == year.pattern) %>%
+  filter(year %in% year.pattern) %>%
   group_by(profile, year) %>%
   mutate(x_west_west = min(x),
          y_west_west = (slope*min(x)) + intercept) %>%
@@ -85,7 +80,7 @@ quartiles.plot <- ggplot(data = quartile.df %>% filter(year %in% year.pattern)) 
   geom_point(aes(x = x_east, y = y_east), color = "blue", size = 3) +
   geom_point(aes(x = x_east_east, y =  y_east_east), color = "purple", size = 3) +
   ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
-quartiles.plot
+#quartiles.plot
 
 ## Calculate euclidean distances between each point of interest and the base point.
 euclidean.distances <- quartile.df %>% 
@@ -96,24 +91,29 @@ euclidean.distances <- quartile.df %>%
   mutate(west_dist = sqrt(((X_BasePoint - x_west)^2) + ((Y_BasePoint -  y_west)^2))) %>%
   mutate(midpoint_dist = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) %>%
   mutate(east_dist = sqrt(((X_BasePoint - x_east)^2) + ((Y_BasePoint -  y_east)^2))) %>%
-  mutate(east_east_dist = sqrt(((X_BasePoint - x_east_east)^2) + ((Y_BasePoint -  y_east_east)^2)))
+  mutate(east_east_dist = sqrt(((X_BasePoint - x_east_east)^2) + ((Y_BasePoint -  y_east_east)^2))) %>%
+  group_by(profile) %>%
+  mutate(west_west_dist_avg = mean(west_west_dist),
+         east_east_dist_avg = mean(east_east_dist))
 
 
 ## Begin dumbbell plot work
 dumbbell.df <- euclidean.distances %>%
-  select(profile, Park, year, west_west_dist, east_east_dist) %>% 
-  mutate(segment_dist = east_east_dist - west_west_dist) %>%
-  pivot_longer(cols = c(east_east_dist, west_west_dist)) %>% 
+  # select(profile, Park, year, west_west_dist, east_east_dist) %>% ## non averaged
+  select(profile, Park, west_west_dist_avg, east_east_dist_avg) %>% ## averaged %>%
+  unique() %>%
+  mutate(segment_dist = east_east_dist_avg - west_west_dist_avg) %>%
+  pivot_longer(cols = c(east_east_dist_avg, west_west_dist_avg)) %>% 
   rename(position = name,
          euclidean_distance = value)
 
 landward.point <- dumbbell.df %>%
-  filter(position == "east_east_dist")
+  filter(position == "east_east_dist_avg")
 seaward.point <- dumbbell.df %>%
-  filter(position == "west_west_dist")
+  filter(position == "west_west_dist_avg")
 diff <- dumbbell.df %>% 
   mutate(x_pos = euclidean_distance + (segment_dist/2)) %>%
-  filter(position == "west_west_dist")
+  filter(position == "west_west_dist_avg")
 
 ## Create plot
 dumbbell.plot <- ggplot(dumbbell.df)+
