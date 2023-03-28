@@ -20,7 +20,8 @@ print(numbers.only)
 profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
                             col_names = c("profile", "Park"), 
                             col_select = (1:2),
-                            skip = 3, show_col_types = FALSE)
+                            skip = 3, show_col_types = FALSE) %>%
+  drop_na()
 profile.OBA <- read_csv("data_raw/OBAProfiles.csv", 
                         col_names = c("OBA", "profile", "Notes"), 
                         col_select = c("profile", "OBA", "Notes"),
