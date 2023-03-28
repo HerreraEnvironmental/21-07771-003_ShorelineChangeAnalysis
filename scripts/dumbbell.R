@@ -4,11 +4,10 @@
 
 
 profile.pattern <- "prof"
-year.pattern <- c("00", "01", "02", "03", "04", "05")
+year.pattern <- c("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10")
 
 source("scripts/src/load_packages.R")
 source("scripts/src/import_profiles.R")
-
 
 
 ## Import erosion file for Base Point data
@@ -92,7 +91,9 @@ euclidean.distances <- quartile.df %>%
   mutate(midpoint_dist = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) %>%
   mutate(east_dist = sqrt(((X_BasePoint - x_east)^2) + ((Y_BasePoint -  y_east)^2))) %>%
   mutate(east_east_dist = sqrt(((X_BasePoint - x_east_east)^2) + ((Y_BasePoint -  y_east_east)^2))) %>%
-  group_by(profile) %>%
+  mutate(yeargroup = ifelse(year %in% c("00", "01", "02", "03", "04", "05"),
+                         "2000 to 2005", "2006 to 2010")) %>%
+  group_by(profile, yeargroup) %>%
   mutate(west_west_dist_avg = mean(west_west_dist),
          east_east_dist_avg = mean(east_east_dist))
 
@@ -100,7 +101,7 @@ euclidean.distances <- quartile.df %>%
 ## Begin dumbbell plot work
 dumbbell.df <- euclidean.distances %>%
   # select(profile, Park, year, west_west_dist, east_east_dist) %>% ## non averaged
-  select(profile, Park, west_west_dist_avg, east_east_dist_avg) %>% ## averaged %>%
+  select(profile, Park, yeargroup, west_west_dist_avg, east_east_dist_avg) %>% ## averaged %>%
   unique() %>%
   mutate(segment_dist = east_east_dist_avg - west_west_dist_avg) %>%
   pivot_longer(cols = c(east_east_dist_avg, west_west_dist_avg)) %>% 
@@ -118,12 +119,12 @@ diff <- dumbbell.df %>%
 ## Create plot
 dumbbell.plot <- ggplot(dumbbell.df)+
   geom_segment(data = landward.point,
-               aes(x = euclidean_distance, y = profile,
+               aes(x = euclidean_distance, y = profile, color = yeargroup,
                    yend = seaward.point$profile, 
                    xend = seaward.point$euclidean_distance),
-               color = "#aeb6bf",
                linewidth = 4.5,
                alpha = .5) +
+ # geom_linerange(position = position_dodge(.5)) +
   geom_point(aes(x = euclidean_distance, y = profile, color = position), 
              size = 4, show.legend = TRUE) +
   geom_text(data = diff, aes(label = paste("Location: ", Park), 
@@ -131,5 +132,6 @@ dumbbell.plot <- ggplot(dumbbell.df)+
             color = "#4a4e4d",
             size = 2.5) +
   scale_y_continuous(trans = "reverse") +
-  ggtitle(paste("Landward and Seaward Point Migration: Year", year.pattern))
+  scale_x_continuous(trans = "reverse") +
+  ggtitle(paste("Landward and Seaward Point Migration: Years 00 - 05 Averaged"))
 dumbbell.plot

@@ -92,7 +92,7 @@ Take linear regressions for only xy data
 
 Look at a single profile and year to see the linear regression
 ```{r, echo=FALSE}
-profile.pattern <- "prof_30|prof_22"
+profile.pattern <- "prof_22"
 year.pattern <- "00"
 source("scripts/src/import_profiles.R")
 ```
@@ -128,6 +128,6 @@ MHHW.ROC.plot
 
 Dumbbell plot of Euclidean distance of profile (geographic, over time)
 ```{r, echo=FALSE}
-source("scripts/MHHW_ROC.R")
+source("scripts/dummb")
 MHHW.ROC.plot
 ```
