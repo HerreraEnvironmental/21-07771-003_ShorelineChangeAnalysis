@@ -24,10 +24,11 @@ profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv",
   drop_na()
 profile.OBA <- read_csv("data_raw/OBAProfiles.csv", 
                         col_names = c("OBA", "profile", "Notes"), 
-                        col_select = c("profile", "OBA", "Notes"),
+                        col_select = c("profile", "OBA"),
                         skip = 1, show_col_types = FALSE) %>%
   separate_longer_delim(profile, ",") %>%
-  mutate(profile = as.numeric(gsub(" ", "", profile)))
+  mutate(profile = as.numeric(gsub(" ", "", profile))) %>%
+  mutate(OBA = replace(OBA, OBA == "One Missing at 13?", "Ocean City"))
 
 complete.geo.profiles <- profile.OBA %>% 
   full_join(profile.erosion, by = "profile") %>%

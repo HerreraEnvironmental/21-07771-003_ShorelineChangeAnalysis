@@ -18,17 +18,19 @@ I still need to get the complete list of profiles. I don't think I can do this w
 NANOOS Shoreline profiles in x y z format (easting northing elevation).
 Naming convention is prof_X_ttYY.out where prof is short for profile, X is the profile number, tt is a season code (e.g. f = fall) and YY is the year, in the format of the last two digis (i.e, "98" is 1998", "00" is 2000, "08" is 2008, etc).
 
-Quite a few profiles are null and will be removed and noted. See the "Explore Profiles" script for more information.
+Quite a few profiles are null (empty) and will be removed and noted. See the "Explore Profiles" script for more information.
 
-Two duplicates were removed from original set: see accompanying script "duplicate_test.R"
-Check on non-conforming files: beachface? dunes?
+Some of the profiles had non-conforming names: "BigE06", "beachface", etc. These do not represent a large portion of the files and have not been included in the analysis. 
+
+Two duplicates were removed from original set: see accompanying script "duplicate_test.R".
+
 
 ### Metadata
 The vertical datum is NAVD88.
 The horizontal is WA State Plane South. All of the units are in meters.
 
 ## Load required packages
-```{r load packages, echo=TRUE, results='hide'}
+```{r load packages, echo=FALSE, results='hide'}
 source("scripts/src/load_packages.R")
 ```
 
