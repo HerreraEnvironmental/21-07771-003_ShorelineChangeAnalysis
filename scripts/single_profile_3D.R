@@ -11,7 +11,6 @@
 
 # Import all files --------------------------------------------------
 
-
 ## Isolate one season, one year
 prof.data <- profiles.df %>%
   drop_na() %>%
@@ -25,16 +24,16 @@ prof.data <- profiles.df %>%
 ## Plot
 marker <- list(size = 3, shape = 1)
 
-profileplot <- plot_ly(prof.data, x = ~x, y = ~y, z = ~z,
-                       color = ~year, marker = marker, hoverinfo = "text", 
+single.profile.plot <- plot_ly(prof.data, x = ~x, y = ~y, z = ~z,
+                       color = ~season, marker = marker, hoverinfo = "text", 
                       text = ~paste("</br> Season: ", season)) %>%
   add_markers() %>%
   layout(
     scene = list(xaxis = list(title = "x"),
                  yaxis = list(title = "y"),
                  zaxis = list(title = "z")),
-    title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
+    title = list(text = paste("Profile:", sub("^[^_]*_", "", profile.pattern), "Year:", year.pattern), y = 0.9),
     legend = levels(year))
 
-profileplot
+single.profile.plot
 

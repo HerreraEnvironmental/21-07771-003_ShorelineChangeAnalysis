@@ -8,9 +8,8 @@
 ## Would need to interpolate Base Point data from John's CAD to get a complete picture.
 ## The quality of data is variable- does midpoint euclidean gloss over the data too much?
 
-#profile.pattern <- "prof_6|prof_7|prof_8|prof_9|prof_17|prof_41"
-# profile.pattern <- "prof_6"
-# source("scripts/import_profiles.R")
+profile.pattern <- "prof_6|prof_7|prof_8|prof_9"
+source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
 profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 

@@ -45,50 +45,57 @@ source("scripts/examine_profiles.R")
 knitr::kable(complete.geo.profiles, caption = "Profiles with matching geographic location")
 ```
 
-## View individual profile and year.
-Select a profile of interest by entering "prof_N" below. 
+## Individual profile, single year visualization
 
+Select a profile of interest by entering "prof_N" below, with "N" being a profile chosen from the above list.
 Select a year of interest by entering the last two digits of the year (from 98 to 18).
+The output from this code chunk will print the total number of files associated with the request, as well as any empty files within the request parameters, and plot the given profile. 
+
+This is an actual plot of the x y z coordinates to understand file format as well as the variability of a given profile, *not* a direct geographic representation of the data. The graph can be rotated using the mouse. Hover over the lines to see the seasonal data.
+
 ```{r prep, echo=FALSE}
-profile.pattern <- "prof_22"
-year.pattern <- c("99")
+profile.pattern <- "prof_17"
+year.pattern <- c("19")
 
 source("scripts/src/import_profiles.R")
-```
-
-Visualize the single profile/year.
-```{r, echo=FALSE}
 source("scripts/single_profile_3D.R")
-profileplot
+
+single.profile.plot
 ```
 
+## Individual profile, all available years visualization
 
-Import data for all years, single profile.
+Import data for a single profile, automatically including all available years.
+Create a visual for the complete profile with all years. The orange horizontal plane is the MHHW mark. 
 ```{r, echo=FALSE}
-profile.pattern <- "prof_22"
+profile.pattern <- "prof_17"
+
 source("scripts/src/import_profiles.R")
-```
-
-Create visual for complete profile, all years. Horizontal plane is the MHHW mark. 
-```{r, echo=FALSE}
 source("scripts/complete_profile_plane.R")
+
 complete.profile.plot
 ```
 
-## BasePoint and Euclidean distance
 
-Import a selection of profiles, all years. The more you select, the longer this will take.
-```{r, echo=FALSE}
-profile.pattern <- "prof"
-source("scripts/src/import_profiles.R")
-```
-Take a preliminary look at the profiles compared to the BasePoint as a 2D reference for Euclidean distance change. 
+## BasePoint reference line and Euclidean distance as an accretion/erosion proxy
+
+In order to quantify shoreline change, an arbitrary "BasePoint" reference line, parallel to the water, was drawn at a reasonable distance from the profiles. The profiles (aka transects) are perpendicular to this BasePoint, allowing for a reference point against which to calculate spatial change.
+
+In order to visualize this concept, the below chunk of code visualizes 1) a simplified selection of profiles (plotted in black) compared to the BasePoint (plotted in red) and 2) an individual profile (plotted in black) and its BasePoint (plotted in red).  
 
 ```{r, echo=FALSE}
 source("scripts/profiles_and_BasePoint.R")
 all.basepoint.plot
 single.basepoint.plot
 ```
+Using Euclidean distance, migrations of the transects over time as compared to the BasePoint act as proxies for accretion and erosion. 
+
+Increasing Euclidean distance = Accretion
+Decreasing Euclidean distance = Erosion
+
+## BasePoint reference line and Euclidean distance as an accretion/erosion proxy
+
+
 Find the midpoint of each profile. See where it is migrating with time.
 ```{r, echo=FALSE}
 source("scripts/midpoint_euclidean_distance.R")

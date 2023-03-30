@@ -34,8 +34,6 @@ complete.geo.profiles <- profile.OBA %>%
   full_join(profile.erosion, by = "profile") %>%
   arrange(profile)
 
-
-
 sequence <- complete.geo.profiles$profile 
 seq2 <- min(sequence, na.rm = TRUE):max(sequence, na.rm = TRUE)
 missing <- seq2[!seq2 %in% sequence]

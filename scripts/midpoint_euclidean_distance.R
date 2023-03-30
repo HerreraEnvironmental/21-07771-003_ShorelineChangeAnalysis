@@ -47,7 +47,7 @@ midpoint.euc.dist.plot <- ggplot(euclidean %>% drop_na(),
   facet_wrap(~profile) +
   geom_col(position = position_dodge(width = 0.5)) +
   geom_line(aes(group = slope_dir), position = position_dodge(width = 1),
-            size = 1, color = "black") +
+            linewidth = 1, color = "black") +
   geom_smooth(method = "lm", se = TRUE, color="blue") +
   theme(axis.text = element_blank()) +
   ggtitle(paste("Profile", profile.pattern, ": Midpoint Euclidean Distance from Base Point"))
