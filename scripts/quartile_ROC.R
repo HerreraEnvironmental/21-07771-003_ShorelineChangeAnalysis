@@ -108,14 +108,18 @@ mean.rate.df <- euclidean.rates %>%
 ## Combine for a complete df of quartile rates with mean
 all.quartile.rates <- quartile.rates %>%
   rbind(mean.rate.df) %>%
-  arrange(profile, year) %>%
+  arrange(profile, year)
 
 ## Plot, highlighting mean
 quartile.ROC.plot <- ggplot(data = all.quartile.rates, 
                             aes(x = year, y = rate_of_change, fill = quartile)) +
   facet_wrap(~profile) +
-  geom_bar(position = "dodge", stat = "identity") +
-  scale_fill_manual( values = c( "mean"="tomato" ), guide = "none" ) +
+  geom_bar(position = "dodge", stat = "identity",width = 1) +
+  scale_fill_manual(values = c("mean"="red", 
+                               "rate_max_dist_to_BP" = "blue"), guide = "none" ) +
+  # scale_size_manual(values = c("mean"=0.5, 
+  #                             "rate_max_dist_to_BP" = 5))
   ggtitle(paste("Profile", profile.pattern, "Rate of Change")) 
 quartile.ROC.plot
+
 
