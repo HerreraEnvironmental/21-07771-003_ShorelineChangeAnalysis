@@ -3,7 +3,7 @@
 ## January 2023
 ## Shoreline Conservation Areas, Washington State Parks
 
-profile.pattern <- "prof_22|prof_23"
+#profile.pattern <- "prof_22|prof_23"
 source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
@@ -33,23 +33,16 @@ euclidean <- complete.profile %>%
   group_by(profile) %>%
   mutate(euc_dist_to_BP = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) 
 
+## Estimate net slope as a proxy for erosion
 total.slope <- euclidean %>%
   drop_na() %>%
-  filter(rank(year) == 1|rank(year) == max(rank(year))) %>%
   group_by(profile) %>%
-  filter(profile == 22) %>% ######################
-  mutate(profile_slope = ifelse(euc_dist_to_BP[max(year)] > 700, TRUE, FALSE))
-  # mutate(profile_slope = ifelse(euc_dist_to_BP[year == 21] > euc_dist_to_BP[year == 97],
-  #                               "Accretion", "Erosion")) %>%
+  mutate(profile_slope = ifelse(euc_dist_to_BP[which.min(year)] < euc_dist_to_BP[which.max(year)],
+                                "Accretion", "Erosion")) %>%
   select(profile, profile_slope)
 
 euclidean.with.slope <- euclidean %>%
   left_join(total.slope, by = "profile", multiple = "all")
-# euclidean.with.slope$year <- factor(euclidean$year, levels =  c("97", "98", "99","00", "01", "02", "03",
-#                                                      "04", "05", "06", "07", "08", "09", "10",
-#                                                      "11", "12", "13", "14", "15", "16", "17",
-#                                                      "18", "19", "20", "21", "22"))
-
 
 ## Visualize euclidean distance from average Euclidean distance of each year
 midpoint.euc.dist.plot <- ggplot(euclidean.with.slope %>% drop_na(), 
