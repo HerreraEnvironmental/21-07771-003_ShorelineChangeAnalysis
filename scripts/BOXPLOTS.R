@@ -5,10 +5,9 @@
 ## Shoreline Conservation Areas, Washington State Parks
 
 
-profile.pattern <- "prof_17"
-year.pattern <- c("00")
+profile.pattern <- "prof_17|prof_16"
 
-source("scripts/src/load_packages.R")
+#source("scripts/src/load_packages.R")
 source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
@@ -20,8 +19,8 @@ complete.profile <- read_csv("data_raw/ProfilesForErosion.csv",
                                            "Total_Change", "Years", "Change_per_Year",
                                            "Hannah", "2050", "Comments"), 
                              skip = 3,  show_col_types = FALSE) %>%
-  filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
-  full_join(profiles.df, by = "profile") %>%
+  filter(profile %in% str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]]) %>%
+  full_join(profiles.df, by = "profile", multiple = "all") %>%
   select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
   drop_na()
 complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "99","00", "01", "02", "03",
@@ -31,8 +30,10 @@ complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "
 
 toplot <- complete.profile %>%
   select(profile, year, x, y, z) %>%
-  #filter(year %in% year.pattern) %>%
-  group_by(profile, year)
+  group_by(profile, year) %>%
+  do(model =  boxplot(toplot[3:5])$stats) %>%
+  select(profile, year, model) %>% 
+  unnest_wider(model)
 
 
 Summary <- boxplot(toplot[3:5])$stats %>%
@@ -40,6 +41,4 @@ Summary <- boxplot(toplot[3:5])$stats %>%
   select(x = 1, y = 2, z = 3)
 rownames(Summary)<-c("Min","First Quartile","Median","Third Quartile","Maximum")
 
-## Visual
-boxplot(y~x,data=toplot, notch = FALSE, main=paste("Profile:", profile.pattern),
-        xlab="x", ylab="y")
+

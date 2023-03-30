@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # *TODO BEFORE COMPLETION*
 
 I still need to get the complete list of profiles. I don't think I can do this without Jon.
+Return to boxplots as the best method for characterizing overall profile movement.
 
 ## Overview
 
@@ -93,11 +94,16 @@ Using Euclidean distance, migrations of the transects over time as compared to t
 Increasing Euclidean distance = Accretion
 Decreasing Euclidean distance = Erosion
 
-## BasePoint reference line and Euclidean distance as an accretion/erosion proxy
+## Characterizing profile elements to use for accretion and erosion proxies. 
 
+Each profile, while following the same basic layout, comes with the variation expected from environmental data. Therefore it is important to find a method of individual profile characterization that will apply to all 4500 profiles, and can act as a reliable proxy to determine erosion or accretion.
+
+The simplest way to do this
 
 Find the midpoint of each profile. See where it is migrating with time.
 ```{r, echo=FALSE}
+
+profile.pattern <- "prof_22|prof_23"
 source("scripts/midpoint_euclidean_distance.R")
 midpoint.euc.dist.plot
 ```
