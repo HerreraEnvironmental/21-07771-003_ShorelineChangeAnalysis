@@ -5,7 +5,6 @@
 
 required_Packages_Install <- c("broom",
                                "data.table",
-                               "gghighlight",
                                "ggmap",
                                "rgl",
                                "scatterplot3d",

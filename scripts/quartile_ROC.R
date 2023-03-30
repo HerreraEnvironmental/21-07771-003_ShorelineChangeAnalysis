@@ -76,72 +76,46 @@ seaward.point.plot <- ggplot(data = euc.quartile.distances, aes(x = year, y = mi
 seaward.point.plot
 
 ## Visualize each quartile's migration
-all.quartiles <- euc.quartile.distances %>%
-  select(profile:year, contains("dist")) %>%
-  pivot_longer(cols = contains("dist"))
+# Messy, so commented out for now
+# all.quartiles <- euc.quartile.distances %>%
+#   select(profile:year, contains("dist")) %>%
+#   pivot_longer(cols = contains("dist"))
+# 
+# all.quartiles.plot <- ggplot(all.quartiles, aes(fill=name, y=value, x=year)) + 
+#   geom_bar(position="dodge", stat="identity")
+# all.quartiles.plot
 
-all.quartiles.plot <- ggplot(t, aes(fill=name, y=value, x=year)) + 
-  geom_bar(position="dodge", stat="identity")
-all.quartiles.plot
-
-## Calculate rates of change  
+## Calculate rates of change by quartile
 euclidean.rates <- euc.quartile.distances %>%
-  select(profile:year, contains("dist")) %>%
-  arrange(profile, year) %>%
-  group_by(profile) %>%
-  mutate(min_rate = (min_dist_to_BP/lag(min_dist_to_BP) - 1) * 100) %>%
-  mutate(q1_rate = (q1_dist_to_BP/lag(q1_dist_to_BP) - 1) * 100) %>%
-  mutate(med_rate = (med_dist_to_BP/lag(med_dist_to_BP) - 1) * 100) %>%
-  mutate(q3_rate = (q3_dist_to_BP/lag(q3_dist_to_BP) - 1) * 100) %>%
-  mutate(max_rate = (max_dist_to_BP/lag(max_dist_to_BP) - 1) * 100)
-
-t <- euc.quartile.distances %>%
   select(profile:year, contains("dist")) %>%
   arrange(profile, year) %>%
   group_by(profile) %>%
   mutate(across(min_dist_to_BP:max_dist_to_BP, ~ ((.x/lag(.x) - 1) * 100), .names = "rate_{.col}"))
 
-## Change rates to dfs for plot
-min_rate_df <- euclidean.rates %>%
-  select(profile, year, rate = min_rate) %>%
-  mutate(position = "min")
+quartile.rates <- euclidean.rates %>%
+  select(profile:year, contains("rate")) %>%
+  pivot_longer(cols = contains("rate"), 
+               names_to = "quartile", values_to = "rate_of_change") 
 
-q1_rate_df <- euclidean.rates %>%
-  select(profile, year, rate = q1_rate) %>%
-  mutate(position = "q1")
-
-med_rate_df <- euclidean.rates %>%
-  select(profile, year, rate = med_rate) %>%
-  mutate(position = "mid")
-
-q3_rate_df <- euclidean.rates %>%
-  select(profile, year, rate = q3_rate) %>%
-  mutate(position = "q3")
-
-max_rate_df <- euclidean.rates %>%
-  select(profile, year, rate = max_rate) %>%
-  mutate(position = "max")
-
-mean_rate_df <- euclidean.rates %>%
+## Add in the average rate of all quartiles.
+mean.rate.df <- euclidean.rates %>%
   drop_na() %>%
-  #group_by(year) %>%
-  rowwise() %>%
-  mutate(mean_rate = mean(min_rate:max_rate)) %>%
-  select(profile, year, rate = mean_rate) %>%
-  mutate(position = "mean")
+  group_by(profile, year) %>%
+  mutate(mean_rate = mean(rate_min_dist_to_BP:rate_max_dist_to_BP)) %>%
+  select(profile, Park, year, rate_of_change = mean_rate) %>%
+  mutate(quartile = "mean")
 
-## Combine
-quartile.rates <- min_rate_df %>%
-  rbind(q1_rate_df) %>%
-  rbind(med_rate_df) %>%
-  rbind(q3_rate_df) %>%
-  rbind(max_rate_df) %>%
-  rbind(mean_rate_df) 
+## Combine for a complete df of quartile rates with mean
+all.quartile.rates <- quartile.rates %>%
+  rbind(mean.rate.df) %>%
+  arrange(profile, year) %>%
 
-quartile.ROC.plot <- ggplot(data = quartile.rates, aes(x = year, y = rate, fill = position)) +
+## Plot, highlighting mean
+quartile.ROC.plot <- ggplot(data = all.quartile.rates, 
+                            aes(x = year, y = rate_of_change, fill = quartile)) +
   facet_wrap(~profile) +
   geom_bar(position = "dodge", stat = "identity") +
-  gghighlight(position == "mean") +
+  scale_fill_manual( values = c( "mean"="tomato" ), guide = "none" ) +
   ggtitle(paste("Profile", profile.pattern, "Rate of Change")) 
 quartile.ROC.plot
 
