@@ -33,31 +33,37 @@ euclidean <- complete.profile %>%
   group_by(profile) %>%
   mutate(euc_dist_to_BP = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) 
 
-myslope <- euclidean %>%
+total.slope <- euclidean %>%
   drop_na() %>%
   filter(rank(year) == 1|rank(year) == max(rank(year))) %>%
   group_by(profile) %>%
-  mutate(profile_slope = ifelse(euc_dist_to_BP[year == 21] > euc_dist_to_BP[year == 97],
-                                "positive", "negative")) %>%
+  filter(profile == 22) %>% ######################
+  mutate(profile_slope = ifelse(euc_dist_to_BP[max(year)] > 700, TRUE, FALSE))
+  # mutate(profile_slope = ifelse(euc_dist_to_BP[year == 21] > euc_dist_to_BP[year == 97],
+  #                               "Accretion", "Erosion")) %>%
   select(profile, profile_slope)
 
-euclidean <- euclidean %>%
-  left_join(myslope, by = "profile")
-euclidean$year <- factor(euclidean$year, levels =  c("97", "98", "99","00", "01", "02", "03",
-                                                     "04", "05", "06", "07", "08", "09", "10",
-                                                     "11", "12", "13", "14", "15", "16", "17",
-                                                     "18", "19", "20", "21", "22"))
+euclidean.with.slope <- euclidean %>%
+  left_join(total.slope, by = "profile", multiple = "all")
+# euclidean.with.slope$year <- factor(euclidean$year, levels =  c("97", "98", "99","00", "01", "02", "03",
+#                                                      "04", "05", "06", "07", "08", "09", "10",
+#                                                      "11", "12", "13", "14", "15", "16", "17",
+#                                                      "18", "19", "20", "21", "22"))
 
 
 ## Visualize euclidean distance from average Euclidean distance of each year
-midpoint.euc.dist.plot <- ggplot(euclidean %>% drop_na(), 
+midpoint.euc.dist.plot <- ggplot(euclidean.with.slope %>% drop_na(), 
        aes(year, euc_dist_to_BP, fill=profile_slope, group = profile_slope)) +
+  scale_fill_manual(values=c("#036CA8", "#36A886")) +
   facet_wrap(~profile) +
   geom_col(position = position_dodge(width = 0.5)) +
   geom_line(aes(group = profile_slope), position = position_dodge(width = 1),
             linewidth = 1, color = "black") +
-  geom_smooth(method = "lm", se = TRUE, color="blue") +
-  theme(axis.text = element_blank()) +
-  ggtitle(paste("Profile", profile.pattern, ": Midpoint Euclidean Distance from Base Point"))
+  geom_smooth(method = "lm", se = FALSE, color="red") +
+  xlab("Year") +
+  ylab("Distance in m from BasePoint") + 
+  theme(axis.text.x = element_blank()) +
+  guides(fill=guide_legend(title="")) +
+  ggtitle("Net Accretion or Erosion per Profile")
 midpoint.euc.dist.plot
 
