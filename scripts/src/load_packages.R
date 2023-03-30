@@ -10,6 +10,7 @@ required_Packages_Install <- c("broom",
                                "rgl",
                                "scatterplot3d",
                                "stringr",
+                               "patchwork",
                                "plotly",
                                "tidyverse")
 

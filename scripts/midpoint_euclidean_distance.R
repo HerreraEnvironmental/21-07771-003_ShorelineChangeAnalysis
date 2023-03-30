@@ -47,12 +47,12 @@ euclidean.with.slope <- euclidean %>%
 ## Visualize euclidean distance from average Euclidean distance of each year
 midpoint.euc.dist.plot <- ggplot(euclidean.with.slope %>% drop_na(), 
        aes(year, euc_dist_to_BP, fill=profile_slope, group = profile_slope)) +
-  scale_fill_manual(values=c("#036CA8", "#36A886")) +
+  scale_fill_manual(values=c("#04A1FF", "tomato2")) +
   facet_wrap(~profile) +
   geom_col(position = position_dodge(width = 0.5)) +
   geom_line(aes(group = profile_slope), position = position_dodge(width = 1),
             linewidth = 1, color = "black") +
-  geom_smooth(method = "lm", se = FALSE, color="red") +
+  geom_smooth(method = "lm", se = TRUE, color="black") +
   xlab("Year") +
   ylab("Distance in m from BasePoint") + 
   theme(axis.text.x = element_blank()) +

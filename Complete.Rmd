@@ -11,8 +11,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # *TODO BEFORE COMPLETION*
 
-I still need to get the complete list of profiles. I don't think I can do this without Jon.
-Return to boxplots as the best method for characterizing overall profile movement.
+- I still need to get the complete list of profiles. I don't think I can do this without Jon.
+- Return to boxplots as the best method for characterizing overall profile movement.
+- I have calculated NET accretion or erosion, but this doesn't cover those profiles that "fall beneath
+the noise"; basically I have sorted them into binary yes/no it's moved, it hasn't moved. 
 
 ## Overview
 
@@ -96,43 +98,42 @@ Decreasing Euclidean distance = Erosion
 
 ## Characterizing profile elements to use for accretion and erosion proxies. 
 
-Each profile, while following the same basic layout, comes with the variation expected from environmental data. Therefore it is important to find a method of individual profile characterization that will apply to all 4500 profiles, and can act as a reliable proxy to determine erosion or accretion.
+Find the midpoint of each profile to acquire a single data point to describe the overall location. See where that midpoint (and by extension the entire profile) is migrating with time.
 
-The simplest way to do this
-
-Find the midpoint of each profile. See where it is migrating with time.
 ```{r, echo=FALSE}
 
-profile.pattern <- "prof_22|prof_23|prof_6|prof_7"
+profile.pattern <- "prof"
 source("scripts/midpoint_euclidean_distance.R")
 midpoint.euc.dist.plot
 ```
 
-
 ## Linear Regressions and Change Rates
 
-Take linear regressions for only xy data
+The midpoint of each profile selects a single point as a proxy for erosion through time. This obscures the variation inherent in the movement of profiles over time.
 
-Look at a single profile and year to see the linear regression
+Each profile, while following the same basic layout, comes with the variation expected from environmental data. Therefore it is important to find a method of individual profile characterization that will apply to all 4500 profiles, and can act as a reliable proxy to determine erosion or accretion.
+
+The profiles have linear relationships due to the geographic layout: in general, a change in x (moving along the Easting plane) will result in a roughly equal change in y (the Northing plane). Therefore, a linear regression can be applied to the x and y variables of each profile to obtain a line proxy rather than a single point.
+
+
+Look at a single profile and year to see the applied linear regression. On the right, the linear quartiles are added for more detailed data description of accretion and erosion. These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with boxplot parameters.
+
+
 ```{r, echo=FALSE}
 profile.pattern <- "prof_22"
 year.pattern <- "00"
-source("scripts/src/import_profiles.R")
-```
 
-```{r, echo=FALSE}
-source("scripts/single_linear_reg.R")
-single.linear
-```
+source("scripts/single_linear_quartiles.R")
 
-Add quartiles along the plot for data description.
-```{r, echo=FALSE}
-source("scripts/single_quartiles.R")
-single.quartiles.plot
+single.linear.plot + single.quartiles.plot
 ```
 
 
+
+
 ```{r, echo=FALSE}
+
+
 source("scripts/quartile_ROC.R")
 quartile.ROC.plot
 ```
