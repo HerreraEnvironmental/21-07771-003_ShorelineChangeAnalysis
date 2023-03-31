@@ -3,7 +3,7 @@
 ## January 2023
 ## Shoreline Conservation Areas, Washington State Parks
 
-#profile.pattern <- "prof_22|prof_23"
+profile.pattern <- "prof_6|prof_22|prof_23"
 source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
@@ -49,7 +49,7 @@ midpoint.euc.dist.plot <- ggplot(euclidean.with.slope %>% drop_na(),
        aes(year, euc_dist_to_BP, fill=profile_slope, group = profile_slope)) +
   scale_fill_manual(values=c("#04A1FF", "tomato2")) +
   facet_wrap(~profile) +
-  geom_col(position = position_dodge(width = 0.5)) +
+  geom_col(position = position_dodge(width = 1)) +
   geom_line(aes(group = profile_slope), position = position_dodge(width = 1),
             linewidth = 1, color = "black") +
   geom_smooth(method = "lm", se = TRUE, color="black") +
@@ -59,4 +59,36 @@ midpoint.euc.dist.plot <- ggplot(euclidean.with.slope %>% drop_na(),
   guides(fill=guide_legend(title="")) +
   ggtitle("Net Accretion or Erosion per Profile")
 midpoint.euc.dist.plot
+
+
+### Test for extraction
+
+eq <- function(x,y) {
+  m <- lm(y ~ x)
+  as.character(
+    as.expression(
+      substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2,
+                 list(a = format(coef(m)[1], digits = 4),
+                      b = format(coef(m)[2], digits = 4),
+                      r2 = format(summary(m)$r.squared, digits = 3)))
+    )
+  )
+}
+
+df <- euclidean.with.slope %>%
+  select(profile, year, euc_dist_to_BP) %>%
+  filter(profile == 23) %>%
+  unique() %>%
+  drop_na() %>%
+  group_by(profile) %>%
+  mutate(dummy_year = row_number()) %>%
+  do(model = lm(euc_dist_to_BP ~ dummy_year, data = .)) %>%
+  mutate(intercept = coef(model)[1],
+         slope = coef(model)[2],
+         rsq = summary(model)$r.squared) 
+
+ggplot(df, aes(x = dummy_year, y = euc_dist_to_BP)) + 
+  geom_point() + 
+  geom_smooth(method = "lm", se=FALSE) +
+  geom_text(x = 08, y = 1200, label = eq(df$year,df$euc_dist_to_BP), parse = TRUE)
 

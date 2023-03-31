@@ -5,7 +5,7 @@
 
 ## Take quartile points along profiles and use euclidean distance to BP as the change rate.
 
-#profile.pattern <- "prof_22|prof_16"
+profile.pattern <- "prof_22|prof_16"
 
 source("scripts/src/load_packages.R")
 source("scripts/src/import_profiles.R")
@@ -32,7 +32,8 @@ complete.lm.df <- complete.profile %>%
   group_by(profile, year) %>%
   do(model = lm(y ~ x, data = .)) %>%
   mutate(intercept = coef(model)[1],
-         slope = coef(model)[2]) 
+         slope = coef(model)[2],
+         rsq = summary(model)$r.squared) 
 
 ## Calculate min, quartile1, median, quartile3, and max values for each profile and year
 quartiles.df <- complete.profile %>%
