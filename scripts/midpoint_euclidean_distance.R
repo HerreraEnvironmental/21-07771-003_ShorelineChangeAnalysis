@@ -3,7 +3,7 @@
 ## January 2023
 ## Shoreline Conservation Areas, Washington State Parks
 
-profile.pattern <- "prof_6|prof_22|prof_23"
+profile.pattern <- "prof"
 source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
@@ -27,7 +27,7 @@ complete.profile <- profile.erosion %>%
 euclidean <- complete.profile %>%
   mutate(x_midpoint = ((min(x) + max(x))/2)) %>%
   mutate(y_midpoint = ((min(y) + max(y))/2)) %>%
-  select(profile, year, X_BasePoint, Y_BasePoint, x_midpoint,  y_midpoint) %>%
+  select(profile, Park, year, X_BasePoint, Y_BasePoint, x_midpoint,  y_midpoint) %>%
   unique() %>%
   arrange(profile, year) %>%
   group_by(profile) %>%
@@ -61,23 +61,10 @@ midpoint.euc.dist.plot <- ggplot(euclidean.with.slope %>% drop_na(),
 midpoint.euc.dist.plot
 
 
-### Test for extraction
+### Extract equation parameters
 
-eq <- function(x,y) {
-  m <- lm(y ~ x)
-  as.character(
-    as.expression(
-      substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2,
-                 list(a = format(coef(m)[1], digits = 4),
-                      b = format(coef(m)[2], digits = 4),
-                      r2 = format(summary(m)$r.squared, digits = 3)))
-    )
-  )
-}
-
-df <- euclidean.with.slope %>%
-  select(profile, year, euc_dist_to_BP) %>%
-  filter(profile == 23) %>%
+equation.details <- euclidean.with.slope %>%
+  select(profile, Park, year, euc_dist_to_BP) %>%
   unique() %>%
   drop_na() %>%
   group_by(profile) %>%
@@ -85,10 +72,8 @@ df <- euclidean.with.slope %>%
   do(model = lm(euc_dist_to_BP ~ dummy_year, data = .)) %>%
   mutate(intercept = coef(model)[1],
          slope = coef(model)[2],
-         rsq = summary(model)$r.squared) 
-
-ggplot(df, aes(x = dummy_year, y = euc_dist_to_BP)) + 
-  geom_point() + 
-  geom_smooth(method = "lm", se=FALSE) +
-  geom_text(x = 08, y = 1200, label = eq(df$year,df$euc_dist_to_BP), parse = TRUE)
+         rsq = summary(model)$r.squared,
+         se = summary(model)$sigma) %>%
+  mutate(profile_direction = ifelse(slope > 0, "Accretion", "Erosion")) %>%
+  select(profile, slope, rsq, se, profile_direction)
 

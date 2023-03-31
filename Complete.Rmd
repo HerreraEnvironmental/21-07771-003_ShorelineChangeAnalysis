@@ -154,8 +154,3 @@ source("scripts/MHHW_ROC.R")
 MHHW.ROC.plot
 ```
 
-Dumbbell plot of Euclidean distance of profile (geographic, over time)
-```{r, echo=FALSE}
-source("scripts/dumbbell.R")
-MHHW.ROC.plot
-```
