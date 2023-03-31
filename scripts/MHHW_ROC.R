@@ -68,6 +68,6 @@ MHHW.ROC.plot <- ggplot(MHHW.ROC, aes(x = year, y = pct_change, fill = profile_d
   geom_bar(position = "dodge", stat = "identity") +
   scale_fill_manual(values=c("#04A1FF", "tomato2")) +
   theme(axis.text.x = element_blank()) +
-  ggtitle("Erosion and Accretion Rates of Change") 
+  ggtitle("Erosion and Accretion Rates of Change at the MHHW Mark") 
 MHHW.ROC.plot
 

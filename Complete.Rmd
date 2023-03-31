@@ -11,11 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # *TODO BEFORE COMPLETION*
 
-- I still need to get the complete list of profiles. I don't think I can do this without Jon.
+- I still need to get the complete list of profiles. I don't think I can do this without Jon. I have submitted a GIS request for help.
 - Return to boxplots as the best method for characterizing overall profile movement.
 - I have calculated NET accretion or erosion, but this doesn't cover those profiles that "fall beneath
 the noise"; basically I have sorted them into binary yes/no it's moved, it hasn't moved. 
 - Use the quartiles more intelligently, at the moment I'm using the mean quartile... which is the midpoint. 
+- Move to pdf/presentation format
 
 ## Overview
 
@@ -108,6 +109,12 @@ source("scripts/midpoint_euclidean_distance.R")
 midpoint.euc.dist.plot
 ```
 
+
+## View linear equation details
+```{r prep, echo=FALSE}
+knitr::kable(equation.details, caption = "Linear equation parameters")
+```
+
 ## Linear Regressions and Change Rates
 
 The midpoint of each profile selects a single point as a proxy for erosion through time. This obscures the variation inherent in the movement of profiles over time.
@@ -134,7 +141,8 @@ Characterizing the profiles with more points allows for a more detailed look at 
 ```{r, echo=FALSE}
 profile.pattern <- "prof"
 source("scripts/rates_of_change.R")
-quartile.ROC.plot
+park.ROC.plot
+profile.ROC.plot
 ```
 
 ## Using MHHW as a proxy for shoreline change

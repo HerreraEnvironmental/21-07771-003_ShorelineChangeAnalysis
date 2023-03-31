@@ -5,7 +5,7 @@
 
 ## Take quartile points along profiles and use euclidean distance to BP as the change rate.
 
-profile.pattern <- "prof_22|prof_16"
+profile.pattern <- "prof"
 
 source("scripts/src/load_packages.R")
 source("scripts/src/import_profiles.R")
@@ -121,6 +121,15 @@ park.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na() %>% filter(quart
   theme(axis.text.x = element_blank()) +
   ggtitle("Combined Rates of Change per Park") 
 park.ROC.plot
+
+profile.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na() %>% filter(quartile == "mean"), 
+                        aes(x = year, y = rate_of_change, fill = profile_direction)) +
+  facet_wrap(~profile) +
+  geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
+  scale_fill_manual(values=c("#04A1FF", "tomato2")) +
+  theme(axis.text.x = element_blank()) +
+  ggtitle("Individual Profile Rates of Change") 
+profile.ROC.plot
 
 
 

@@ -33,7 +33,7 @@ complete.profile <- read_csv("data_raw/ProfilesForErosion.csv",
                                            "Hannah", "2050", "Comments"), 
                              skip = 3,  show_col_types = FALSE) %>%
   filter(profile == (str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
-  full_join(profiles.df, by = "profile") %>%
+  full_join(profiles.df, by = "profile", multiple = "all") %>%
   select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
   drop_na()
 complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "99","00", "01", "02", "03",
