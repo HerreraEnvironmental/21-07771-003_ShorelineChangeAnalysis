@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 - Return to boxplots as the best method for characterizing overall profile movement.
 - I have calculated NET accretion or erosion, but this doesn't cover those profiles that "fall beneath
 the noise"; basically I have sorted them into binary yes/no it's moved, it hasn't moved. 
+- Use the quartiles more intelligently, at the moment I'm using the mean quartile... which is the midpoint. 
 
 ## Overview
 
@@ -128,19 +129,23 @@ source("scripts/single_linear_quartiles.R")
 single.linear.plot + single.quartiles.plot
 ```
 
-*TODO: Add quartile and rate change descriptions here, including annualized*
-Characterizing the profiles with more points allows for a more detailed look at erosion and accretion. 
+
+Characterizing the profiles with more points allows for a more detailed look at erosion and accretion rates. 
 ```{r, echo=FALSE}
 profile.pattern <- "prof"
 source("scripts/rates_of_change.R")
-
 quartile.ROC.plot
 ```
+
+## Using MHHW as a proxy for shoreline change
+
+As the profiles (and the shoreline) change over time, the point at which a profile crosses the mean high high water mark shifts, acting as a reliable indicator of accretion and erosion. 
 
 Visualize where the profiles cross the MHHW mark. 
 ```{r, echo=FALSE}
 source("scripts/MHHW_to_BP.R")
 MHHW.to.BasePoint
+complete.profile.plot
 ```
 
 How do those points change with time?

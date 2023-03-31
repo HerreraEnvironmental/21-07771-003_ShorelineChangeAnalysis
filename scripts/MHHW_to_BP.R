@@ -8,11 +8,11 @@
 
 # -------------------------------------------------------------------------
 
-# profile.pattern <- "prof_22"
-# year.pattern <- c("00")
-# 
-# source("scripts/src/load_packages.R")
-# source("scripts/src/import_profiles.R")
+profile.pattern <- "prof_22"
+year.pattern <- c("00")
+
+source("scripts/src/load_packages.R")
+source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
 profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
@@ -27,16 +27,34 @@ profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv",
 
 ## Combine
 complete.profile <- profile.erosion %>%
-  full_join(profiles.df, by = "profile") %>%
+  full_join(profiles.df, by = "profile", multiple = "all") %>%
   select(profile, Park, MHHW, BasePoint_X, BasePoint_Y, season:z) 
 
+# Original single plot for reference  -------------------------------------------------
+
+marker <- list(color = ~year, showscale = TRUE,
+               size = 2, shape = 1)
+
+complete.profile.plot <- plot_ly(complete.profile %>% drop_na(), x = ~x, y = ~y, z = ~z,
+                                 marker = marker, hoverinfo = "text", 
+                                 text = ~paste('</br> Year: ', year)) %>%
+  add_markers() %>%
+  add_mesh(complete.profile, x = ~x, y = ~y, z = ~MHHW, opacity = 0.5) %>%
+  layout(
+    scene = list(xaxis = list(title = "x"),
+                 yaxis = list(title = "y"),
+                 zaxis = list(title = "z")),
+    title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
+    legend = levels(year))
+
+complete.profile.plot
 
 # Where does each profile cross the MHHW? -------------------------------------------------
 MHHW <- complete.profile %>%
   group_by(year) %>%
   filter(z == MHHW)
 
-marker <- list(showscale = TRUE,
+marker <- list(showscale = FALSE,
                size = 5, shape = 1)
 
 MHHW.to.BasePoint <- plot_ly(MHHW %>% drop_na(), x = ~x, y = ~y, z = ~z,
@@ -50,7 +68,7 @@ MHHW.to.BasePoint <- plot_ly(MHHW %>% drop_na(), x = ~x, y = ~y, z = ~z,
                  yaxis = list(title = "y"),
                  zaxis = list(title = "z")),
     title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
-    legend = levels(year))
+    showlegend = FALSE)
 
 MHHW.to.BasePoint
 
