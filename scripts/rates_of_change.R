@@ -5,7 +5,7 @@
 
 ## Take quartile points along profiles and use euclidean distance to BP as the change rate.
 
-profile.pattern <- "prof_22|prof_16"
+#profile.pattern <- "prof_22|prof_16"
 
 source("scripts/src/load_packages.R")
 source("scripts/src/import_profiles.R")
@@ -19,7 +19,7 @@ complete.profile <- read_csv("data_raw/ProfilesForErosion.csv",
                                            "Total_Change", "Years", "Change_per_Year",
                                            "Hannah", "2050", "Comments"), 
                              skip = 3,  show_col_types = FALSE) %>%
-  filter(profile %in% as.numeric(str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
+  #filter(profile %in% as.numeric(str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
   full_join(profiles.df, by = "profile", multiple = "all") %>%
   select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
   drop_na()
@@ -69,11 +69,11 @@ euc.quartile.distances <- quartiles.df %>%
 
 ## Visualize the spatial migration minimum (furthest seaward) point over time;
 ## increasing means accretion, decreasing means erosion.
-seaward.point.plot <- ggplot(data = euc.quartile.distances, aes(x = year, y = min_dist_to_BP)) +
-  facet_wrap(~profile) +
-  geom_bar(position = "dodge", stat = "identity", alpha = 0.5) +
-  ggtitle("Accretion and Erosion of Seaward Point")
-seaward.point.plot
+# seaward.point.plot <- ggplot(data = euc.quartile.distances, aes(x = year, y = min_dist_to_BP)) +
+#   facet_wrap(~profile) +
+#   geom_bar(position = "dodge", stat = "identity", alpha = 0.5) +
+#   ggtitle("Accretion and Erosion of Seaward Point")
+# seaward.point.plot
 
 ## Visualize each quartile's migration
 # Messy, so commented out for now
@@ -108,18 +108,26 @@ mean.rate.df <- euclidean.rates %>%
 ## Combine for a complete df of quartile rates with mean
 all.quartile.rates <- quartile.rates %>%
   rbind(mean.rate.df) %>%
-  arrange(profile, year)
+  arrange(profile, year) %>%
+  mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion"))
 
-## Plot, highlighting mean
-quartile.ROC.plot <- ggplot(data = all.quartile.rates, 
-                            aes(x = year, y = rate_of_change, fill = quartile)) +
-  facet_wrap(~profile) +
-  geom_bar(position = "dodge", stat = "identity",width = 1) +
-  scale_fill_manual(values = c("mean"="red", 
-                               "rate_max_dist_to_BP" = "blue"), guide = "none" ) +
-  # scale_size_manual(values = c("mean"=0.5, 
-  #                             "rate_max_dist_to_BP" = 5))
-  ggtitle(paste("Profile", profile.pattern, "Rate of Change")) 
-quartile.ROC.plot
+## Plot only mean for now
+park.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na() %>% filter(quartile == "mean"), 
+                            aes(x = year, y = rate_of_change, fill = profile_direction)) +
+  facet_wrap(~Park) +
+  geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
+  scale_fill_manual(values=c("#04A1FF", "tomato2")) +
+  theme(axis.text.x = element_blank()) +
+  ggtitle("Combined Rates of Change per Park") 
+park.ROC.plot
+
+
+
+## Annualized rates (not different from quartile rates)
+# annualized.ROC <- euc.quartile.distances %>%
+#   select(profile:year, med_dist_to_BP) %>%
+#   arrange(profile, year) %>% 
+#   group_by(profile) %>%
+#   mutate(change=(med_dist_to_BP-lag(med_dist_to_BP,1))/lag(med_dist_to_BP,1)*100)
 
 

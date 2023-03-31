@@ -116,7 +116,7 @@ Each profile, while following the same basic layout, comes with the variation ex
 The profiles have linear relationships due to the geographic layout: in general, a change in x (moving along the Easting plane) will result in a roughly equal change in y (the Northing plane). Therefore, a linear regression can be applied to the x and y variables of each profile to obtain a line proxy rather than a single point.
 
 
-Look at a single profile and year to see the applied linear regression. On the right, the linear quartiles are added for more detailed data description of accretion and erosion. These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with boxplot parameters.
+Look at a single profile and year to see the applied linear regression. On the right, the linear quartiles are added for more detailed data description of accretion and erosion. These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with standard boxplot parameters.
 
 
 ```{r, echo=FALSE}
@@ -128,13 +128,12 @@ source("scripts/single_linear_quartiles.R")
 single.linear.plot + single.quartiles.plot
 ```
 
-
-
-
+*TODO: Add quartile and rate change descriptions here, including annualized*
+Characterizing the profiles with more points allows for a more detailed look at erosion and accretion. 
 ```{r, echo=FALSE}
+profile.pattern <- "prof"
+source("scripts/rates_of_change.R")
 
-
-source("scripts/quartile_ROC.R")
 quartile.ROC.plot
 ```
 
