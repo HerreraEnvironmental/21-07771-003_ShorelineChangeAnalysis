@@ -44,6 +44,12 @@ total.slope <- euclidean %>%
 euclidean.with.slope <- euclidean %>%
   left_join(total.slope, by = "profile", multiple = "all")
 
+## Download for cluster
+cluster <- euclidean.with.slope %>%
+  drop_na() %>%
+  select(profile:year, euc_dist_to_BP) %>%
+  unique() 
+
 ## Visualize euclidean distance from average Euclidean distance of each year
 midpoint.euc.dist.plot <- ggplot(euclidean.with.slope %>% drop_na(), 
        aes(year, euc_dist_to_BP, fill=profile_slope, group = profile_slope)) +
