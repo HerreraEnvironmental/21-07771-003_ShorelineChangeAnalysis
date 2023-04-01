@@ -161,7 +161,3 @@ How do those points change with time?
 source("scripts/MHHW_ROC.R")
 MHHW.ROC.plot
 ```
-
-```{r, echo=FALSE}
-source("scripts/dumbbell.R")
-```
