@@ -104,4 +104,10 @@ fviz_dend(res.hc, k = 4, ## TODO: Think about number of clusters?
           color_labels_by_k = TRUE,
           rect = TRUE)
 
+df.clustered <- cutree(res.hc, k = 4) %>%
+  as.data.frame() %>%
+  rownames_to_column(var = "Park_profile") %>%
+  separate(Park_profile, into = c("Park", "profile"), sep = "_") %>%
+  rename(cluster_id = 3)
+
 
