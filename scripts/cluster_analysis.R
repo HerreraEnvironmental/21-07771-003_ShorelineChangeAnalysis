@@ -1,30 +1,8 @@
 ## First go at the cluster
 
-library(NbClust)
 library(tidyverse)
-
-## Thought process: go with unsupervised clustering. We want the patterns to be found.
-## Relevant types of unsupervised clustering: k-mean and hierarchical. 
-## Kmeans requires some advance knowledge of the number of clusters k, 
-## while HCA seeks to build a hierarchy of clusters without a predetermined k. 
-## Because we do not know how similar the transects will be, and we are trying
-## to determine the sub reaches, we will use HCA for this analysis. The number of classes
-## is not specified in advance; hierarchical clustering will determine that.  
-## Our variables are distance to baseline (euclidean midpoint movement over time),
-## and year. 
-
-
-
-# HCA ---------------------------------------------------------------------
-
-## 1. Put every point in its own cluster.
-## 2. Merge two points that are closest to each other based on "distance" from
-## calculated distance matrix. This removes one cluster.
-## - Measure cluster distance by single linkage: compute minimum distance before merging. 
-## - TODO: Confirm this method
-## 3. Recalculate all distances with the new number of clusters and save the distances
-## in a new distance matrix.
-## 4. Continue this until all clusters have been merged.
+library(cluster)
+library(factoextra)
 
 
 ## Load and prepare data
@@ -40,9 +18,6 @@ df <- read_csv("data_secondary/profiles_to_cluster.csv", show_col_types = FALSE)
   column_to_rownames(var = "year") %>%
   t()
 
-
-  
-
 ## Clustering cannot be performed on missing data. NA data needs to be removed.
 ## Since the two variables do not have the same units, one may have more weight.
 ## Scale the data to compare variables independent of units.
@@ -50,6 +25,29 @@ df <- read_csv("data_secondary/profiles_to_cluster.csv", show_col_types = FALSE)
 df.drop <- df[-c(21, 22, 23, 24),-c(24,25,26)]
 #df.drop <- na.omit(df.drop)
 df.scaled <- scale(df.drop)
+
+
+## Thought process: go with unsupervised clustering. We want the patterns to be found.
+## Relevant types of unsupervised clustering: k-mean and hierarchical. 
+## Kmeans requires some advance knowledge of the number of clusters k, 
+## while HCA seeks to build a hierarchy of clusters without a predetermined k. 
+## Because we do not know how similar the transects will be, and we are trying
+## to determine the sub reaches, we will use HCA for this analysis. The number of classes
+## is not specified in advance; hierarchical clustering will determine that.  
+## Our variables are distance to baseline (euclidean midpoint movement over time),
+## and year. 
+
+
+# HCA ---------------------------------------------------------------------
+
+## 1. Put every point in its own cluster.
+## 2. Merge two points that are closest to each other based on "distance" from
+## calculated distance matrix. This removes one cluster.
+## - Measure cluster distance by single linkage: compute minimum distance before merging. 
+## - TODO: Confirm this method
+## 3. Recalculate all distances with the new number of clusters and save the distances
+## in a new distance matrix.
+## 4. Continue this until all clusters have been merged.
 
 ## Create the distance matrix. 
 ## This calculates the Euclidean distance between each pair of points
@@ -81,46 +79,29 @@ rect.hclust(df.hclust,
 
   
 # kmeans Cluster analysis --------------------------------------------------------
-library("cluster")
-library("factoextra")
-distance <- get_dist(df)
-fviz_dist(distance, gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
 
-k2 <- kmeans(distance, centers = 13, nstart = 25)
-str(k2)
+res.dist <- get_dist(df.scaled, stand = TRUE, method = "pearson")
 
-fviz_cluster(k2, data = distance)
+fviz_dist(res.dist, 
+          gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+fviz_nbclust(df.scaled, kmeans, method = "gap_stat")
 
 
-######## First attempt
-pairs(mydata[2:5])
+km.res <- kmeans(df.scaled, 3, nstart = 25)
+fviz_cluster(km.res, data = df.scaled,
+             ellipse.type = "convex",
+             palette = "jco",
+             ggtheme = theme_minimal())
 
-plot(mydata$Moclips_6~ mydata$`Grayland Beach_23`, data = mydata)
-with(mydata, text(mydata$`Grayland Beach_22` ~ mydata$`Grayland Beach_23`, 
-                          labels=mydata$year,pos=4))
+# Another hierarchical cluster --------------------------------------------------------
+res.hc <- df.scaled %>%
+  dist(method = "euclidean") %>% 
+  hclust(method = "ward.D2") ## TODO: Think about hclust methods...
 
+fviz_dend(res.hc, k = 4, ## TODO: Think about number of clusters?
+          cex = 0.5,
+          k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "tomato1"),
+          color_labels_by_k = TRUE,
+          rect = TRUE)
 
-z <- mydata[,-c(1,1)]
-means <- apply(z,2,mean)
-sds <- apply(z,2,sd)
-nor <- scale(z,center=means,scale=sds)
-distance = dist(nor)
-
-mydata.hclust = hclust(distance)
-plot(mydata.hclust)
-plot(mydata.hclust,labels=mydata$year,main='Default from hclust')
-plot(mydata.hclust,hang=-1, labels=mydata$year,main='Default from hclust')
-mydata.hclust<-hclust(distance,method="average") 
-plot(mydata.hclust,hang=-1) 
-
-member = cutree(mydata.hclust,3)
-table(member)
-
-
-plot(silhouette(cutree(mydata.hclust,3), distance))
-
-## not working
-wss <- (nrow(nor)-1)*sum(apply(nor,2,var))
-for (i in 2:20) wss[i] <- sum(kmeans(nor, centers=i)$withinss)
-plot(1:20, wss, type="b", xlab="Number of Clusters", ylab="Within groups sum of squares")
 
