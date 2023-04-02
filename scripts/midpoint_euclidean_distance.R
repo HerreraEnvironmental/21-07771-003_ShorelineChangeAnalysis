@@ -33,6 +33,24 @@ euclidean <- complete.profile %>%
   group_by(profile) %>%
   mutate(euc_dist_to_BP = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) 
 
+
+###################################################
+## Accretion/Erosion: Is it significant?
+mytest <- euclidean %>%
+  drop_na() %>%
+  select(profile, year, euc_dist_to_BP) %>%
+  filter(profile == 6 | profile == 22) %>%
+  unique()
+
+
+###################################################
+
+
+
+
+
+
+
 ## Estimate net slope as a proxy for erosion
 total.slope <- euclidean %>%
   drop_na() %>%
