@@ -33,17 +33,15 @@ toplot <- complete.profile %>%
   group_by(profile, year) %>%
   do(model =  as.data.frame(boxplot(.[3:5])$stats)) %>%
   select(profile, year, model) %>% 
-  unnest(model)
-
-t <- toplot %>%
+  unnest(model) %>%
   group_by(profile, year) %>%
-  mutate(n = row_number()) %>%
-  mutate(quartile = ifelse(n == 1, "Min", "other"))
+  mutate(quartile = row_number()) %>%
+  rename(x = V1, y = V2, z = V3)
 
-  
-Summary <- boxplot(toplot[3:5])$stats %>%
-  as.data.frame() %>%
-  select(x = 1, y = 2, z = 3)
-rownames(Summary)<-c("Min","First Quartile","Median","Third Quartile","Maximum")
+toplot$quartile[toplot$quartile=="1"]<-"Min"
+toplot$quartile[toplot$quartile=="2"]<-"Q2"
+toplot$quartile[toplot$quartile=="3"]<-"Med"
+toplot$quartile[toplot$quartile=="4"]<-"Q3"
+toplot$quartile[toplot$quartile=="5"]<-"Max"
 
 
