@@ -31,11 +31,16 @@ complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "
 toplot <- complete.profile %>%
   select(profile, year, x, y, z) %>%
   group_by(profile, year) %>%
-  do(model =  boxplot(toplot[3:5])$stats) %>%
+  do(model =  as.data.frame(boxplot(.[3:5])$stats)) %>%
   select(profile, year, model) %>% 
-  unnest_wider(model)
+  unnest(model)
 
+t <- toplot %>%
+  group_by(profile, year) %>%
+  mutate(n = row_number()) %>%
+  mutate(quartile = ifelse(n == 1, "Min", "other"))
 
+  
 Summary <- boxplot(toplot[3:5])$stats %>%
   as.data.frame() %>%
   select(x = 1, y = 2, z = 3)
