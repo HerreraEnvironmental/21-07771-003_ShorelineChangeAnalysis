@@ -109,6 +109,32 @@ source("scripts/midpoint_euclidean_distance.R")
 midpoint.euc.dist.plot
 ```
 
+|profile|Park|shoreline_profile|
+|---|---|---|
+|6|Moclips|Significant Accretion|
+|7|Pacific Beach|Significant Accretion|
+|8|Pacific Beach|Significant Accretion|
+|9|Griffiths-Priday|Significant Accretion|
+|10|North Beach|Significant Accretion|
+|16|Westport Light|Non Significant Accretion|
+|17|Westport Light|Non Significant Accretion|
+|19|Twin Harbors|Significant Accretion|
+|21|Grayland Beach|Significant Accretion|
+|22|Grayland Beach|Significant Accretion|
+|23|Grayland Beach|Non Significant Erosion|
+|25|Leadbetter Beach|Significant Accretion|
+|26|Leadbetter Beach|Significant Accretion|
+|27|Leadbetter Beach|Non Significant Accretion|
+|28|Leadbetter Beach|Significant Accretion|
+|29|Leadbetter Beach|Significant Accretion|
+|30|Leadbetter Beach|Significant Accretion|
+|33|Pacific Pines|Significant Accretion|
+|35|Loomis Lake|Significant Accretion|
+|41|Cape Disappointment|Significant Erosion|
+|48|Ocean City|Significant Accretion|
+|52|Cape Disappointment|Non Significant Erosion|
+|53|Cape Disappointment|Significant Erosion|
+|54|Cape Disappointment|Non Significant Erosion|
 
 ## View linear equation details
 ```{r prep, echo=FALSE}

@@ -31,50 +31,50 @@ euclidean <- complete.profile %>%
   unique() %>%
   arrange(profile, year) %>%
   group_by(profile) %>%
-  mutate(euc_dist_to_BP = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) 
-
-
-###################################################
-## Accretion/Erosion: Is it significant?
-mytest <- euclidean %>%
+  mutate(euc_dist_to_BP = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) %>%
   drop_na() %>%
-  select(profile, year, euc_dist_to_BP) %>%
-  filter(profile == 6 | profile == 22) %>%
-  unique()
-
-
-###################################################
-
-
-
-
-
-
-
-## Estimate net slope as a proxy for erosion
-total.slope <- euclidean %>%
-  drop_na() %>%
-  group_by(profile) %>%
-  mutate(profile_slope = ifelse(euc_dist_to_BP[which.min(year)] < euc_dist_to_BP[which.max(year)],
-                                "Accretion", "Erosion")) %>%
-  select(profile, profile_slope)
-
-euclidean.with.slope <- euclidean %>%
-  left_join(total.slope, by = "profile", multiple = "all")
+  mutate(net_profile_slope = ifelse(euc_dist_to_BP[which.min(year)] < euc_dist_to_BP[which.max(year)],
+                                "Accretion", "Erosion"))
 
 ## Download for cluster
-cluster <- euclidean.with.slope %>%
+# cluster <- euclidean %>%
+#   drop_na() %>%
+#   select(profile:year, euc_dist_to_BP) %>%
+#   unique() 
+
+### Extract equation parameters
+equation.details <- euclidean %>%
+  select(profile, Park, year, euc_dist_to_BP) %>%
+  unique() %>%
   drop_na() %>%
-  select(profile:year, euc_dist_to_BP) %>%
-  unique() 
+  group_by(profile) %>%
+  mutate(dummy_year = row_number()) %>%
+  do(model = lm(euc_dist_to_BP ~ dummy_year, data = .)) %>%
+  mutate(intercept = coef(model)[1],
+         slope = coef(model)[2],
+         rsq = summary(model)$r.squared,
+         se = summary(model)$sigma,
+         pvalue = glance(model)$p.value) %>%
+  mutate(profile_direction = ifelse(slope > 0, "Accretion", "Erosion")) %>%
+  select(profile, slope, rsq, se, pvalue)
+
+toplot <- euclidean %>%
+  left_join(equation.details, by = "profile") %>%
+  mutate(shoreline_profile = ifelse(pvalue < 0.05 & slope > 0, "Significant Accretion",
+                          ifelse(pvalue > 0.05 & slope > 0, "Non Significant Accretion", 
+                                 ifelse(pvalue < 0.05 & slope < 0, "Significant Erosion", 
+                                        ifelse(pvalue > 0.05 & slope < 0, "Non Significant Erosion", "Other")))))
+
 
 ## Visualize euclidean distance from average Euclidean distance of each year
-midpoint.euc.dist.plot <- ggplot(euclidean.with.slope %>% drop_na(), 
-       aes(year, euc_dist_to_BP, fill=profile_slope, group = profile_slope)) +
-  scale_fill_manual(values=c("#04A1FF", "tomato2")) +
+midpoint.euc.dist.plot <- ggplot(toplot %>% drop_na(), 
+                                 aes(year, euc_dist_to_BP, 
+                                     fill = shoreline_profile, group = shoreline_profile)) +
+  scale_fill_manual(values=c("grey55", "grey54", "#04A1FF", "tomato2", "grey")) +
+  #facet_grid(rows = vars(profile)) +
   facet_wrap(~profile) +
   geom_col(position = position_dodge(width = 1)) +
-  geom_line(aes(group = profile_slope), position = position_dodge(width = 1),
+  geom_line(aes(group = shoreline_profile), position = position_dodge(width = 1),
             linewidth = 1, color = "black") +
   geom_smooth(method = "lm", se = TRUE, color="black") +
   xlab("Year") +
@@ -85,19 +85,29 @@ midpoint.euc.dist.plot <- ggplot(euclidean.with.slope %>% drop_na(),
 midpoint.euc.dist.plot
 
 
-### Extract equation parameters
+## Maybe easier to read table. 
+results.table <- toplot %>%
+  select(profile, Park, shoreline_profile) %>%
+  unique()
 
-equation.details <- euclidean.with.slope %>%
-  select(profile, Park, year, euc_dist_to_BP) %>%
-  unique() %>%
-  drop_na() %>%
-  group_by(profile) %>%
-  mutate(dummy_year = row_number()) %>%
-  do(model = lm(euc_dist_to_BP ~ dummy_year, data = .)) %>%
-  mutate(intercept = coef(model)[1],
-         slope = coef(model)[2],
-         rsq = summary(model)$r.squared,
-         se = summary(model)$sigma) %>%
-  mutate(profile_direction = ifelse(slope > 0, "Accretion", "Erosion")) %>%
-  select(profile, slope, rsq, se, profile_direction)
+df_2_MD <- function(your_df){
+  cn <- as.character(names(your_df))
+  headr <- paste0(c("", cn),  sep = "|", collapse='')
+  sepr <- paste0(c('|', rep(paste0(c(rep('-',3), "|"), collapse=''),length(cn))), collapse ='')
+  st <- "|"
+  for (i in 1:nrow(your_df)){
+    for(j in 1:ncol(your_df)){
+      if (j%%ncol(your_df) == 0) {
+        st <- paste0(st, as.character(your_df[i,j]), "|", "\n", "" , "|", collapse = '')
+      } else {
+        st <- paste0(st, as.character(your_df[i,j]), "|", collapse = '')
+      }
+    }
+  }
+  fin <- paste0(c(headr, sepr, substr(st,1,nchar(st)-1)), collapse="\n")
+  cat(fin)
+}  
 
+
+# run function
+df_2_MD(results.table)
