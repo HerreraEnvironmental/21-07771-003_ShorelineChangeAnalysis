@@ -89,10 +89,11 @@ fviz_nbclust(df.scaled, kmeans, method = "gap_stat")
 
 
 km.res <- kmeans(df.scaled, 3, nstart = 25)
-fviz_cluster(km.res, data = df.scaled,
+kmeans.plot <- fviz_cluster(km.res, data = df.scaled,
              ellipse.type = "convex",
              palette = "jco",
              ggtheme = theme_light())
+kmeans.plot
 
 # Another hierarchical cluster --------------------------------------------------------
 ## Hclustering again, but this time using a variance minimizing method
@@ -101,11 +102,12 @@ res.hc <- df.scaled %>%
   dist(method = "euclidean") %>% 
   hclust(method = "ward.D2") ## TODO: Think about hclust methods...
 
-fviz_dend(res.hc, k = 4, ## Assigning 4 clusters based on viewing the graph.
+kmeans.dendogram <- fviz_dend(res.hc, k = 4, ## Assigning 4 clusters based on viewing the graph.
           cex = 0.5,
           k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "tomato1"),
           color_labels_by_k = TRUE,
           rect = TRUE)
+kmeans.dendogram
 
 
 # Assign clusters based on the last HCA --------------------------------------------------------

@@ -3,6 +3,9 @@ title: 'NANOOS Profiles: SCA Shoreline Characterization'
 author: "Regina Lionheart"
 date: "2023-03-01"
 output: pdf_document
+editor_options: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r setup, include=FALSE}
@@ -11,38 +14,44 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # *TODO BEFORE COMPLETION*
 
-- I still need to get the complete list of profiles. I don't think I can do this without Jon. I have submitted a GIS request for help.
-- Have figured out boxplots- but those don't incorporate those slopes that are negative (eroding shorelines). Maybe it's better to just do quartiles?
-- Move to pdf/presentation format
+-   I still need to get the complete list of profiles. I don't think I can do this without Jon. I have submitted a GIS request for help.
+-   Have figured out boxplots- but those don't incorporate those slopes that are negative (eroding shorelines). Maybe it's better to just do quartiles?
+- Incorporate Hannah's data!!
+-   Move to pdf/presentation format
 
 ## Overview
 
 NANOOS Shoreline profiles in x y z format (easting northing elevation).
-Naming convention is prof_X_ttYY.out where prof is short for profile, X is the profile number, tt is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (i.e, "98" is 1998", "00" is 2000, "08" is 2008, etc).
+Naming convention is prof_X\_ttYY.out where prof is short for profile, X is the profile number, tt is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (i.e, "98" is 1998", "00" is 2000, "08" is 2008, etc).
 
-Quite a few profiles are null (empty) and will be removed and noted. See the "Explore Profiles" script for more information.
+Quite a few profiles are null (empty) and will be removed and noted.
+See the "Explore Profiles" script for more information.
 
-Some of the profiles had non-conforming names: "BigE06", "beachface", etc. These do not represent a large portion of the files and have not been included in the analysis. 
+Some of the profiles had non-conforming names: "BigE06", "beachface", etc.
+These do not represent a large portion of the files and have not been included in the analysis.
 
 Two duplicates were removed from original set: see accompanying script "duplicate_test.R".
 
-
 ### Metadata
+
 The vertical datum is NAVD88.
-The horizontal is WA State Plane South. All of the units are in meters.
+The horizontal is WA State Plane South.
+All of the units are in meters.
 
 ## Load required packages
+
 ```{r load packages, echo=FALSE, results='hide'}
 source("scripts/src/load_packages.R")
 ```
 
 ## Explore profiles
+
 ```{r prep, echo=FALSE}
 source("scripts/examine_profiles.R")
 ```
 
-
 ## View profiles and their locations
+
 ```{r prep, echo=FALSE}
 knitr::kable(complete.geo.profiles, caption = "Profiles with matching geographic location")
 ```
@@ -51,9 +60,11 @@ knitr::kable(complete.geo.profiles, caption = "Profiles with matching geographic
 
 Select a profile of interest by entering "prof_N" below, with "N" being a profile chosen from the above list.
 Select a year of interest by entering the last two digits of the year (from 98 to 18).
-The output from this code chunk will print the total number of files associated with the request, as well as any empty files within the request parameters, and plot the given profile. 
+The output from this code chunk will print the total number of files associated with the request, as well as any empty files within the request parameters, and plot the given profile.
 
-This is an actual plot of the x y z coordinates to understand file format as well as the variability of a given profile, *not* a direct geographic representation of the data. The graph can be rotated using the mouse. Hover over the lines to see the seasonal data.
+This is an actual plot of the x y z coordinates to understand file format as well as the variability of a given profile, *not* a direct geographic representation of the data.
+The graph can be rotated using the mouse.
+Hover over the lines to see the seasonal data.
 
 ```{r prep, echo=FALSE}
 profile.pattern <- "prof_17"
@@ -67,7 +78,9 @@ single.profile.plot
 ## Individual profile, all available years visualization
 
 Import data for a single profile, automatically including all available years.
-Create a visual for the complete profile with all years. The orange horizontal plane is the MHHW mark. 
+Create a visual for the complete profile with all years.
+The orange horizontal plane is the MHHW mark.
+
 ```{r, echo=FALSE}
 profile.pattern <- "prof_17"
 
@@ -77,6 +90,7 @@ complete.profile.plot
 ```
 
 It is also helpful to see the above plot spread over time, to provide a clearer picture of profile migration.
+
 ```{r, echo=FALSE}
 profile.pattern <- "prof_17"
 
@@ -86,59 +100,57 @@ suppressWarnings(print(profile.timeseries.fig))
 
 ```
 
-
 ## BasePoint reference line and Euclidean distance as an accretion/erosion proxy
 
-In order to quantify shoreline change, an arbitrary "BasePoint" reference line, parallel to the water, was drawn at a reasonable distance from the profiles. The profiles (aka transects) are perpendicular to this BasePoint, allowing for a reference point against which to calculate spatial change.
+In order to quantify shoreline change, an arbitrary "BasePoint" reference line, parallel to the water, was drawn at a reasonable distance from the profiles.
+The profiles (aka transects) are perpendicular to this BasePoint, allowing for a reference point against which to calculate spatial change.
 
-In order to visualize this concept, the below chunk of code visualizes 1) a simplified selection of profiles (plotted in black) compared to the BasePoint (plotted in red) and 2) an individual profile (plotted in black) and its BasePoint (plotted in red).  
+In order to visualize this concept, the below chunk of code visualizes 1) a simplified selection of profiles (plotted in black) compared to the BasePoint (plotted in red) and 2) an individual profile (plotted in black) and its BasePoint (plotted in red).
 
 ```{r, echo=FALSE}
 source("scripts/profiles_and_BasePoint.R")
-all.basepoint.plot
-single.basepoint.plot
+print(all.basepoint.plot)
+print(single.basepoint.plot)
 ```
-Using Euclidean distance, migrations of the transects over time as compared to the BasePoint act as proxies for accretion and erosion. 
 
-Increasing Euclidean distance = Accretion
-Decreasing Euclidean distance = Erosion
+Using Euclidean distance, migrations of the transects over time as compared to the BasePoint act as proxies for accretion and erosion.
 
-## Characterizing profile elements to use for accretion and erosion proxies. 
+Increasing Euclidean distance = Accretion Decreasing Euclidean distance = Erosion
 
-Find the midpoint of each profile to acquire a single data point to describe the overall location. See where that midpoint (and by extension the entire profile) is migrating with time.
+## Characterizing profile elements to use for accretion and erosion proxies.
+
+Find the midpoint of each profile to acquire a single data point to describe the overall migration of the profile.
+See where that midpoint (and by extension the entire profile) is migrating with time.
 
 ```{r, echo=FALSE}
-
-profile.pattern <- "prof"
+profile.pattern <- "prof" ## Adjust this to see specific profiles.
 source("scripts/midpoint_euclidean_distance.R")
 midpoint.euc.dist.plot
 ```
 
+## Assign status to each profile according to linear regression equation details.
 
-## Assign status to each profile
 ```{r prep, echo=FALSE}
-knitr::kable(results.table, caption = "Change status of each profile")
-```
-
-## View linear equation details
-```{r prep, echo=FALSE}
-knitr::kable(equation.details, caption = "Linear equation parameters")
+knitr::kable(results.table, caption = "Linear equation parameters")
 ```
 
 ## Linear Regressions and Change Rates
 
-The midpoint of each profile selects a single point as a proxy for erosion through time. This obscures the variation inherent in the movement of profiles over time.
+The midpoint of each profile selects a single point as a proxy for erosion through time.
+This obscures the variation inherent in the movement of profiles over time.
 
-Each profile, while following the same basic layout, comes with the variation expected from environmental data. Therefore it is important to find a method of individual profile characterization that will apply to all 4500 profiles, and can act as a reliable proxy to determine erosion or accretion.
+Each profile, while following the same basic layout, comes with the variation expected from environmental data.
+Therefore it is important to find a method of individual profile characterization that will apply to all 4500 profiles, and can act as a reliable proxy to determine erosion or accretion.
 
-The profiles have linear relationships due to the geographic layout: in general, a change in x (moving along the Easting plane) will result in a roughly equal change in y (the Northing plane). Therefore, a linear regression can be applied to the x and y variables of each profile to obtain a line proxy rather than a single point.
+The profiles have linear relationships due to the geographic layout: in general, a change in x (moving along the Easting plane) will result in a roughly equal change in y (the Northing plane).
+Therefore, a linear regression can be applied to the x and y variables of each profile to obtain a line proxy rather than a single point.
 
-
-Look at a single profile and year to see the applied linear regression. On the right, the linear quartiles are added for more detailed data description of accretion and erosion. These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with standard boxplot parameters.
-
+Look at a single profile and year to see the applied linear regression.
+On the right, the linear quartiles are added for more detailed data description of accretion and erosion.
+These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with standard boxplot parameters.
 
 ```{r, echo=FALSE}
-profile.pattern <- "prof_22"
+profile.pattern <- "prof_16"
 year.pattern <- "00"
 
 source("scripts/single_linear_quartiles.R")
@@ -146,8 +158,8 @@ source("scripts/test_boxplot.R")
 single.linear.plot + single.quartiles.plot
 ```
 
+Characterizing the profiles with more points allows for a more detailed look at erosion and accretion rates.
 
-Characterizing the profiles with more points allows for a more detailed look at erosion and accretion rates. 
 ```{r, echo=FALSE}
 profile.pattern <- "prof"
 source("scripts/rates_of_change.R")
@@ -157,9 +169,10 @@ profile.ROC.plot
 
 ## Using MHHW as a proxy for shoreline change
 
-As the profiles (and the shoreline) change over time, the point at which a profile crosses the mean high high water mark shifts, acting as a reliable indicator of accretion and erosion. 
+As the profiles (and the shoreline) change over time, the point at which a profile crosses the mean high high water mark shifts, acting as a reliable indicator of accretion and erosion.
 
-Visualize where the profiles cross the MHHW mark. 
+Visualize where the profiles cross the MHHW mark.
+
 ```{r, echo=FALSE}
 source("scripts/MHHW_to_BP.R")
 MHHW.to.BasePoint
@@ -167,12 +180,17 @@ complete.profile.plot
 ```
 
 How do those points change with time?
+
 ```{r, echo=FALSE}
 source("scripts/MHHW_ROC.R")
 MHHW.ROC.plot
 ```
 
-Clustering 
+Clustering
+
 ```{r, echo=FALSE}
 source("scripts/cluster_analysis.R")
+kmeans.plot
+kmeans.dendogram
+dumbbell.plot
 ```

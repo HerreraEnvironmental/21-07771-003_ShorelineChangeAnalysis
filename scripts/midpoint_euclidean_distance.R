@@ -3,44 +3,42 @@
 ## January 2023
 ## Shoreline Conservation Areas, Washington State Parks
 
-profile.pattern <- "prof"
-source("scripts/src/import_profiles.R")
+#profile.pattern <- "prof"
+#source("scripts/src/import_profiles.R")
+#profiles.df <- read.csv("data_secondary/all_imported_profiles.csv") 
+source("scripts/src/assign_profile_parks.R")
 
 ## Import erosion file for Base Point data
-profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
-                            col_names = c("profile", "Park", "MHHW",
-                                          "X_BasePoint", "Y_BasePoint", 
-                                          "Start_Year", "Start_X", "Start_Y", "Start_Dist",
-                                          "End_Year", "End_X", "End_Y", "End_Dist",
-                                          "Total_Change", "Years", "Change_per_Year",
-                                          "Hannah", "2050", "Comments"), 
-                            skip = 3, show_col_types = FALSE)
-
-## Combine and add euclidean distance
-complete.profile <- profile.erosion %>%
-  full_join(profiles.df, by = "profile", multiple = "all") %>%
-  select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
-  group_by(profile, year)
+# profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
+#                             col_names = c("profile", "Park", "MHHW",
+#                                           "BasePoint_X", "BasePoint_Y", 
+#                                           "Start_Year", "Start_X", "Start_Y", "Start_Dist",
+#                                           "End_Year", "End_X", "End_Y", "End_Dist",
+#                                           "Total_Change", "Years", "Change_per_Year",
+#                                           "Hannah", "2050", "Comments"), 
+#                             skip = 3, show_col_types = FALSE)
+# 
+# ## Combine and add euclidean distance
+# complete.profile <- profile.erosion %>%
+#   full_join(profiles.df, by = "profile", multiple = "all") %>%
+#   select(profile, Park, BasePoint_X, BasePoint_Y, season:z) %>%
+#  group_by(profile, year)
 
 
 ## Euclidean distances
 euclidean <- complete.profile %>%
+  group_by(profile, year) %>%
   mutate(x_midpoint = ((min(x) + max(x))/2)) %>%
   mutate(y_midpoint = ((min(y) + max(y))/2)) %>%
-  select(profile, Park, year, X_BasePoint, Y_BasePoint, x_midpoint,  y_midpoint) %>%
+  select(profile, Park, year, BasePoint_X, BasePoint_Y, x_midpoint,  y_midpoint) %>%
   unique() %>%
   arrange(profile, year) %>%
   group_by(profile) %>%
-  mutate(euc_dist_to_BP = sqrt(((X_BasePoint - x_midpoint)^2) + ((Y_BasePoint -  y_midpoint)^2))) %>%
+  mutate(euc_dist_to_BP = sqrt(((BasePoint_X - x_midpoint)^2) + ((BasePoint_Y -  y_midpoint)^2))) %>%
   drop_na() %>%
   mutate(net_profile_slope = ifelse(euc_dist_to_BP[which.min(year)] < euc_dist_to_BP[which.max(year)],
                                 "Accretion", "Erosion"))
 
-## Download for cluster
-# cluster <- euclidean %>%
-#   drop_na() %>%
-#   select(profile:year, euc_dist_to_BP) %>%
-#   unique() 
 
 ### Extract equation parameters
 equation.details <- euclidean %>%
@@ -88,5 +86,13 @@ midpoint.euc.dist.plot
 ## Table of results
 results.table <- toplot %>%
   select(profile, Park, shoreline_profile) %>%
-  unique()
+  unique() %>%
+  left_join(equation.details, by = "profile")
+
+## Download for cluster
+# cluster <- euclidean %>%
+#   drop_na() %>%
+#   select(profile:year, euc_dist_to_BP) %>%
+#   unique() 
+# write.csv(cluster, "data_secondary/profiles_to_cluster.csv", row.names = FALSE)
 

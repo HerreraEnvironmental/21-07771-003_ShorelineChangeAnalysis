@@ -24,8 +24,11 @@ profiles.df <- rbindlist(dfs.filtered, idcol = TRUE, fill = FALSE) %>%
            into = c("season", "year"), 
            sep = "(?<=[A-Za-z])(?=[0-9])") %>%
   select(profile:year, x:z) %>%
+  drop_na() %>%
   mutate(profile = as.numeric(profile)) %>%
   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
                                          "04", "05", "06", "07", "08", "09", "10",
                                          "11", "12", "13", "14", "15", "16", "17",
                                          "18", "19", "20", "21", "22")))
+
+write.csv(profiles.df, "data_secondary/all_imported_profiles.csv", row.names = FALSE)

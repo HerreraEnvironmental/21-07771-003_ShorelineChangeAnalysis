@@ -64,7 +64,7 @@ MHHW.ROC <- MHHW.dist %>%
   mutate(profile_direction = ifelse(pct_change > 0, "Accretion", "Erosion"))
 
 MHHW.ROC.plot <- ggplot(MHHW.ROC, aes(x = year, y = pct_change, fill = profile_direction)) +
-  facet_wrap( ~ profile, scales = "free") +
+  facet_wrap( ~ profile, scales = "fixed") +
   geom_bar(position = "dodge", stat = "identity") +
   scale_fill_manual(values=c("#04A1FF", "tomato2")) +
   theme(axis.text.x = element_blank()) +
