@@ -6,10 +6,11 @@
 
 #profile.pattern <- "prof_6"
 #year.pattern <- c("00")
-#source("scripts/src/import_profiles.R")
 
 
 # Import all files --------------------------------------------------
+source("scripts/src/import_profiles.R")
+
 
 ## Isolate one season, one year
 prof.data <- profiles.df %>%
