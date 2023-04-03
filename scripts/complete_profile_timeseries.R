@@ -4,11 +4,10 @@
 ## Shoreline Conservation Areas, Washington State Parks
 
 
-profile.pattern <- "prof_17"
-source("scripts/src/import_profiles.R")
-
+#profile.pattern <- "prof_22"
 
 # Import all files --------------------------------------------------
+source("scripts/src/import_profiles.R")
 
 
 ## Isolate one season, one year
@@ -24,10 +23,9 @@ prof.data <- profiles.df %>%
 
 my.data <- prof.data %>%
   select(-profile, -season, -y) %>%
-  #rename(y = year) %>%
   group_by(year) 
 
-prof.fig <- plot_ly(my.data, x = ~x, y = ~as.numeric(year), z = ~z, 
+profile.timeseries.fig <- plot_ly(my.data, x = ~x, y = ~as.numeric(year), z = ~z, 
                     type = "scatter3d", mode = "lines",
                     width = 3, color=~year) %>%
   layout(
@@ -36,5 +34,4 @@ prof.fig <- plot_ly(my.data, x = ~x, y = ~as.numeric(year), z = ~z,
                  zaxis = list(title = "z")),
     title = list(text = paste("Profile:", profile.pattern), y = 0.95),
     legend = levels(year))
-suppressWarnings(print(prof.fig))
 

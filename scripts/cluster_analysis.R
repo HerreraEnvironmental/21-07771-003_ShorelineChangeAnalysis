@@ -39,6 +39,7 @@ df.scaled <- scale(df.drop)
 
 
 # HCA ---------------------------------------------------------------------
+# Hierarchical agglomerative clustering
 
 ## 1. Put every point in its own cluster.
 ## 2. Merge two points that are closest to each other based on "distance" from
@@ -74,13 +75,13 @@ barplot(df.hclust$height,
 
 plot(df.hclust)
 rect.hclust(df.hclust,
-            k = 12, # k is used to specify the number of clusters
+            k = 12, # k is used to specify the number of clusters, taken from previous steps.
             border = "blue")
 
   
 # kmeans Cluster analysis --------------------------------------------------------
-
-res.dist <- get_dist(df.scaled, stand = TRUE, method = "pearson")
+## The below kmeans analysis 
+res.dist <- get_dist(df.scaled, stand = TRUE, method = "euclidean")
 
 fviz_dist(res.dist, 
           gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
@@ -91,18 +92,23 @@ km.res <- kmeans(df.scaled, 3, nstart = 25)
 fviz_cluster(km.res, data = df.scaled,
              ellipse.type = "convex",
              palette = "jco",
-             ggtheme = theme_minimal())
+             ggtheme = theme_light())
 
 # Another hierarchical cluster --------------------------------------------------------
+## Hclustering again, but this time using a variance minimizing method
+## rather than a distance-based, neighboring method.
 res.hc <- df.scaled %>%
   dist(method = "euclidean") %>% 
   hclust(method = "ward.D2") ## TODO: Think about hclust methods...
 
-fviz_dend(res.hc, k = 4, ## TODO: Think about number of clusters?
+fviz_dend(res.hc, k = 4, ## Assigning 4 clusters based on viewing the graph.
           cex = 0.5,
           k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "tomato1"),
           color_labels_by_k = TRUE,
           rect = TRUE)
+
+
+# Assign clusters based on the last HCA --------------------------------------------------------
 
 df.clustered <- cutree(res.hc, k = 4) %>%
   as.data.frame() %>%
@@ -111,3 +117,109 @@ df.clustered <- cutree(res.hc, k = 4) %>%
   rename(cluster_id = 3)
 
 
+# Visualize as a dummbell plot --------------------------------------------------------
+
+
+profile.pattern <- "prof"
+year.pattern <- c("20")
+
+source("scripts/src/load_packages.R")
+source("scripts/src/import_profiles.R")
+
+
+## Import erosion file for Base Point data
+complete.profile <- read_csv("data_raw/ProfilesForErosion.csv", 
+                             col_names = c("profile", "Park", "MHHW",
+                                           "X_BasePoint", "Y_BasePoint", 
+                                           "Start_Year", "Start_X", "Start_Y", "Start_Dist",
+                                           "End_Year", "End_X", "End_Y", "End_Dist",
+                                           "Total_Change", "Years", "Change_per_Year",
+                                           "Hannah", "2050", "Comments"), 
+                             skip = 3,  show_col_types = FALSE) %>%
+  full_join(profiles.df, by = "profile", multiple = "all") %>%
+  select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
+  drop_na()
+
+## Geographic locations
+profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
+                            col_names = c("profile", "Park"), 
+                            col_select = (1:2),
+                            skip = 3, show_col_types = FALSE)
+profile.OBA <- read_csv("data_raw/OBAProfiles.csv", 
+                        col_names = c("OBA", "profile", "Notes"), 
+                        col_select = c("profile", "OBA", "Notes"),
+                        skip = 1, show_col_types = FALSE) %>%
+  separate_longer_delim(profile, ",") %>%
+  mutate(profile = as.numeric(gsub(" ", "", profile)))
+
+complete.geo.profiles <- profile.OBA %>% 
+  full_join(profile.erosion, by = "profile") %>%
+  arrange(profile)
+
+
+## Apply linear model 
+linear.model.df <- complete.profile %>%
+  filter(year %in% year.pattern) %>%
+  group_by(profile, year) %>%
+  do(model = lm(y ~ x, data = .)) %>%
+  mutate(intercept = coef(model)[1],
+         slope = coef(model)[2]) 
+
+quartile.df <- complete.profile %>%
+  left_join(linear.model.df %>% select(-model), by = c("profile", "year")) %>%
+  filter(year %in% year.pattern) %>%
+  group_by(profile, year) %>%
+  mutate(x_west_west = min(x),
+         y_west_west = (slope*min(x)) + intercept) %>%
+  mutate(x_east_east = max(x),
+         y_east_east = (slope*max(x)) + intercept) %>%
+  unique()
+
+
+## Calculate euclidean distances between each point of interest and the base point.
+euclidean.distances <- quartile.df %>% 
+  select(profile, Park, year, everything(), -c(x, y, z, season, slope, intercept)) %>%
+  unique() %>%
+  ungroup() %>%
+  mutate(west_west_dist = sqrt(((X_BasePoint - x_west_west)^2) + ((Y_BasePoint -  y_west_west)^2))) %>%
+  mutate(east_east_dist = sqrt(((X_BasePoint - x_east_east)^2) + ((Y_BasePoint -  y_east_east)^2))) %>%
+  group_by(profile) 
+
+
+## Begin dumbbell plot work
+dumbbell.df <- euclidean.distances %>%
+  select(profile, Park, year, west_west_dist, east_east_dist) %>%
+  unique() %>%
+  mutate(segment_dist = east_east_dist - west_west_dist) %>%
+  pivot_longer(cols = c(east_east_dist, west_west_dist)) %>% 
+  rename(position = name,
+         euclidean_distance = value) %>%
+  left_join(df.clustered %>% 
+              select(-Park) %>% 
+              mutate(profile = as.numeric(profile)), by = "profile") 
+
+landward.point <- dumbbell.df %>%
+  filter(position == "east_east_dist")
+seaward.point <- dumbbell.df %>%
+  filter(position == "west_west_dist")
+diff <- dumbbell.df %>% 
+  mutate(x_pos = euclidean_distance + (segment_dist/2)) %>%
+  filter(position == "west_west_dist")
+
+## Create plot
+dumbbell.plot <- ggplot(dumbbell.df) +
+  geom_segment(data = landward.point,
+               aes(x = euclidean_distance, y = profile,
+                   yend = seaward.point$profile, 
+                   xend = seaward.point$euclidean_distance),
+               linewidth = 4.5,
+               alpha = .2) +
+  geom_point(aes(x = euclidean_distance, y = profile, color = factor(cluster_id)), 
+             size = 4, show.legend = TRUE) +
+  geom_text(data = diff, aes(label = paste("Location: ", Park), 
+                             x = x_pos, y = profile),
+            size = 2.5) +
+  scale_y_continuous(trans = "reverse") +
+  scale_x_continuous(trans = "reverse") +
+  ggtitle(paste("Cluster group"))
+dumbbell.plot

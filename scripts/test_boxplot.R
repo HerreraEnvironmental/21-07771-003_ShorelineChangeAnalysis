@@ -64,10 +64,24 @@ maybe.pivot <- boxplot.quartiles %>%
   pivot_wider(names_from = quartile, values_from = c(x, y, z)) %>%
   left_join(complete.profile %>% 
               select(profile, X_BasePoint, Y_BasePoint, x, y) %>%
-              unique())
+              unique(), multiple = "all")
 
 
+# single.quartiles.plot <- ggplot(data = maybe.pivot) +
+#   geom_point(aes(x = x, y = y), alpha = 0.5) +
+#   geom_point(aes(x = X_BasePoint, y = Y_BasePoint), color = "red", size = 5) + 
+#   geom_point(aes(x = x_min, y = y_min), color = "darkred", size = 3) +
+#   geom_point(aes(x = x_quartile1, y = y_quartile1), color = "orange", size = 3) +
+#   geom_point(aes(x = x_median, y = y_median), color = "green", size = 3) +
+#   geom_point(aes(x = x_quartile3, y = y_quartile3), color = "blue", size = 3) +
+#   geom_point(aes(x = x_max, y =  y_max), color = "purple", size = 3) +
+#   theme(axis.text = element_blank()) +
+#   ggtitle(paste("Profile:", profile.pattern, "Year:", year.pattern))
+# single.quartiles.plot
+
+## test
 single.quartiles.plot <- ggplot(data = maybe.pivot) +
+  facet_wrap(~profile) +
   geom_point(aes(x = x, y = y), alpha = 0.5) +
   geom_point(aes(x = X_BasePoint, y = Y_BasePoint), color = "red", size = 5) + 
   geom_point(aes(x = x_min, y = y_min), color = "darkred", size = 3) +

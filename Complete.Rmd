@@ -12,10 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # *TODO BEFORE COMPLETION*
 
 - I still need to get the complete list of profiles. I don't think I can do this without Jon. I have submitted a GIS request for help.
-- Return to boxplots as the best method for characterizing overall profile movement.
-- I have calculated NET accretion or erosion, but this doesn't cover those profiles that "fall beneath
-the noise"; basically I have sorted them into binary yes/no it's moved, it hasn't moved. 
-- Use the quartiles more intelligently, at the moment I'm using the mean quartile... which is the midpoint. 
+- Have figured out boxplots- but those don't incorporate those slopes that are negative (eroding shorelines). Maybe it's better to just do quartiles?
 - Move to pdf/presentation format
 
 ## Overview
@@ -79,6 +76,16 @@ source("scripts/src/import_profiles.R")
 source("scripts/complete_profile_plane.R")
 
 complete.profile.plot
+```
+
+It is also helpful to see the above plot spread over time, to provide a clearer picture of profile migration.
+```{r, echo=FALSE}
+profile.pattern <- "prof_17"
+
+source("scripts/complete_profile_timeseries.R")
+
+suppressWarnings(print(profile.timeseries.fig))
+
 ```
 
 
@@ -158,7 +165,7 @@ profile.pattern <- "prof_22"
 year.pattern <- "00"
 
 source("scripts/single_linear_quartiles.R")
-#source("scripts/test_boxplot.R")
+source("scripts/test_boxplot.R")
 single.linear.plot + single.quartiles.plot
 ```
 

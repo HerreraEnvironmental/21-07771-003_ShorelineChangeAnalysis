@@ -5,9 +5,9 @@
 ## Shoreline Conservation Areas, Washington State Parks
 
 
-profile.pattern <- "prof_17|prof_16"
+profile.pattern <- "prof_17|prof_16|prof_22"
 
-#source("scripts/src/load_packages.R")
+source("scripts/src/load_packages.R")
 source("scripts/src/import_profiles.R")
 
 ## Import erosion file for Base Point data
