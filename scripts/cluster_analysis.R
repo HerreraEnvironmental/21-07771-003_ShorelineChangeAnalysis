@@ -216,7 +216,7 @@ dumbbell.plot <- ggplot(dumbbell.df) +
                alpha = .2) +
   geom_point(aes(x = euclidean_distance, y = profile, color = factor(cluster_id)), 
              size = 4, show.legend = TRUE) +
-  geom_text(data = diff, aes(label = paste("Location: ", Park), 
+  geom_text(data = diff, aes(label = paste("Location: ", Park, profile), 
                              x = x_pos, y = profile),
             size = 2.5) +
   scale_y_continuous(trans = "reverse") +
