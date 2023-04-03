@@ -5,28 +5,13 @@
 
 ## Take quartile points along profiles and use euclidean distance to BP as the change rate.
 
-profile.pattern <- "prof"
+#profile.pattern <- "prof"
 
 source("scripts/src/load_packages.R")
-source("scripts/src/import_profiles.R")
+#source("scripts/src/import_profiles.R")
+source("scripts/src/assign_profile_parks.R")
 
-## Import erosion file for Base Point data
-complete.profile <- read_csv("data_raw/ProfilesForErosion.csv", 
-                             col_names = c("profile", "Park", "MHHW",
-                                           "X_BasePoint", "Y_BasePoint", 
-                                           "Start_Year", "Start_X", "Start_Y", "Start_Dist",
-                                           "End_Year", "End_X", "End_Y", "End_Dist",
-                                           "Total_Change", "Years", "Change_per_Year",
-                                           "Hannah", "2050", "Comments"), 
-                             skip = 3,  show_col_types = FALSE) %>%
-  #filter(profile %in% as.numeric(str_extract_all(profile.pattern, "\\(?[0-9,.]+\\)?")[[1]])) %>%
-  full_join(profiles.df, by = "profile", multiple = "all") %>%
-  select(profile, Park, X_BasePoint, Y_BasePoint, season:z) %>%
-  drop_na()
-complete.profile$year <- factor(complete.profile$year, levels =  c("97", "98", "99","00", "01", "02", "03",
-                                                                   "04", "05", "06", "07", "08", "09", "10",
-                                                                   "11", "12", "13", "14", "15", "16", "17",
-                                                                   "18", "19", "20", "21", "22"))
+
 ## Acquire slope and intercept for all profiles/years
 complete.lm.df <- complete.profile %>%
   group_by(profile, year) %>%
@@ -62,11 +47,11 @@ euc.quartile.distances <- quartiles.df %>%
   unique() %>%
   arrange(profile, year) %>%
   rowwise() %>%
-  mutate(min_dist_to_BP = sqrt(((X_BasePoint - x_min)^2) + ((Y_BasePoint -  y_min)^2))) %>%
-  mutate(q1_dist_to_BP = sqrt(((X_BasePoint - x_quartile1)^2) + ((Y_BasePoint -  y_quartile1)^2))) %>%
-  mutate(med_dist_to_BP = sqrt(((X_BasePoint - x_median)^2) + ((Y_BasePoint -  y_median)^2))) %>%
-  mutate(q3_dist_to_BP = sqrt(((X_BasePoint - x_quartile3)^2) + ((Y_BasePoint -  y_quartile3)^2))) %>%
-  mutate(max_dist_to_BP = sqrt(((X_BasePoint - x_max)^2) + ((Y_BasePoint -  y_max)^2)))
+  mutate(min_dist_to_BP = sqrt(((BasePoint_X - x_min)^2) + ((BasePoint_Y -  y_min)^2))) %>%
+  mutate(q1_dist_to_BP = sqrt(((BasePoint_X - x_quartile1)^2) + ((BasePoint_Y -  y_quartile1)^2))) %>%
+  mutate(med_dist_to_BP = sqrt(((BasePoint_X - x_median)^2) + ((BasePoint_Y -  y_median)^2))) %>%
+  mutate(q3_dist_to_BP = sqrt(((BasePoint_X - x_quartile3)^2) + ((BasePoint_Y -  y_quartile3)^2))) %>%
+  mutate(max_dist_to_BP = sqrt(((BasePoint_X - x_max)^2) + ((BasePoint_Y -  y_max)^2)))
 
 ## Visualize the spatial migration minimum (furthest seaward) point over time;
 ## increasing means accretion, decreasing means erosion.

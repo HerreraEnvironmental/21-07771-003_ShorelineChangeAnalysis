@@ -3,7 +3,7 @@
 ## known geographic location. 
 
 ## In order to run this file, scripts/src/import_profiles.R must already have 
-## bun run.
+## been run.
 
 ## Import erosion file for Base Point data
 profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
@@ -20,9 +20,10 @@ profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv",
 if (str_detect(profile.pattern, "\\(?[0-9,.]+\\)?")) {
   profile.erosion <- profile.erosion %>%
     filter(profile %in% str_extract_all(profile.pattern,"\\(?[0-9,.]+\\)?")[[1]])
+} else {
+  profiles.df <- read.csv("data_secondary/all_imported_profiles.csv")
 }
 
-profiles.df <- read.csv("data_secondary/all_imported_profiles.csv")
 
 ## Combine
 complete.profile <- profile.erosion %>%

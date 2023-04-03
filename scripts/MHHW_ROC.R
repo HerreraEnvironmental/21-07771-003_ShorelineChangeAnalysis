@@ -8,25 +8,10 @@
 
 # -------------------------------------------------------------------------
 
-profile.pattern <- "prof"
+#profile.pattern <- "prof"
 
 source("scripts/src/load_packages.R")
-source("scripts/src/import_profiles.R")
-
-## Import erosion file for Base Point data
-profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
-                            col_names = c("profile", "Park", "MHHW",
-                                          "BasePoint_X", "BasePoint_Y", 
-                                          "Start_Year", "Start_X", "Start_Y", "Start_Dist",
-                                          "End_Year", "End_X", "End_Y", "End_Dist",
-                                          "Total_Change", "Years", "Change_per_Year",
-                                          "Hannah", "2050", "Comments"), 
-                            skip = 3, show_col_types = FALSE)
-
-## Combine
-complete.profile <- profile.erosion %>%
-  full_join(profiles.df, by = "profile", multiple = "all") %>%
-  select(profile, Park, MHHW, BasePoint_X, BasePoint_Y, season:z) 
+source("scripts/src/assign_profile_parks.R")
 
 # How far are those points from the Base Point? -------------------------------------------------
 MHHW.dist <- complete.profile %>%
