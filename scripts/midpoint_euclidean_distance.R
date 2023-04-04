@@ -8,22 +8,6 @@
 #profiles.df <- read.csv("data_secondary/all_imported_profiles.csv") 
 source("scripts/src/assign_profile_parks.R")
 
-## Import erosion file for Base Point data
-# profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 
-#                             col_names = c("profile", "Park", "MHHW",
-#                                           "BasePoint_X", "BasePoint_Y", 
-#                                           "Start_Year", "Start_X", "Start_Y", "Start_Dist",
-#                                           "End_Year", "End_X", "End_Y", "End_Dist",
-#                                           "Total_Change", "Years", "Change_per_Year",
-#                                           "Hannah", "2050", "Comments"), 
-#                             skip = 3, show_col_types = FALSE)
-# 
-# ## Combine and add euclidean distance
-# complete.profile <- profile.erosion %>%
-#   full_join(profiles.df, by = "profile", multiple = "all") %>%
-#   select(profile, Park, BasePoint_X, BasePoint_Y, season:z) %>%
-#  group_by(profile, year)
-
 
 ## Euclidean distances
 euclidean <- complete.profile %>%
@@ -83,11 +67,21 @@ midpoint.euc.dist.plot <- ggplot(toplot %>% drop_na(),
 midpoint.euc.dist.plot
 
 
+## Pearson's correlation 
+pearson.correlation <- toplot %>%
+  group_by(profile) %>%
+  mutate(dummy_year = row_number()) %>%
+  group_by(profile) %>%
+  summarize(cor=cor(dummy_year, euc_dist_to_BP)) %>%
+  mutate(relationship = ifelse(cor > 0 & cor < 1, TRUE, FALSE)) 
+write.csv(pearson.correlation, "data_secondary/pearson_correlation.csv", row.names = FALSE)
+
 ## Table of results
 results.table <- toplot %>%
   select(profile, Park, shoreline_profile) %>%
   unique() %>%
   left_join(equation.details, by = "profile")
+
 
 ## Download equations for WCEHA comparison
 write.csv(results.table, "data_secondary/midpoint_profile_results.csv", row.names = FALSE)
