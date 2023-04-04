@@ -9,7 +9,9 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = T,
+                      results = "hide")
+source("scripts/src/kableExtrafunction.R")
 ```
 
 # *TODO BEFORE COMPLETION*
@@ -20,7 +22,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Notes
 
 A bunch of the profiles are weirdly scattered around and they don't all progress sequentially, but they seem to be matching to the NVS Beach and Shoreline Changes database.
+
 The three profiles that don't match up are 16 and 17 (both Westport) and one of the Leadbetter Point profiles, and of those, only profile 17 could use a second look.
+
+The NANOOS site appears to be missing profiles 42 - 47,
 
 # Overview
 
@@ -43,7 +48,7 @@ All of the units are in meters.
 
 ## Load required packages
 
-```{r load packages, echo=FALSE, results='hide'}
+```{r load packages, echo=TRUE, results='hide'}
 source("scripts/src/load_packages.R")
 ```
 
@@ -55,14 +60,15 @@ source("scripts/examine_profiles.R")
 
 ## View profiles and their locations
 
-```{r prep, echo=FALSE}
-knitr::kable(complete.geo.profiles, caption = "Profiles with matching geographic location")
+```{r prep, echo=FALSE, warning=FALSE}
+knitr::kable(complete.geo.profiles, caption = "Profiles with matching geographic location") %>%
+  kableExtra::kable_styling()
 ```
 
 ## Individual profile, single year visualization
 
-Select a profile of interest by entering "prof_N" below, with "N" being a profile chosen from the above list.
-Select a year of interest by entering the last two digits of the year (from 98 to 18).
+Select a single profile by entering "prof_N" below, with "N" being a profile number chosen from the above list.
+Select a single year by entering the last two digits of the year (from 98 to 18).
 The output from this code chunk will print the total number of files associated with the request, as well as any empty files within the request parameters, and plot the given profile.
 
 This is an actual plot of the x y z coordinates to understand file format as well as the variability of a given profile, *not* a direct geographic representation of the data.
@@ -89,13 +95,13 @@ profile.pattern <- "prof_17"
 
 source("scripts/complete_profile_plane.R")
 
-complete.profile.plot
+suppressWarnings(print(complete.profile.plot))
 ```
 
 It is also helpful to see the above plot spread over time, to provide a clearer picture of profile migration.
 
 ```{r, echo=FALSE}
-profile.pattern <- "prof_17"
+profile.pattern <- "prof_22"
 
 source("scripts/complete_profile_timeseries.R")
 
@@ -103,7 +109,7 @@ suppressWarnings(print(profile.timeseries.fig))
 
 ```
 
-## BasePoint reference line and Euclidean distance as an accretion/erosion proxy
+## "BasePoint" reference line and Euclidean distance as an accretion/erosion proxy
 
 In order to quantify shoreline change, an arbitrary "BasePoint" reference line, parallel to the water, was drawn at a reasonable distance from the profiles.
 The profiles (aka transects) are perpendicular to this BasePoint, allowing for a reference point against which to calculate spatial change.
@@ -118,15 +124,15 @@ print(single.basepoint.plot)
 
 Using Euclidean distance, migrations of the transects over time as compared to the BasePoint act as proxies for accretion and erosion.
 
-Increasing Euclidean distance = Accretion Decreasing Euclidean distance = Erosion
+|                               |           |
+|-------------------------------|-----------|
+| Increasing Euclidean distance | Accretion |
+| Decreasing Euclidean distance | Erosion   |
 
 ## Characterizing profile elements to use for accretion and erosion proxies.
 
 Find the midpoint of each profile to acquire a single data point to describe the overall migration of the profile.
 See where that midpoint (and by extension the entire profile) is migrating with time.
-
-*TODO check this* The regression t-Test is applied to test if the slope, β1 , of the population regression line equals 0 .
-Based on that test we may decide whether x is a useful (linear) predictor of y .
 
 ```{r, echo=FALSE}
 profile.pattern <- "prof" ## Adjust this to see specific profiles.
@@ -136,31 +142,41 @@ midpoint.euc.dist.plot
 
 ## Assign status to each profile according to linear regression equation details.
 
+Once the midpoint euclidean distance has been plotted against time, a linear regression can be applied to understand how time is a predictor of erosion or accretion, and whether that profile movement is considered significant or not. 
+
+Below is a table with the relevant results of each profile's linear regression over time, including pvalues (less than 0.05 indicates a significant relationship), rsquared values (indicitive of how good the fit of the regression is) and the Pearson correlation (how closely are time and euclidean distance, or x and y, related).
+
+
 ```{r prep, echo=FALSE}
-knitr::kable(results.table, caption = "Linear equation parameters")
+knitr::kable(results.table, caption = "Linear equation parameters") %>%
+  kableExtra::kable_styling()
 ```
 
-## Comparison of results to Washington Coastal Erosion Hazard Assessment
+## Comparison of results to Washington Coastal Erosion Hazard Assessment (WCEHA)
+
+The WCEHA (https://waecy.maps.arcgis.com/apps/View/index.html?appid=389d0a3ce642485db912d4a416a56e25) is a second database that can be used as a comparison to the results from the NANOOS profiles. 
 
 ```{r}
 source("scripts/WCEHA_validation.R")
-all.data
+knitr::kable(all.data, caption = "Comparison with WCEHA data") %>%
+  kableExtra::kable_styling() %>%
+  row_spec(which(all.data$conflict == "flag"), bold = T, color = "white", background = "red")
+
 ```
 
 ## Linear Regressions and Change Rates
 
 The midpoint of each profile selects a single point as a proxy for erosion through time.
-This obscures the variation inherent in the movement of profiles over time.
+This obscures the variation inherent in the collection of profiles.
 
-Each profile, while following the same basic layout, comes with the variation expected from environmental data.
-Therefore it is important to find a method of individual profile characterization that will apply to all 4500 profiles, and can act as a reliable proxy to determine erosion or accretion.
+Therefore it is important to find a method of individual profile characterization that will apply to all 4500 profiles, and can act as a reliable proxy to determine rates of erosion or accretion.
 
-The profiles have linear relationships due to the geographic layout: in general, a change in x (moving along the Easting plane) will result in a roughly equal change in y (the Northing plane).
+The profiles have linear relationships due to the geographic layout: in general, a change in x (moving along the Easting plane) will result in a *roughly* equal change in y (the Northing plane).
 Therefore, a linear regression can be applied to the x and y variables of each profile to obtain a line proxy rather than a single point.
 
 Look at a single profile and year to see the applied linear regression.
 On the right, the linear quartiles are added for more detailed data description of accretion and erosion.
-These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with standard boxplot parameters.
+These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with standard boxplot parameters, although they are calculated using *only distance* and not boxplot delineations.
 
 ```{r, echo=FALSE}
 profile.pattern <- "prof_17"
@@ -173,6 +189,10 @@ single.linear.plot + single.quartiles.plot
 
 Characterizing the profiles with more points allows for a more detailed look at erosion and accretion rates.
 
+Each quartile's movement is tracked over time, same as the midpoint proxy used above. Then the means of the movement was taken and used to determine a rate of change for each profile. 
+
+The rates can be viewed by park or by profile.
+
 ```{r, echo=FALSE}
 profile.pattern <- "prof"
 source("scripts/rates_of_change.R")
@@ -180,27 +200,46 @@ park.ROC.plot
 profile.ROC.plot
 ```
 
-## Using MHHW as a proxy for shoreline change
+## Using Mean High High Water (MHHW) as a proxy for shoreline change
 
-As the profiles (and the shoreline) change over time, the point at which a profile crosses the mean high high water mark shifts, acting as a reliable indicator of accretion and erosion.
+As the profiles (and the shoreline) change over time, the coordinate at which a profile crosses the mean high high water mark shifts, acting as a reliable indicator of accretion and erosion.
 
 Visualize where the profiles cross the MHHW mark.
 
 ```{r, echo=FALSE}
-source("scripts/MHHW_to_BP.R")
-MHHW.to.BasePoint
+source("scripts/MHHW_to_BasePoint.R")
+
 complete.profile.plot
+MHHW.to.BasePoint
 ```
 
-How do those points change with time across all profiles?
+How does the euclidean distance from the MHHW to the BasePoint move with time? What are the rates of change when the proxy is the MHHW mark?
 
 ```{r, echo=FALSE}
 profile.pattern <- "prof"
-source("scripts/MHHW_ROC.R")
+source("scripts/MHHW_RatesOfChange.R")
 MHHW.ROC.plot
 ```
 
-Clustering
+Clustering using the midpoint euclidean distance data.
+
+This analysis applies unsupervised clustering, as we want are inputting unlabeled data without training. Relevant types of unsupervised clustering are k-means clustering and hierarchical agglomerative clustering (HCA).
+
+Pure kmeans requires some advance knowledge of the number of clusters k, while HCA seeks to build a hierarchy of clusters without a predetermined k. 
+
+Because we are trying to determine the sub reaches, we will use HCA for this analysis. The number of classes is not specified in advance; hierarchical clustering will determine that.  
+
+Our variables are distance to baseline (euclidean midpoint movement over time, aka erosion and accretion), and year.
+
+HCA Approach
+1. Create a distance matrix that computes and returns the distance between rows. 
+2. Start with every point in its own cluster and compare distances.
+3. Merge the two points that are closest to each other based on "distance" (distance method is variable), from the calculated distance matrix in step 1. This removes one cluster. This also corresponds to the first height of the luster dendogram.
+  - Measure cluster distance by single linkage: compute minimum distance before merging. 
+  - "Single" is the default distance measure but may not be the most effective.
+4. Recalculate all distances with the new number of clusters and continue to combine.
+5. Continue this until all clusters have been merged.
+6. Create a dendogram using the history of the point combination, which shows the sequence of combinations of the clusters. The distances of merge between clusters, called heights, are illustrated on the y-axis.
 
 ```{r, echo=FALSE}
 source("scripts/cluster_analysis.R")

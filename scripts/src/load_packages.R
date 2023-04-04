@@ -6,7 +6,10 @@
 required_Packages_Install <- c("broom",
                                "cluster",
                                "data.table",
+                               "factoExtra",
                                "ggmap",
+                               "kableExtra",
+                               "patchwork",
                                "rgl",
                                "scatterplot3d",
                                "stringr",
@@ -17,6 +20,6 @@ for(Package in required_Packages_Install) {
   if(!require(Package,character.only = TRUE)) { 
     install.packages(Package, dependencies=TRUE)
   }
-  library(Package, character.only = TRUE)
+  suppressWarnings(library(Package, character.only = TRUE))
 }
 

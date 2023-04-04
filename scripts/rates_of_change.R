@@ -98,7 +98,7 @@ all.quartile.rates <- quartile.rates %>%
   mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion"))
 
 ## Plot only mean for now
-park.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na() %>% filter(quartile == "mean"), 
+park.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na(), #%>% filter(quartile == "mean"), 
                             aes(x = year, y = rate_of_change, fill = profile_direction)) +
   facet_wrap(~Park) +
   geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
@@ -107,7 +107,7 @@ park.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na() %>% filter(quart
   ggtitle("Combined Rates of Change per Park") 
 park.ROC.plot
 
-profile.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na() %>% filter(quartile == "mean"), 
+profile.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na(), # %>% filter(quartile == "mean"), 
                         aes(x = year, y = rate_of_change, fill = profile_direction)) +
   facet_wrap(~profile) +
   geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +

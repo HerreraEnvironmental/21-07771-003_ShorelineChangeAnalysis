@@ -1,10 +1,7 @@
-library(data.table)
-library(tidyverse)
-
 
 ## Import all files
 profile.names <- list.files(path = "data_raw/all_prof_xyz_s97-s22/", pattern = profile.pattern)
-print(paste("Total number of files:", length(profile.names)))
+print(paste("Total number of files in profile:", length(profile.names)))
 
 profile.list <- suppressWarnings(lapply(paste("data_raw/all_prof_xyz_s97-s22/", profile.names, sep = ""), 
                                     read.table, header = FALSE, col.names = c("x", "y", "z")))

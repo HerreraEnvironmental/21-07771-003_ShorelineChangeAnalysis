@@ -72,15 +72,17 @@ pearson.correlation <- toplot %>%
   group_by(profile) %>%
   mutate(dummy_year = row_number()) %>%
   group_by(profile) %>%
-  summarize(cor=cor(dummy_year, euc_dist_to_BP)) %>%
-  mutate(relationship = ifelse(cor > 0 & cor < 1, TRUE, FALSE)) 
-write.csv(pearson.correlation, "data_secondary/pearson_correlation.csv", row.names = FALSE)
+  summarize(pearson_correlation=cor(dummy_year, euc_dist_to_BP)) %>%
+  mutate(relationship = ifelse(pearson_correlation > 0 & pearson_correlation < 1, 
+                               "Accretion", "Erosion")) 
 
 ## Table of results
 results.table <- toplot %>%
   select(profile, Park, shoreline_profile) %>%
   unique() %>%
-  left_join(equation.details, by = "profile")
+  left_join(equation.details, by = "profile") %>%
+  left_join(pearson.correlation, by = "profile") %>%
+  select(-relationship)
 
 
 ## Download equations for WCEHA comparison

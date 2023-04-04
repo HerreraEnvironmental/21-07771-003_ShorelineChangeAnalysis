@@ -32,7 +32,9 @@ profile.OBA <- read_csv("data_raw/OBAProfiles.csv",
 
 complete.geo.profiles <- profile.OBA %>% 
   full_join(profile.erosion, by = "profile") %>%
-  arrange(profile)
+  arrange(profile) %>%
+  unite(col = "location", c(OBA, Park), sep = ", ", na.rm = TRUE) %>%
+  complete(profile = 1:max(profile), fill = list(profile = 0))
 
 sequence <- complete.geo.profiles$profile 
 seq2 <- min(sequence, na.rm = TRUE):max(sequence, na.rm = TRUE)

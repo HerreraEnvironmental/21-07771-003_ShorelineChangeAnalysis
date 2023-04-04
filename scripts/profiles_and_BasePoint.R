@@ -25,6 +25,7 @@ profile.midpoints <- complete.profile %>%
 all.basepoint.plot <- ggplot(data = profile.midpoints %>% group_by(profile, year) %>% slice(750)) +
   geom_point(aes(x = x, y = y)) +
   geom_point(aes(x = BasePoint_X, y = BasePoint_Y), color = "red", size = 3) +
+  geom_line(aes(x = BasePoint_X, y = BasePoint_Y), color = "red", linewidth = 1) +
   ggtitle(paste("Profile:", profile.pattern))
 all.basepoint.plot
 

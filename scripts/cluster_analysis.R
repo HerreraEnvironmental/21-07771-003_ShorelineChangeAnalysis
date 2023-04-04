@@ -1,11 +1,8 @@
-## First go at the cluster
+## Clustering analysis to determine subreaches
 
-library(tidyverse)
-library(cluster)
-library(factoextra)
-
-
-## Load and prepare data
+## Load and prepare data.
+## Import midpoint euclidean data and arrange so that rows are observations
+## and columsn are variables.
 df <- read_csv("data_secondary/profiles_to_cluster.csv", show_col_types = FALSE) %>%
   select(-1) %>%
   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
@@ -19,50 +16,21 @@ df <- read_csv("data_secondary/profiles_to_cluster.csv", show_col_types = FALSE)
   t()
 
 ## Clustering cannot be performed on missing data. NA data needs to be removed.
+df.drop <- df[-c(21, 22, 23, 24),-c(24,25,26)]
+
 ## Since the two variables do not have the same units, one may have more weight.
 ## Scale the data to compare variables independent of units.
-
-df.drop <- df[-c(21, 22, 23, 24),-c(24,25,26)]
-#df.drop <- na.omit(df.drop)
 df.scaled <- scale(df.drop)
-
-
-## Thought process: go with unsupervised clustering. We want the patterns to be found.
-## Relevant types of unsupervised clustering: k-mean and hierarchical. 
-## Kmeans requires some advance knowledge of the number of clusters k, 
-## while HCA seeks to build a hierarchy of clusters without a predetermined k. 
-## Because we do not know how similar the transects will be, and we are trying
-## to determine the sub reaches, we will use HCA for this analysis. The number of classes
-## is not specified in advance; hierarchical clustering will determine that.  
-## Our variables are distance to baseline (euclidean midpoint movement over time),
-## and year. 
-
 
 # HCA ---------------------------------------------------------------------
 # Hierarchical agglomerative clustering
 
-## 1. Put every point in its own cluster.
-## 2. Merge two points that are closest to each other based on "distance" from
-## calculated distance matrix. This removes one cluster.
-## - Measure cluster distance by single linkage: compute minimum distance before merging. 
-## - TODO: Confirm this method
-## 3. Recalculate all distances with the new number of clusters and save the distances
-## in a new distance matrix.
-## 4. Continue this until all clusters have been merged.
 
 ## Create the distance matrix. 
 ## This calculates the Euclidean distance between each pair of points
 df.dist <- dist(df.scaled)
 
-## Within the distance matrix, start comparing distance between individual clusters.
-## The smallest distance between two points corresponds to the first height of the dendogram, 
-## and are closest together in the matrix. Theses two points are combined to one group, 
-## Now there are new distances between the newly created group and all the rest of the groups.
-## The process is repeated until there are no more groups to create. 
-## Now a dendogram can be drawn using the history of point combination,
-## showing the sequence of combinations of the clusters. 
-## The distances of merge between clusters, called heights, are illustrated on the y-axis.
-
+## Apply HCA using "single" distance method
 df.hclust <- hclust(df.dist, method = "single")
 
 ## Determine optimal number of clusters from dendogram, using largest height difference.
