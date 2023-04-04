@@ -237,13 +237,23 @@ HCA Approach
 3. Merge the two points that are closest to each other based on "distance" (distance method is variable), from the calculated distance matrix in step 1. This removes one cluster. This also corresponds to the first height of the luster dendogram.
   - Measure cluster distance by single linkage: compute minimum distance before merging. 
   - "Single" is the default distance measure but may not be the most effective.
+  - "Single" also falls under the umbrella of nearest neighbor method, which builds branches off of smallest distances.
 4. Recalculate all distances with the new number of clusters and continue to combine.
 5. Continue this until all clusters have been merged.
 6. Create a dendogram using the history of the point combination, which shows the sequence of combinations of the clusters. The distances of merge between clusters, called heights, are illustrated on the y-axis.
 
 ```{r, echo=FALSE}
 source("scripts/cluster_analysis.R")
+
+plot(df.hclust)
+rect.hclust(df.hclust,
+            k = 3, # k is used to specify the number of clusters, taken from previous steps.
+            border = "blue")
+
 kmeans.plot
 kmeans.dendogram
+```
+```{r}
+source("scripts/cluster_dumbbell.R")
 dumbbell.plot
 ```

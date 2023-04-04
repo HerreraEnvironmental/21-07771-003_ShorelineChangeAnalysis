@@ -6,7 +6,7 @@
 required_Packages_Install <- c("broom",
                                "cluster",
                                "data.table",
-                               "factoExtra",
+                               "factoextra",
                                "ggmap",
                                "kableExtra",
                                "patchwork",
