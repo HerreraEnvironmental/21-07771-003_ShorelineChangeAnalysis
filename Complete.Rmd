@@ -15,17 +15,16 @@ knitr::opts_chunk$set(echo = TRUE)
 # *TODO BEFORE COMPLETION*
 
 -   I still need to get the complete list of profiles. I don't think I can do this without Jon. I have submitted a GIS request for help.
--   Have figured out boxplots- but those don't incorporate those slopes that are negative (eroding shorelines). Maybe it's better to just do quartiles?
--   Move to pdf/presentation format. 
+-   Move to pdf/presentation format.
 
-# *TODO Other notes*
+## Notes
+
 A bunch of the profiles are weirdly scattered around and they don't all progress sequentially, but they seem to be matching to the NVS Beach and Shoreline Changes database.
-The three profiles that don't match up are 16 and 17 (both Westport) and one of the Leadbetter Point profiles, and of those, only profile 17 could use a second look. 
+The three profiles that don't match up are 16 and 17 (both Westport) and one of the Leadbetter Point profiles, and of those, only profile 17 could use a second look.
 
+# Overview
 
-## Overview
-
-NANOOS Shoreline profiles in x y z format (easting northing elevation).
+NANOOS Shoreline profiles in x y z format (Easting Northing elevation).
 Naming convention is prof_X\_ttYY.out where prof is short for profile, X is the profile number, tt is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (i.e, "98" is 1998", "00" is 2000, "08" is 2008, etc).
 
 Quite a few profiles are null (empty) and will be removed and noted.
@@ -124,14 +123,10 @@ Increasing Euclidean distance = Accretion Decreasing Euclidean distance = Erosio
 ## Characterizing profile elements to use for accretion and erosion proxies.
 
 Find the midpoint of each profile to acquire a single data point to describe the overall migration of the profile.
-See where that midpoint (and by extension the entire profile) is migrating with time. 
+See where that midpoint (and by extension the entire profile) is migrating with time.
 
-*TODO check this*
-The regression t-Test is applied to test if the slope, β1
-, of the population regression line equals 0
-. Based on that test we may decide whether x
- is a useful (linear) predictor of y
-.
+*TODO check this* The regression t-Test is applied to test if the slope, β1 , of the population regression line equals 0 .
+Based on that test we may decide whether x is a useful (linear) predictor of y .
 
 ```{r, echo=FALSE}
 profile.pattern <- "prof" ## Adjust this to see specific profiles.
@@ -145,12 +140,12 @@ midpoint.euc.dist.plot
 knitr::kable(results.table, caption = "Linear equation parameters")
 ```
 
-## Comparison of results to Washington Coastal Erosion Hazard Assessment 
+## Comparison of results to Washington Coastal Erosion Hazard Assessment
+
 ```{r}
 source("scripts/WCEHA_validation.R")
 all.data
 ```
-
 
 ## Linear Regressions and Change Rates
 
