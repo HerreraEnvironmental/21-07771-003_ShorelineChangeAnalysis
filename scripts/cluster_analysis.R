@@ -125,22 +125,8 @@ profile.pattern <- "prof"
 year.pattern <- c("20")
 
 source("scripts/src/load_packages.R")
-#source("scripts/src/import_profiles.R")
 source("scripts/src/assign_profile_parks.R")
 
-
-## Import erosion file for Base Point data
-# complete.profile <- read_csv("data_raw/ProfilesForErosion.csv", 
-#                              col_names = c("profile", "Park", "MHHW",
-#                                            "BasePoint_X", "BasePoint_Y", 
-#                                            "Start_Year", "Start_X", "Start_Y", "Start_Dist",
-#                                            "End_Year", "End_X", "End_Y", "End_Dist",
-#                                            "Total_Change", "Years", "Change_per_Year",
-#                                            "Hannah", "2050", "Comments"), 
-#                              skip = 3,  show_col_types = FALSE) %>%
-#   full_join(profiles.df, by = "profile", multiple = "all") %>%
-#   select(profile, Park, BasePoint_X, BasePoint_Y, season:z) %>%
-#   drop_na()
 
 ## Geographic locations
 profile.erosion <- read_csv("data_raw/ProfilesForErosion.csv", 

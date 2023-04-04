@@ -17,7 +17,11 @@ knitr::opts_chunk$set(echo = TRUE)
 -   I still need to get the complete list of profiles. I don't think I can do this without Jon. I have submitted a GIS request for help.
 -   Have figured out boxplots- but those don't incorporate those slopes that are negative (eroding shorelines). Maybe it's better to just do quartiles?
 - Incorporate Hannah's data!!
--   Move to pdf/presentation format
+-   Move to pdf/presentation format. 
+
+# *TODO Other notes*
+A bunch of the profiles are weirdly scattered around and they don't all progress sequentially, but they seem to be matching to the NVS Beach and Shoreline Changes database.
+
 
 ## Overview
 
@@ -130,7 +134,7 @@ The regression t-Test is applied to test if the slope, β1
 .
 
 ```{r, echo=FALSE}
-profile.pattern <- "prof" ## Adjust this to see specific profiles.
+profile.pattern <- "prof_16|prof_17|prof_19" ## Adjust this to see specific profiles.
 source("scripts/midpoint_euclidean_distance.R")
 midpoint.euc.dist.plot
 ```
@@ -140,6 +144,12 @@ midpoint.euc.dist.plot
 ```{r prep, echo=FALSE}
 knitr::kable(results.table, caption = "Linear equation parameters")
 ```
+
+## Comparison of results to Washington Coastal Erosion Hazard Assessment 
+```{r}
+
+```
+
 
 ## Linear Regressions and Change Rates
 

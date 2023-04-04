@@ -89,10 +89,12 @@ results.table <- toplot %>%
   unique() %>%
   left_join(equation.details, by = "profile")
 
+## Download equations for WCEHA comparison
+write.csv(results.table, "data_secondary/midpoint_profile_results.csv", row.names = FALSE)
+
 ## Download for cluster
 # cluster <- euclidean %>%
 #   drop_na() %>%
 #   select(profile:year, euc_dist_to_BP) %>%
 #   unique() 
 # write.csv(cluster, "data_secondary/profiles_to_cluster.csv", row.names = FALSE)
-
