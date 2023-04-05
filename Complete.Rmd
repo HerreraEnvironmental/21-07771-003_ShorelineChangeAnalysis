@@ -81,7 +81,7 @@ The graph can be rotated using the mouse.
 Hover over the lines to see the seasonal data.
 
 ```{r prep, echo=FALSE}
-profile.pattern <- "prof_15"
+profile.pattern <- "prof_1"
 year.pattern <- c("19")
 
 source("scripts/single_profile_3D.R")

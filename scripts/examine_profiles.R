@@ -30,11 +30,17 @@ profile.OBA <- read_csv("data_raw/OBAProfiles.csv",
   mutate(profile = as.numeric(gsub(" ", "", profile))) %>%
   mutate(OBA = replace(OBA, OBA == "One Missing at 13?", "Ocean City"))
 
-complete.geo.profiles <- profile.OBA %>% 
-  full_join(profile.erosion, by = "profile") %>%
-  arrange(profile) %>%
-  unite(col = "location", c(OBA, Park), sep = ", ", na.rm = TRUE) %>%
-  complete(profile = 1:max(profile), fill = list(profile = 0))
+# complete.geo.profiles <- profile.OBA %>% 
+#   full_join(profile.erosion, by = "profile") %>%
+#   arrange(profile) %>%
+#   unite(col = "location", c(OBA, Park), sep = ", ", na.rm = TRUE) %>%
+#   complete(profile = 1:max(profile), fill = list(profile = 0))
+
+complete.geo.profiles <- read_csv("data_raw/NANOOS_WCEHA_validation.csv",
+                      col_names = c("profile", "WCEHA", "location", "notes"),
+                      col_select = c(-WCEHA),
+                      skip = 1,
+                      show_col_types = FALSE)
 
 sequence <- complete.geo.profiles$profile 
 seq2 <- min(sequence, na.rm = TRUE):max(sequence, na.rm = TRUE)

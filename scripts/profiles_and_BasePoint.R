@@ -15,7 +15,7 @@ source("scripts/src/assign_profile_parks.R")
 
 ## Combine and add euclidean distance
 profile.midpoints <- complete.profile %>%
-  select(profile, Park, BasePoint_X, BasePoint_Y, season:z) %>%
+  select(profile, BasePoint_X, BasePoint_Y, season:z) %>%
   group_by(profile, year) %>%
   mutate(x_midpoint = ((min(x) + max(x))/2)) %>%
   mutate(y_midpoint = ((min(y) + max(y))/2))
