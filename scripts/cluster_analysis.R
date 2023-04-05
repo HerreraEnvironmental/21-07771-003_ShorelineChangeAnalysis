@@ -41,7 +41,7 @@ plot(df.hclust, main = "Dendogram using 'single' distance method")
 diff(df.hclust$height)
 barplot(df.hclust$height,
         names.arg = (nrow(df.scaled) - 1):1,
-        main = "Barplot of Dendogram Heights")
+        main = "Barplot of Dendogram Heights, 'single' distance method")
 abline(h = 2.661588, col = "blue")
 
 
@@ -73,6 +73,7 @@ km.res <- kmeans(df.scaled, 3, nstart = 25)
 kmeans.plot <- fviz_cluster(km.res, data = df.scaled,
              ellipse.type = "convex",
              palette = "jco",
+             main = "Kmeans with 3 clusters according to wss and silhouette",
              ggtheme = theme_light())
 kmeans.plot
 
