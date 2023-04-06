@@ -115,7 +115,7 @@ res.hc <- df.scaled %>%
 
 kmeans.dendogram <- fviz_dend(res.hc, k = 4, ## Assigning 4 clusters based on viewing the graph.
           cex = 0.5,
-          k_colors = c("#2E9FDF", "#36A886", "#E7B800", "tomato1"),
+          k_colors = c("#04A1FF",'#FFC42E','#3ECDA3','#1D455C'),
           color_labels_by_k = TRUE,
           rect = TRUE)
 kmeans.dendogram
@@ -128,7 +128,7 @@ df.clustered <- cutree(res.hc, k = 4) %>%
   rownames_to_column(var = "profile") %>%
   rename(cluster_id = 2) %>%
   full_join(df %>% select(profile, Park, euc_dist_to_BP), 
-            by = "profile") %>%
+            by = "profile", multiple = "all") %>%
   select(profile, Park, cluster_id, euc_dist_to_BP) %>%
   unique() %>%
   mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
@@ -139,13 +139,15 @@ df.clustered <- cutree(res.hc, k = 4) %>%
                                               "31", "32", "33", "34", "35", "36",
                                               "37", "49", "38", "50", "39", "40",
                                               "51", "52", "41", "53", "54", "42",
-                                              "43", "44", "45", "46", "47")))
+                                              "43", "44", "45", "46", "47"))) %>%
+  arrange(profile)
 
 
-plt <- ggplot(df.clustered) +
+cluster.plot <- ggplot(df.clustered) +
   geom_col(aes(euc_dist_to_BP, profile, 
                group = factor(profile), fill = factor(cluster_id)), 
            width = 0.6) +
+  scale_fill_manual(values = c("#04A1FF",'#FFC42E','#3ECDA3','#1D455C')) +
   scale_y_discrete(limits = rev, position = "right")
 
-plt
+cluster.plot
