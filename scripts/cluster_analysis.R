@@ -4,7 +4,6 @@
 ## Import midpoint euclidean data and arrange so that rows are observations
 ## and columsn are variables.
 df <- read_csv("data_secondary/profiles_to_cluster.csv", show_col_types = FALSE) %>%
-  select(-1) %>%
   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
                                          "04", "05", "06", "07", "08", "09", "10", 
                                          "11", "12", "13", "14", "15", "16", "17",
@@ -16,7 +15,8 @@ df <- read_csv("data_secondary/profiles_to_cluster.csv", show_col_types = FALSE)
   t()
 
 ## Clustering cannot be performed on missing data. NA data needs to be removed.
-df.drop <- df[-c(21, 22, 23, 24),-c(24,25,26)]
+df.drop <- df[-c(1, 24, 46, 47),-c(1:3, 5, 14:16)]
+#df.drop <- na.omit(df)
 
 ## Since the two variables do not have the same units, one may have more weight.
 ## Scale the data to compare variables independent of units.
@@ -38,17 +38,17 @@ plot(df.hclust, main = "Dendogram using 'single' distance method")
 
 ## Difficult to see , so let's do a barplot 
 ## where the columns correspond to the height of the dendogram.
-diff(df.hclust$height)
 barplot(df.hclust$height,
         names.arg = (nrow(df.scaled) - 1):1,
         main = "Barplot of Dendogram Heights, 'single' distance method")
-abline(h = 2.661588, col = "blue")
+max(diff(df.hclust$height))
+abline(h = 2.831486, col = "blue")
 
 
 ## Largest, most conservative grouping is 3. Next best is 12.
 plot(df.hclust)
 rect.hclust(df.hclust,
-            k = 3, # k is used to specify the number of clusters, taken from previous steps.
+            k = 2, # k is used to specify the number of clusters, taken from previous steps.
             border = "blue")
 
   
@@ -84,7 +84,7 @@ res.hc <- df.scaled %>%
   dist(method = "euclidean") %>% 
   hclust(method = "ward.D2") 
 
-kmeans.dendogram <- fviz_dend(res.hc, k = 4, ## Assigning 4 clusters based on viewing the graph.
+kmeans.dendogram <- fviz_dend(res.hc, k = 3, ## Assigning 4 clusters based on viewing the graph.
           cex = 0.5,
           k_colors = c("#2E9FDF", "#00AFBB", "#E7B800", "tomato1"),
           color_labels_by_k = TRUE,

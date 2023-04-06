@@ -90,7 +90,7 @@ write.csv(results.table, "data_secondary/midpoint_profile_results.csv", row.name
 
 ## Download for cluster
 # cluster <- euclidean %>%
-#   drop_na() %>%
+#   #drop_na() %>%
 #   select(profile:year, euc_dist_to_BP) %>%
-#   unique() 
+#   unique()
 # write.csv(cluster, "data_secondary/profiles_to_cluster.csv", row.names = FALSE)

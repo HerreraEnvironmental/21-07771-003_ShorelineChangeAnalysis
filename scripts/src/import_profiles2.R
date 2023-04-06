@@ -1,12 +1,11 @@
-
 ## Import all files
 profile.names <- list.files(path = "data_raw/all_prof_xyz_s97-s22/", 
-                            pattern = paste(str_extract(profile.pattern, "[^_]*_[^_]*"), "_", sep = ""))
+                            pattern = profile.pattern)
 
 print(paste("Total number of files in profile:", length(profile.names)))
 
 profile.list <- suppressWarnings(lapply(paste("data_raw/all_prof_xyz_s97-s22/", profile.names, sep = ""), 
-                                    read.table, header = FALSE, col.names = c("x", "y", "z")))
+                                        read.table, header = FALSE, col.names = c("x", "y", "z")))
 names(profile.list) = profile.names
 
 ## Remove empty dataframes from list according to number of rows (1 or fewer means df is empty)
@@ -29,5 +28,3 @@ profiles.df <- rbindlist(dfs.filtered, idcol = TRUE, fill = FALSE) %>%
                                          "04", "05", "06", "07", "08", "09", "10",
                                          "11", "12", "13", "14", "15", "16", "17",
                                          "18", "19", "20", "21", "22")))
-
-#write.csv(profiles.df, "data_secondary/all_imported_profiles.csv", row.names = FALSE)

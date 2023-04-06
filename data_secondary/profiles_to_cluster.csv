@@ -1,548 +1,685 @@
-"","profile","Park","year","euc_dist_to_BP"
-"1",6,"Moclips","97",288.613432206463
-"2",6,"Moclips","98",353.165915116399
-"3",6,"Moclips","99",386.578466194119
-"4",6,"Moclips","00",445.242725768796
-"5",6,"Moclips","01",441.100862190254
-"6",6,"Moclips","02",388.688835252597
-"7",6,"Moclips","03",397.641696411487
-"8",6,"Moclips","04",435.273050050196
-"9",6,"Moclips","05",442.90442354982
-"10",6,"Moclips","06",399.871767508061
-"11",6,"Moclips","07",401.616244504621
-"12",6,"Moclips","08",402.069096549331
-"13",6,"Moclips","09",361.349206896898
-"14",6,"Moclips","10",332.753462829468
-"15",6,"Moclips","11",435.445716766172
-"16",6,"Moclips","12",417.547953683177
-"17",6,"Moclips","13",437.488207526802
-"18",6,"Moclips","14",452.347107871814
-"19",6,"Moclips","15",412.772151798051
-"20",6,"Moclips","16",437.036753174149
-"21",6,"Moclips","17",387.648775891261
-"22",6,"Moclips","18",432.839587029655
-"23",6,"Moclips","19",455.231040242238
-"24",7,"Pacific Beach","97",307.225902268995
-"25",7,"Pacific Beach","98",416.61350509193
-"26",7,"Pacific Beach","99",402.922495338747
-"27",7,"Pacific Beach","00",415.120225958674
-"28",7,"Pacific Beach","01",372.865352540292
-"29",7,"Pacific Beach","02",417.485815627282
-"30",7,"Pacific Beach","03",410.302375145435
-"31",7,"Pacific Beach","04",425.57324766128
-"32",7,"Pacific Beach","05",401.972639771668
-"33",7,"Pacific Beach","06",402.573587217273
-"34",7,"Pacific Beach","07",377.09807295317
-"35",7,"Pacific Beach","08",370.469934711281
-"36",7,"Pacific Beach","09",359.225542834837
-"37",7,"Pacific Beach","10",359.975525070795
-"38",7,"Pacific Beach","11",403.164012840926
-"39",7,"Pacific Beach","12",419.641005265198
-"40",7,"Pacific Beach","13",455.232290292517
-"41",7,"Pacific Beach","14",438.230249127079
-"42",7,"Pacific Beach","15",453.761524371535
-"43",7,"Pacific Beach","16",406.480050463737
-"44",7,"Pacific Beach","17",400.461732316556
-"45",7,"Pacific Beach","18",403.110343516513
-"46",7,"Pacific Beach","19",447.159089922162
-"47",8,"Pacific Beach","97",387.516608708599
-"48",8,"Pacific Beach","98",466.328725257213
-"49",8,"Pacific Beach","99",459.11750829719
-"50",8,"Pacific Beach","00",475.014854109861
-"51",8,"Pacific Beach","01",409.545752816442
-"52",8,"Pacific Beach","02",456.643900265832
-"53",8,"Pacific Beach","03",447.106410264945
-"54",8,"Pacific Beach","04",483.724681223736
-"55",8,"Pacific Beach","05",480.834805962511
-"56",8,"Pacific Beach","06",471.921302390575
-"57",8,"Pacific Beach","07",458.095598674581
-"58",8,"Pacific Beach","08",467.558764862798
-"59",8,"Pacific Beach","09",450.835626919609
-"60",8,"Pacific Beach","10",429.834640414191
-"61",8,"Pacific Beach","11",500.36328235093
-"62",8,"Pacific Beach","12",482.307792286221
-"63",8,"Pacific Beach","13",495.970712567794
-"64",8,"Pacific Beach","14",477.673654208625
-"65",8,"Pacific Beach","15",488.484839734057
-"66",8,"Pacific Beach","16",463.262887705251
-"67",8,"Pacific Beach","17",491.776001473246
-"68",8,"Pacific Beach","18",458.749480272219
-"69",8,"Pacific Beach","19",474.62718161208
-"70",9,"Griffiths-Priday","97",325.007820713603
-"71",9,"Griffiths-Priday","98",351.133298477955
-"72",9,"Griffiths-Priday","99",364.475512277585
-"73",9,"Griffiths-Priday","00",386.080332379163
-"74",9,"Griffiths-Priday","01",390.050030124334
-"75",9,"Griffiths-Priday","02",421.071288798014
-"76",9,"Griffiths-Priday","03",385.768925297252
-"77",9,"Griffiths-Priday","04",373.887143032499
-"78",9,"Griffiths-Priday","05",433.888800558393
-"79",9,"Griffiths-Priday","06",418.256444212162
-"80",9,"Griffiths-Priday","07",434.923499767517
-"81",9,"Griffiths-Priday","08",444.451383083709
-"82",9,"Griffiths-Priday","09",412.008848843079
-"83",9,"Griffiths-Priday","10",379.201188948538
-"84",9,"Griffiths-Priday","11",446.488784769584
-"85",9,"Griffiths-Priday","12",438.375271770647
-"86",9,"Griffiths-Priday","13",461.886381050603
-"87",9,"Griffiths-Priday","14",464.83212488489
-"88",9,"Griffiths-Priday","15",456.24289191722
-"89",9,"Griffiths-Priday","16",416.009523088127
-"90",9,"Griffiths-Priday","17",459.189723807064
-"91",9,"Griffiths-Priday","18",422.964214680149
-"92",9,"Griffiths-Priday","19",453.52899590324
-"93",10,"North Beach","97",494.575218596738
-"94",10,"North Beach","98",505.879126496648
-"95",10,"North Beach","99",496.311510696654
-"96",10,"North Beach","00",545.349196043265
-"97",10,"North Beach","01",592.123103860188
-"98",10,"North Beach","02",594.357106881046
-"99",10,"North Beach","03",576.247949345611
-"100",10,"North Beach","04",542.430177995309
-"101",10,"North Beach","05",601.327352799635
-"102",10,"North Beach","06",650.657991766795
-"103",10,"North Beach","07",614.644914991592
-"104",10,"North Beach","08",660.109351016948
-"105",10,"North Beach","09",636.748127637614
-"106",10,"North Beach","10",626.05405926727
-"107",10,"North Beach","11",682.63068668204
-"108",10,"North Beach","12",701.12660782485
-"109",10,"North Beach","13",658.576348231569
-"110",10,"North Beach","14",641.474193576807
-"111",10,"North Beach","15",698.131049302365
-"112",10,"North Beach","16",725.619268504517
-"113",10,"North Beach","17",652.472836311997
-"114",10,"North Beach","18",674.409456802793
-"115",10,"North Beach","19",702.27818350354
-"116",16,"Westport Light","97",334.527709502503
-"117",16,"Westport Light","98",367.244860072961
-"118",16,"Westport Light","99",398.880557466779
-"119",16,"Westport Light","00",414.92799550043
-"120",16,"Westport Light","01",381.875721963303
-"121",16,"Westport Light","02",378.26244890286
-"122",16,"Westport Light","03",397.872454594446
-"123",16,"Westport Light","04",394.588405461955
-"124",16,"Westport Light","05",383.651960017142
-"125",16,"Westport Light","06",397.175284037172
-"126",16,"Westport Light","07",361.161201750678
-"127",16,"Westport Light","08",359.177765528438
-"128",16,"Westport Light","09",351.033595899317
-"129",16,"Westport Light","10",372.398059373285
-"130",16,"Westport Light","11",403.764307114924
-"131",16,"Westport Light","12",376.175599554269
-"132",16,"Westport Light","13",371.312724936793
-"133",16,"Westport Light","14",395.959916311005
-"134",16,"Westport Light","15",399.00265303004
-"135",16,"Westport Light","16",381.104884316622
-"136",16,"Westport Light","17",407.035337839366
-"137",16,"Westport Light","18",406.411961561177
-"138",16,"Westport Light","19",394.094392563513
-"139",16,"Westport Light","20",343.407525907628
-"140",16,"Westport Light","21",375.908275314605
-"141",17,"Westport Light","97",354.207236409699
-"142",17,"Westport Light","98",346.935981738709
-"143",17,"Westport Light","99",440.756305144921
-"144",17,"Westport Light","00",413.35170883883
-"145",17,"Westport Light","01",442.856494363563
-"146",17,"Westport Light","02",440.484534859064
-"147",17,"Westport Light","03",457.367032589832
-"148",17,"Westport Light","04",405.227211573954
-"149",17,"Westport Light","05",446.912539234476
-"150",17,"Westport Light","06",394.309196507016
-"151",17,"Westport Light","07",414.283811535043
-"152",17,"Westport Light","08",406.44453326991
-"153",17,"Westport Light","09",383.312418563509
-"154",17,"Westport Light","10",367.843497461919
-"155",17,"Westport Light","11",421.369484538232
-"156",17,"Westport Light","12",404.489622363803
-"157",17,"Westport Light","13",439.235607874618
-"158",17,"Westport Light","14",460.528141512537
-"159",17,"Westport Light","15",434.934033072834
-"160",17,"Westport Light","16",408.104236715307
-"161",17,"Westport Light","17",365.685209162195
-"162",17,"Westport Light","18",418.398753015607
-"163",17,"Westport Light","19",438.412139002803
-"164",17,"Westport Light","20",442.916504010617
-"165",17,"Westport Light","21",384.216111485448
-"166",17,"Westport Light","22",460.270214249193
-"167",19,"Twin Harbors","97",316.795346004322
-"168",19,"Twin Harbors","98",325.023886891423
-"169",19,"Twin Harbors","99",330.755634910421
-"170",19,"Twin Harbors","00",358.058133722726
-"171",19,"Twin Harbors","01",349.118871768623
-"172",19,"Twin Harbors","02",368.649583751303
-"173",19,"Twin Harbors","03",404.508476579897
-"174",19,"Twin Harbors","04",374.136245571043
-"175",19,"Twin Harbors","05",364.954318682499
-"176",19,"Twin Harbors","06",356.955420886132
-"177",19,"Twin Harbors","07",368.090322679129
-"178",19,"Twin Harbors","08",337.49620623792
-"179",19,"Twin Harbors","09",352.561750052404
-"180",19,"Twin Harbors","10",345.805138806531
-"181",19,"Twin Harbors","11",372.125549546114
-"182",19,"Twin Harbors","12",382.242596167667
-"183",19,"Twin Harbors","13",380.623778093291
-"184",19,"Twin Harbors","14",389.102988198491
-"185",19,"Twin Harbors","15",371.87670984483
-"186",19,"Twin Harbors","16",363.987981188961
-"187",19,"Twin Harbors","17",375.822884481507
-"188",19,"Twin Harbors","18",372.109310586282
-"189",19,"Twin Harbors","19",372.248664101049
-"190",19,"Twin Harbors","20",393.61081546368
-"191",19,"Twin Harbors","21",379.578048364236
-"192",19,"Twin Harbors","22",378.517094759263
-"193",21,"Grayland Beach","97",616.520162890085
-"194",21,"Grayland Beach","98",596.299045488107
-"195",21,"Grayland Beach","99",589.422096400379
-"196",21,"Grayland Beach","00",597.310299530338
-"197",21,"Grayland Beach","01",613.316506401909
-"198",21,"Grayland Beach","02",616.137261736369
-"199",21,"Grayland Beach","03",633.858700737005
-"200",21,"Grayland Beach","04",620.343007395916
-"201",21,"Grayland Beach","05",633.301127920213
-"202",21,"Grayland Beach","06",639.81146842252
-"203",21,"Grayland Beach","07",625.557117795813
-"204",21,"Grayland Beach","08",586.09320385072
-"205",21,"Grayland Beach","09",632.585046495745
-"206",21,"Grayland Beach","10",642.32736517295
-"207",21,"Grayland Beach","11",698.216566582323
-"208",21,"Grayland Beach","12",704.817491340841
-"209",21,"Grayland Beach","13",760.722753702043
-"210",21,"Grayland Beach","14",779.59257829012
-"211",21,"Grayland Beach","15",817.58336218701
-"212",21,"Grayland Beach","16",818.596096145725
-"213",21,"Grayland Beach","17",797.997424588604
-"214",21,"Grayland Beach","18",786.180889617636
-"215",21,"Grayland Beach","19",855.304566221903
-"216",21,"Grayland Beach","20",819.778883510658
-"217",21,"Grayland Beach","21",897.718246444828
-"218",22,"Grayland Beach","97",681.871238229747
-"219",22,"Grayland Beach","98",671.80426464853
-"220",22,"Grayland Beach","99",722.434527431362
-"221",22,"Grayland Beach","00",862.203260548206
-"222",22,"Grayland Beach","01",859.487120220538
-"223",22,"Grayland Beach","02",900.958425580791
-"224",22,"Grayland Beach","03",890.631940169451
-"225",22,"Grayland Beach","04",859.676853372803
-"226",22,"Grayland Beach","05",917.00000613412
-"227",22,"Grayland Beach","06",888.570705149558
-"228",22,"Grayland Beach","07",968.710149902938
-"229",22,"Grayland Beach","08",1057.2776650081
-"230",22,"Grayland Beach","09",1191.29807119169
-"231",22,"Grayland Beach","10",1211.36139769474
-"232",22,"Grayland Beach","11",1177.27135861915
-"233",22,"Grayland Beach","12",1119.42450501362
-"234",22,"Grayland Beach","13",1242.77325405722
-"235",22,"Grayland Beach","14",1442.92471158409
-"236",22,"Grayland Beach","15",1481.09555337424
-"237",22,"Grayland Beach","16",1308.16735926637
-"238",22,"Grayland Beach","17",1410.89778227374
-"239",22,"Grayland Beach","18",1343.53604733924
-"240",22,"Grayland Beach","19",1398.53687162691
-"241",22,"Grayland Beach","20",1422.35289749062
-"242",22,"Grayland Beach","21",1241.47512324048
-"243",23,"Grayland Beach","97",1420.97130189179
-"244",23,"Grayland Beach","98",1186.92783855
-"245",23,"Grayland Beach","99",1176.7401192808
-"246",23,"Grayland Beach","00",1282.22814795184
-"247",23,"Grayland Beach","01",1224.63394674694
-"248",23,"Grayland Beach","02",1181.11568205661
-"249",23,"Grayland Beach","03",1143.49388923815
-"250",23,"Grayland Beach","04",1207.90016336202
-"251",23,"Grayland Beach","05",1266.32917885715
-"252",23,"Grayland Beach","06",1344.54907304456
-"253",23,"Grayland Beach","07",1246.45666858097
-"254",23,"Grayland Beach","08",1153.65287366912
-"255",23,"Grayland Beach","09",1023.51158393541
-"256",23,"Grayland Beach","10",831.250132706737
-"257",23,"Grayland Beach","11",990.263606937566
-"258",23,"Grayland Beach","12",1060.26250685854
-"259",23,"Grayland Beach","13",1008.91355539014
-"260",23,"Grayland Beach","14",1231.39226286752
-"261",23,"Grayland Beach","15",1330.5973913998
-"262",23,"Grayland Beach","16",1231.56358059582
-"263",23,"Grayland Beach","17",1204.94419461026
-"264",23,"Grayland Beach","18",1153.40293966375
-"265",23,"Grayland Beach","19",1276.49177545333
-"266",23,"Grayland Beach","20",1227.38362304742
-"267",23,"Grayland Beach","21",1224.50310177229
-"268",25,"Leadbetter Beach","97",675.675425500288
-"269",25,"Leadbetter Beach","98",665.942385139311
-"270",25,"Leadbetter Beach","99",734.066839259213
-"271",25,"Leadbetter Beach","00",681.472934752359
-"272",25,"Leadbetter Beach","01",736.804226406182
-"273",25,"Leadbetter Beach","02",746.411653663716
-"274",25,"Leadbetter Beach","03",871.827487078142
-"275",25,"Leadbetter Beach","04",896.54914536239
-"276",25,"Leadbetter Beach","05",755.150726626818
-"277",25,"Leadbetter Beach","06",962.644070386357
-"278",25,"Leadbetter Beach","07",975.377091603537
-"279",25,"Leadbetter Beach","08",800.458035689564
-"280",25,"Leadbetter Beach","09",939.298044419335
-"281",25,"Leadbetter Beach","10",908.704531187096
-"282",25,"Leadbetter Beach","11",876.807342721295
-"283",25,"Leadbetter Beach","12",851.590648169643
-"284",25,"Leadbetter Beach","13",1000.11690807877
-"285",25,"Leadbetter Beach","14",945.989440651966
-"286",25,"Leadbetter Beach","15",981.932596986676
-"287",25,"Leadbetter Beach","16",1013.14741381747
-"288",25,"Leadbetter Beach","17",943.840307096488
-"289",25,"Leadbetter Beach","18",962.576670634602
-"290",25,"Leadbetter Beach","19",940.260283498685
-"291",26,"Leadbetter Beach","97",579.764511245724
-"292",26,"Leadbetter Beach","98",587.45168980095
-"293",26,"Leadbetter Beach","99",592.923978811787
-"294",26,"Leadbetter Beach","00",729.346882508564
-"295",26,"Leadbetter Beach","01",863.749137249913
-"296",26,"Leadbetter Beach","02",795.325312325089
-"297",26,"Leadbetter Beach","03",816.387432549646
-"298",26,"Leadbetter Beach","04",780.743775031209
-"299",26,"Leadbetter Beach","05",760.938090862193
-"300",26,"Leadbetter Beach","06",757.569145359021
-"301",26,"Leadbetter Beach","07",789.000057826347
-"302",26,"Leadbetter Beach","08",678.233472135505
-"303",26,"Leadbetter Beach","09",810.584802472867
-"304",26,"Leadbetter Beach","10",790.286875460401
-"305",26,"Leadbetter Beach","11",687.952946719453
-"306",26,"Leadbetter Beach","12",781.329717468872
-"307",26,"Leadbetter Beach","13",700.349191368136
-"308",26,"Leadbetter Beach","14",899.698018017718
-"309",26,"Leadbetter Beach","15",813.549368154744
-"310",26,"Leadbetter Beach","16",864.68105403088
-"311",26,"Leadbetter Beach","17",776.912366374107
-"312",26,"Leadbetter Beach","18",688.319398607936
-"313",26,"Leadbetter Beach","19",792.501052507188
-"314",27,"Leadbetter Beach","97",622.501453512392
-"315",27,"Leadbetter Beach","98",662.041143623275
-"316",27,"Leadbetter Beach","99",652.927959272713
-"317",27,"Leadbetter Beach","00",720.426255074039
-"318",27,"Leadbetter Beach","01",704.398099887425
-"319",27,"Leadbetter Beach","02",694.642303959386
-"320",27,"Leadbetter Beach","03",712.218733202803
-"321",27,"Leadbetter Beach","04",731.828151002684
-"322",27,"Leadbetter Beach","05",719.124363132027
-"323",27,"Leadbetter Beach","06",725.308737469781
-"324",27,"Leadbetter Beach","07",703.585221295192
-"325",27,"Leadbetter Beach","08",708.645127020583
-"326",27,"Leadbetter Beach","09",717.102849753775
-"327",27,"Leadbetter Beach","10",712.259086709345
-"328",27,"Leadbetter Beach","11",706.978466309266
-"329",27,"Leadbetter Beach","12",740.759361820684
-"330",27,"Leadbetter Beach","13",716.547108936346
-"331",27,"Leadbetter Beach","14",747.447402781645
-"332",27,"Leadbetter Beach","15",722.976898680044
-"333",27,"Leadbetter Beach","16",699.955674310878
-"334",27,"Leadbetter Beach","17",667.861850478839
-"335",27,"Leadbetter Beach","18",688.54062060639
-"336",27,"Leadbetter Beach","19",672.339915388774
-"337",28,"Leadbetter Beach","97",798.643430637217
-"338",28,"Leadbetter Beach","98",807.270432537961
-"339",28,"Leadbetter Beach","99",815.290000551954
-"340",28,"Leadbetter Beach","00",846.988738428676
-"341",28,"Leadbetter Beach","01",811.56876085766
-"342",28,"Leadbetter Beach","02",825.460255509009
-"343",28,"Leadbetter Beach","03",848.871168214012
-"344",28,"Leadbetter Beach","04",867.867783435345
-"345",28,"Leadbetter Beach","05",856.155214505521
-"346",28,"Leadbetter Beach","06",831.000838161424
-"347",28,"Leadbetter Beach","07",846.565908272946
-"348",28,"Leadbetter Beach","08",800.422463858925
-"349",28,"Leadbetter Beach","09",828.914589583863
-"350",28,"Leadbetter Beach","10",868.925565108994
-"351",28,"Leadbetter Beach","11",891.100279892771
-"352",28,"Leadbetter Beach","12",925.628696670516
-"353",28,"Leadbetter Beach","13",878.318067743711
-"354",28,"Leadbetter Beach","14",869.785305980733
-"355",28,"Leadbetter Beach","15",885.674134219228
-"356",28,"Leadbetter Beach","16",895.486130057286
-"357",28,"Leadbetter Beach","17",847.585829341217
-"358",28,"Leadbetter Beach","18",845.902721667822
-"359",28,"Leadbetter Beach","19",832.474039114753
-"360",29,"Leadbetter Beach","97",795.520723582968
-"361",29,"Leadbetter Beach","98",783.468449300895
-"362",29,"Leadbetter Beach","99",802.866877897559
-"363",29,"Leadbetter Beach","00",852.59515932238
-"364",29,"Leadbetter Beach","01",808.729621876183
-"365",29,"Leadbetter Beach","02",802.10044023486
-"366",29,"Leadbetter Beach","03",847.853990083192
-"367",29,"Leadbetter Beach","04",842.096189072225
-"368",29,"Leadbetter Beach","05",844.897880752425
-"369",29,"Leadbetter Beach","06",847.171310568255
-"370",29,"Leadbetter Beach","07",827.42203974148
-"371",29,"Leadbetter Beach","08",793.297893369812
-"372",29,"Leadbetter Beach","09",828.043083676814
-"373",29,"Leadbetter Beach","10",835.907213526078
-"374",29,"Leadbetter Beach","11",858.398634464193
-"375",29,"Leadbetter Beach","12",912.042177451232
-"376",29,"Leadbetter Beach","13",857.956273259307
-"377",29,"Leadbetter Beach","14",845.125239254515
-"378",29,"Leadbetter Beach","15",836.954810623004
-"379",29,"Leadbetter Beach","16",852.523957038734
-"380",29,"Leadbetter Beach","17",836.181782180161
-"381",29,"Leadbetter Beach","18",831.914409795248
-"382",29,"Leadbetter Beach","19",856.05880500408
-"383",30,"Leadbetter Beach","97",1149.00165997486
-"384",30,"Leadbetter Beach","98",1173.84135525204
-"385",30,"Leadbetter Beach","99",1165.69996246889
-"386",30,"Leadbetter Beach","00",1205.88519281479
-"387",30,"Leadbetter Beach","01",1165.07147319383
-"388",30,"Leadbetter Beach","02",1179.44047871226
-"389",30,"Leadbetter Beach","03",1233.75250728213
-"390",30,"Leadbetter Beach","04",1242.21808509014
-"391",30,"Leadbetter Beach","05",1216.65482353256
-"392",30,"Leadbetter Beach","06",1197.15249180085
-"393",30,"Leadbetter Beach","07",1208.46439955838
-"394",30,"Leadbetter Beach","08",1187.89906188402
-"395",30,"Leadbetter Beach","09",1185.01340559927
-"396",30,"Leadbetter Beach","10",1201.72674395015
-"397",30,"Leadbetter Beach","11",1204.87294518964
-"398",30,"Leadbetter Beach","12",1266.62195820222
-"399",30,"Leadbetter Beach","13",1254.95399924657
-"400",30,"Leadbetter Beach","14",1247.63149673691
-"401",30,"Leadbetter Beach","15",1205.1860533233
-"402",30,"Leadbetter Beach","16",1235.66939782653
-"403",30,"Leadbetter Beach","17",1204.29717621938
-"404",30,"Leadbetter Beach","18",1207.85244020121
-"405",30,"Leadbetter Beach","19",1221.76048214246
-"406",33,"Pacific Pines","97",1008.04278292144
-"407",33,"Pacific Pines","98",1029.33010764284
-"408",33,"Pacific Pines","99",1052.10098323545
-"409",33,"Pacific Pines","00",1055.51318083909
-"410",33,"Pacific Pines","01",1053.73147818836
-"411",33,"Pacific Pines","02",1072.58823667332
-"412",33,"Pacific Pines","03",1072.89688280141
-"413",33,"Pacific Pines","04",1106.10508164913
-"414",33,"Pacific Pines","05",1068.29206404429
-"415",33,"Pacific Pines","06",1104.6625209538
-"416",33,"Pacific Pines","07",1070.80156373627
-"417",33,"Pacific Pines","08",1056.71031815724
-"418",33,"Pacific Pines","09",1065.23464266096
-"419",33,"Pacific Pines","10",1076.44727889944
-"420",33,"Pacific Pines","11",1110.59500072034
-"421",33,"Pacific Pines","12",1137.4709434201
-"422",33,"Pacific Pines","13",1135.94179604415
-"423",33,"Pacific Pines","14",1109.93652513333
-"424",33,"Pacific Pines","15",1085.84094162082
-"425",33,"Pacific Pines","16",1111.09095923781
-"426",33,"Pacific Pines","17",1095.47201283283
-"427",33,"Pacific Pines","18",1100.40012523854
-"428",33,"Pacific Pines","19",1110.05065403568
-"429",33,"Pacific Pines","20",1104.48150777866
-"430",35,"Loomis Lake","97",1323.93075863128
-"431",35,"Loomis Lake","98",1342.42592388741
-"432",35,"Loomis Lake","99",1420.29215735707
-"433",35,"Loomis Lake","00",1380.72866505333
-"434",35,"Loomis Lake","01",1377.74338054115
-"435",35,"Loomis Lake","02",1370.41713084007
-"436",35,"Loomis Lake","03",1406.41811575539
-"437",35,"Loomis Lake","04",1425.10850290425
-"438",35,"Loomis Lake","05",1375.80318814137
-"439",35,"Loomis Lake","06",1433.96660460589
-"440",35,"Loomis Lake","07",1386.11333945854
-"441",35,"Loomis Lake","08",1372.15043640446
-"442",35,"Loomis Lake","09",1422.55417862553
-"443",35,"Loomis Lake","10",1401.82812159691
-"444",35,"Loomis Lake","11",1399.78428521146
-"445",35,"Loomis Lake","12",1415.65207880503
-"446",35,"Loomis Lake","13",1452.98689871071
-"447",35,"Loomis Lake","14",1446.11326092566
-"448",35,"Loomis Lake","15",1441.98942337486
-"449",35,"Loomis Lake","16",1434.5668654423
-"450",35,"Loomis Lake","17",1390.77097611358
-"451",35,"Loomis Lake","18",1432.36148065003
-"452",35,"Loomis Lake","19",1431.11231052108
-"453",35,"Loomis Lake","20",1407.83025825204
-"454",35,"Loomis Lake","21",1426.43129260577
-"455",35,"Loomis Lake","22",1478.99170290101
-"456",41,"Cape Disappointment","97",944.908171318772
-"457",41,"Cape Disappointment","98",942.293659455475
-"458",41,"Cape Disappointment","99",921.458233304684
-"459",41,"Cape Disappointment","00",945.041535396716
-"460",41,"Cape Disappointment","01",980.880437324036
-"461",41,"Cape Disappointment","02",963.882437398364
-"462",41,"Cape Disappointment","03",953.033945631022
-"463",41,"Cape Disappointment","04",945.913136101853
-"464",41,"Cape Disappointment","05",921.343741743549
-"465",41,"Cape Disappointment","06",945.587799625199
-"466",41,"Cape Disappointment","07",950.208306057145
-"467",41,"Cape Disappointment","08",912.491343863037
-"468",41,"Cape Disappointment","09",924.685741995635
-"469",41,"Cape Disappointment","10",906.142460612559
-"470",41,"Cape Disappointment","11",923.485170102934
-"471",41,"Cape Disappointment","12",936.184596393799
-"472",41,"Cape Disappointment","13",934.245820555294
-"473",41,"Cape Disappointment","14",926.433703105636
-"474",41,"Cape Disappointment","15",940.479646045058
-"475",41,"Cape Disappointment","16",940.768393827628
-"476",41,"Cape Disappointment","17",876.027057858386
-"477",41,"Cape Disappointment","18",899.311162001223
-"478",41,"Cape Disappointment","19",931.256769961951
-"479",41,"Cape Disappointment","20",907.595625402634
-"480",41,"Cape Disappointment","21",896.32364647208
-"481",41,"Cape Disappointment","22",894.170267636427
-"482",48,"Ocean City","99",410.86003726937
-"483",48,"Ocean City","00",480.630275211614
-"484",48,"Ocean City","01",486.614186625281
-"485",48,"Ocean City","02",515.382433950763
-"486",48,"Ocean City","03",525.681832979782
-"487",48,"Ocean City","04",477.470947414608
-"488",48,"Ocean City","05",549.10150457363
-"489",48,"Ocean City","06",500.454998301574
-"490",48,"Ocean City","07",515.715689818529
-"491",48,"Ocean City","08",537.639153382649
-"492",48,"Ocean City","09",530.687426740084
-"493",48,"Ocean City","10",501.914212042261
-"494",48,"Ocean City","11",568.416388794351
-"495",48,"Ocean City","12",565.296460496604
-"496",48,"Ocean City","13",566.213243619394
-"497",48,"Ocean City","14",578.166401760796
-"498",48,"Ocean City","15",570.80959980102
-"499",48,"Ocean City","16",570.757749071353
-"500",48,"Ocean City","17",553.535404761981
-"501",48,"Ocean City","18",537.862147766527
-"502",48,"Ocean City","19",577.261402875661
-"503",52,"Cape Disappointment","05",622.657672642055
-"504",52,"Cape Disappointment","06",612.180554452691
-"505",52,"Cape Disappointment","07",609.005235055494
-"506",52,"Cape Disappointment","08",631.045799863205
-"507",52,"Cape Disappointment","09",615.562581099604
-"508",52,"Cape Disappointment","10",613.204458337497
-"509",52,"Cape Disappointment","11",609.424571296541
-"510",52,"Cape Disappointment","12",600.801281040584
-"511",52,"Cape Disappointment","13",639.82298278507
-"512",52,"Cape Disappointment","14",616.250227038501
-"513",52,"Cape Disappointment","15",643.562654603252
-"514",52,"Cape Disappointment","16",635.742639457976
-"515",52,"Cape Disappointment","17",574.132385169142
-"516",52,"Cape Disappointment","18",594.78787926873
-"517",52,"Cape Disappointment","19",567.099983424431
-"518",53,"Cape Disappointment","05",1135.98761530443
-"519",53,"Cape Disappointment","06",1157.13733886693
-"520",53,"Cape Disappointment","07",1085.9686286445
-"521",53,"Cape Disappointment","08",1065.12434162639
-"522",53,"Cape Disappointment","09",1090.85561635121
-"523",53,"Cape Disappointment","10",1090.83059970372
-"524",53,"Cape Disappointment","11",1090.19278539395
-"525",53,"Cape Disappointment","12",1130.78490037895
-"526",53,"Cape Disappointment","13",1137.07224102076
-"527",53,"Cape Disappointment","14",1152.411348521
-"528",53,"Cape Disappointment","15",1101.24190504404
-"529",53,"Cape Disappointment","16",1036.73276356543
-"530",53,"Cape Disappointment","17",1026.08824008952
-"531",53,"Cape Disappointment","18",1055.85297994087
-"532",53,"Cape Disappointment","19",1047.48903559895
-"533",54,"Cape Disappointment","05",1019.18895020747
-"534",54,"Cape Disappointment","06",1056.83499776454
-"535",54,"Cape Disappointment","07",1005.58088159281
-"536",54,"Cape Disappointment","08",975.161542322591
-"537",54,"Cape Disappointment","09",999.814217804992
-"538",54,"Cape Disappointment","10",974.025648584258
-"539",54,"Cape Disappointment","11",1032.28324365213
-"540",54,"Cape Disappointment","12",1046.24500326164
-"541",54,"Cape Disappointment","13",1029.27518761988
-"542",54,"Cape Disappointment","14",1018.93262510333
-"543",54,"Cape Disappointment","15",1032.25901180373
-"544",54,"Cape Disappointment","16",966.537165038141
-"545",54,"Cape Disappointment","17",940.202639235267
-"546",54,"Cape Disappointment","18",982.085506066013
-"547",54,"Cape Disappointment","19",948.754586418414
+"profile","Park","year","euc_dist_to_BP"
+1,"Haynisisoos Park, North Beach","97",334.835582749176
+1,"Haynisisoos Park, North Beach","98",365.611623506402
+1,"Haynisisoos Park, North Beach","99",356.460109738775
+2,"Santiago, North Beach","97",466.142040132292
+2,"Santiago, North Beach","98",494.649709305166
+2,"Santiago, North Beach","99",529.822634838014
+2,"Santiago, North Beach","10",511.066635919143
+2,"Santiago, North Beach","11",588.281765389423
+2,"Santiago, North Beach","12",547.36094940971
+2,"Santiago, North Beach","13",525.489374465085
+2,"Santiago, North Beach","14",535.938028490875
+2,"Santiago, North Beach","15",544.611482682549
+2,"Santiago, North Beach","16",555.838194561788
+2,"Santiago, North Beach","17",553.907547593193
+2,"Santiago, North Beach","18",553.746578371093
+2,"Santiago, North Beach","19",599.46700796099
+3,"L443, North Beach","97",435.519716805053
+3,"L443, North Beach","98",535.005841478326
+3,"L443, North Beach","99",529.296308953631
+3,"L443, North Beach","10",528.317482542396
+3,"L443, North Beach","11",618.056694433386
+3,"L443, North Beach","12",556.382761853702
+3,"L443, North Beach","13",582.65243148377
+3,"L443, North Beach","14",574.537868682256
+3,"L443, North Beach","15",604.258384456459
+3,"L443, North Beach","16",630.041867010389
+3,"L443, North Beach","17",573.937035283456
+3,"L443, North Beach","18",606.697659514126
+3,"L443, North Beach","19",631.740247171183
+4,"B1, North Beach","97",470.228925465806
+4,"B1, North Beach","98",562.568531611688
+4,"B1, North Beach","99",568.031396709505
+4,"B1, North Beach","10",558.516964926519
+4,"B1, North Beach","11",592.199351764893
+4,"B1, North Beach","12",592.464293607389
+4,"B1, North Beach","13",601.196408028822
+4,"B1, North Beach","14",593.123335949385
+4,"B1, North Beach","15",605.255118404405
+4,"B1, North Beach","16",620.39419242906
+4,"B1, North Beach","17",604.384597832157
+4,"B1, North Beach","18",594.732554040675
+4,"B1, North Beach","19",614.360579682431
+5,"A1.5, North Beach","97",441.866865510801
+5,"A1.5, North Beach","98",497.790576781401
+5,"A1.5, North Beach","99",553.927123106806
+5,"A1.5, North Beach","10",522.626355692441
+5,"A1.5, North Beach","11",554.516450439799
+5,"A1.5, North Beach","12",551.100686977764
+5,"A1.5, North Beach","13",550.572530146889
+5,"A1.5, North Beach","14",545.197573908168
+5,"A1.5, North Beach","15",561.052937817247
+5,"A1.5, North Beach","16",582.831417194001
+5,"A1.5, North Beach","17",517.007966059851
+5,"A1.5, North Beach","18",548.62869697852
+5,"A1.5, North Beach","19",560.955417797498
+6,"Moclips, North Beach","97",421.991433439821
+6,"Moclips, North Beach","98",486.305980528316
+6,"Moclips, North Beach","99",519.594104762168
+6,"Moclips, North Beach","10",466.098525312626
+6,"Moclips, North Beach","11",568.783790729488
+6,"Moclips, North Beach","12",550.860901105362
+6,"Moclips, North Beach","13",570.808308867888
+6,"Moclips, North Beach","14",585.657719100151
+6,"Moclips, North Beach","15",546.101509122243
+6,"Moclips, North Beach","16",570.353878047307
+6,"Moclips, North Beach","17",520.972338840165
+6,"Moclips, North Beach","18",566.15581922259
+6,"Moclips, North Beach","19",588.549551325662
+7,"Pacific Beach, North Beach","97",437.327040312352
+7,"Pacific Beach, North Beach","98",547.291305039962
+7,"Pacific Beach, North Beach","99",533.207800176788
+7,"Pacific Beach, North Beach","10",490.007656137491
+7,"Pacific Beach, North Beach","11",533.176981304862
+7,"Pacific Beach, North Beach","12",549.635814571201
+7,"Pacific Beach, North Beach","13",585.226200377538
+7,"Pacific Beach, North Beach","14",568.244243298023
+7,"Pacific Beach, North Beach","15",583.813907199323
+7,"Pacific Beach, North Beach","16",536.436224396123
+7,"Pacific Beach, North Beach","17",530.493075560216
+7,"Pacific Beach, North Beach","18",533.130066210271
+7,"Pacific Beach, North Beach","19",577.154245285771
+8,"Roosevelt Beach Rd OBA, North Beach","97",437.052001451049
+8,"Roosevelt Beach Rd OBA, North Beach","98",516.085698070942
+8,"Roosevelt Beach Rd OBA, North Beach","99",508.934741105748
+8,"Roosevelt Beach Rd OBA, North Beach","10",479.290038070217
+8,"Roosevelt Beach Rd OBA, North Beach","11",549.683706395186
+8,"Roosevelt Beach Rd OBA, North Beach","12",531.662472824029
+8,"Roosevelt Beach Rd OBA, North Beach","13",545.2552290775
+8,"Roosevelt Beach Rd OBA, North Beach","14",526.998491091176
+8,"Roosevelt Beach Rd OBA, North Beach","15",537.860228222315
+8,"Roosevelt Beach Rd OBA, North Beach","16",512.640500499484
+8,"Roosevelt Beach Rd OBA, North Beach","17",541.096388774097
+8,"Roosevelt Beach Rd OBA, North Beach","18",508.124131313784
+8,"Roosevelt Beach Rd OBA, North Beach","19",523.974475050436
+9,"Griffiths-Priday State Park, North Beach","97",469.061107476459
+9,"Griffiths-Priday State Park, North Beach","98",495.821216388572
+9,"Griffiths-Priday State Park, North Beach","99",506.119801604367
+9,"Griffiths-Priday State Park, North Beach","10",524.953089194653
+9,"Griffiths-Priday State Park, North Beach","11",592.542437538488
+9,"Griffiths-Priday State Park, North Beach","12",584.524281315167
+9,"Griffiths-Priday State Park, North Beach","13",608.174577718482
+9,"Griffiths-Priday State Park, North Beach","14",611.105495850781
+9,"Griffiths-Priday State Park, North Beach","15",602.386615144302
+9,"Griffiths-Priday State Park, North Beach","16",562.007881525732
+9,"Griffiths-Priday State Park, North Beach","17",605.415497285983
+9,"Griffiths-Priday State Park, North Beach","18",569.057229850409
+9,"Griffiths-Priday State Park, North Beach","19",599.562725215658
+10,"Ocean City OBA, North Beach","97",364.85709930396
+10,"Ocean City OBA, North Beach","98",376.521958606001
+10,"Ocean City OBA, North Beach","99",367.020790231954
+10,"Ocean City OBA, North Beach","10",497.245828099653
+10,"Ocean City OBA, North Beach","11",553.759938251659
+10,"Ocean City OBA, North Beach","12",572.22956889038
+10,"Ocean City OBA, North Beach","13",529.72858806422
+10,"Ocean City OBA, North Beach","14",512.664482105499
+10,"Ocean City OBA, North Beach","15",569.210387565533
+10,"Ocean City OBA, North Beach","16",596.70037121868
+10,"Ocean City OBA, North Beach","17",523.668783022729
+10,"Ocean City OBA, North Beach","18",545.54677811579
+10,"Ocean City OBA, North Beach","19",573.3641508348
+11,"Ocean Shores SR 115 OBA, North Beach","97",398.720080028345
+11,"Ocean Shores SR 115 OBA, North Beach","98",400.706229079109
+11,"Ocean Shores SR 115 OBA, North Beach","99",406.383341319244
+11,"Ocean Shores SR 115 OBA, North Beach","10",516.48586556343
+11,"Ocean Shores SR 115 OBA, North Beach","11",584.883530839105
+11,"Ocean Shores SR 115 OBA, North Beach","12",587.580902961299
+11,"Ocean Shores SR 115 OBA, North Beach","13",608.803112493529
+11,"Ocean Shores SR 115 OBA, North Beach","14",585.877775416346
+11,"Ocean Shores SR 115 OBA, North Beach","15",585.2270363729
+11,"Ocean Shores SR 115 OBA, North Beach","16",599.760723701377
+11,"Ocean Shores SR 115 OBA, North Beach","17",580.177065385035
+11,"Ocean Shores SR 115 OBA, North Beach","18",611.024335872788
+11,"Ocean Shores SR 115 OBA, North Beach","19",607.604112861984
+12,"Ocean Shores Pacific Blvd OBA, North Beach","97",376.51940795377
+12,"Ocean Shores Pacific Blvd OBA, North Beach","98",381.518601302541
+12,"Ocean Shores Pacific Blvd OBA, North Beach","99",386.153368212505
+12,"Ocean Shores Pacific Blvd OBA, North Beach","10",484.036749276179
+12,"Ocean Shores Pacific Blvd OBA, North Beach","11",562.241094698561
+12,"Ocean Shores Pacific Blvd OBA, North Beach","12",573.66066692238
+12,"Ocean Shores Pacific Blvd OBA, North Beach","13",556.166067770982
+12,"Ocean Shores Pacific Blvd OBA, North Beach","14",568.173426733272
+12,"Ocean Shores Pacific Blvd OBA, North Beach","15",563.870884490296
+12,"Ocean Shores Pacific Blvd OBA, North Beach","16",608.569000516649
+12,"Ocean Shores Pacific Blvd OBA, North Beach","17",540.938242062687
+12,"Ocean Shores Pacific Blvd OBA, North Beach","18",560.22275346319
+12,"Ocean Shores Pacific Blvd OBA, North Beach","19",611.864571033369
+13,"Ocean Shores Butter Clam St OBA, North Beach","97",330.500548985348
+13,"Ocean Shores Butter Clam St OBA, North Beach","98",327.214167428023
+13,"Ocean Shores Butter Clam St OBA, North Beach","99",342.606495906913
+13,"Ocean Shores Butter Clam St OBA, North Beach","10",446.312907621558
+13,"Ocean Shores Butter Clam St OBA, North Beach","11",457.776236000319
+13,"Ocean Shores Butter Clam St OBA, North Beach","12",460.532404026721
+13,"Ocean Shores Butter Clam St OBA, North Beach","13",433.341645839192
+13,"Ocean Shores Butter Clam St OBA, North Beach","14",509.696889084715
+13,"Ocean Shores Butter Clam St OBA, North Beach","15",407.656457153109
+13,"Ocean Shores Butter Clam St OBA, North Beach","16",450.788710040106
+13,"Ocean Shores Butter Clam St OBA, North Beach","17",430.078901578093
+13,"Ocean Shores Butter Clam St OBA, North Beach","18",468.353970996977
+13,"Ocean Shores Butter Clam St OBA, North Beach","19",470.123105141209
+13,"Ocean Shores Butter Clam St OBA, North Beach","20",443.164611153244
+13,"Ocean Shores Butter Clam St OBA, North Beach","21",425.934614225747
+13,"Ocean Shores Butter Clam St OBA, North Beach","22",444.418382514297
+14,"Ocean Shores North Jetty North, North Beach","97",338.267959789055
+14,"Ocean Shores North Jetty North, North Beach","98",370.312693838387
+14,"Ocean Shores North Jetty North, North Beach","99",370.373902970849
+14,"Ocean Shores North Jetty North, North Beach","10",417.0293524248
+14,"Ocean Shores North Jetty North, North Beach","11",408.561559035913
+14,"Ocean Shores North Jetty North, North Beach","12",405.934668492169
+14,"Ocean Shores North Jetty North, North Beach","13",417.684759707425
+14,"Ocean Shores North Jetty North, North Beach","14",433.5895192966
+14,"Ocean Shores North Jetty North, North Beach","15",412.429480030066
+14,"Ocean Shores North Jetty North, North Beach","16",375.960281356762
+14,"Ocean Shores North Jetty North, North Beach","17",421.709013346715
+14,"Ocean Shores North Jetty North, North Beach","18",402.379557358268
+14,"Ocean Shores North Jetty North, North Beach","19",471.623324473949
+14,"Ocean Shores North Jetty North, North Beach","20",441.571863342579
+14,"Ocean Shores North Jetty North, North Beach","21",407.483129049368
+14,"Ocean Shores North Jetty North, North Beach","22",386.629858244071
+15,"Ocean Shores North Jetty South, North Beach","97",361.550434287155
+15,"Ocean Shores North Jetty South, North Beach","98",353.872072592957
+15,"Ocean Shores North Jetty South, North Beach","99",366.515831329596
+15,"Ocean Shores North Jetty South, North Beach","10",385.458041946491
+15,"Ocean Shores North Jetty South, North Beach","11",448.704938331672
+15,"Ocean Shores North Jetty South, North Beach","12",420.544330102321
+15,"Ocean Shores North Jetty South, North Beach","13",438.286232048459
+15,"Ocean Shores North Jetty South, North Beach","14",435.762309390363
+15,"Ocean Shores North Jetty South, North Beach","15",448.01530853
+15,"Ocean Shores North Jetty South, North Beach","16",411.763832128595
+15,"Ocean Shores North Jetty South, North Beach","17",436.206066742812
+15,"Ocean Shores North Jetty South, North Beach","18",398.864353487792
+15,"Ocean Shores North Jetty South, North Beach","19",430.764845080519
+16,"Westport Light North, Grayland Plains","97",417.325090313039
+16,"Westport Light North, Grayland Plains","98",449.589253685859
+16,"Westport Light North, Grayland Plains","99",480.96967528401
+16,"Westport Light North, Grayland Plains","10",455.121869356751
+16,"Westport Light North, Grayland Plains","11",486.471930674104
+16,"Westport Light North, Grayland Plains","12",458.974233191596
+16,"Westport Light North, Grayland Plains","13",454.1035002219
+16,"Westport Light North, Grayland Plains","14",478.695771200059
+16,"Westport Light North, Grayland Plains","15",481.71793344945
+16,"Westport Light North, Grayland Plains","16",463.800931574937
+16,"Westport Light North, Grayland Plains","17",489.768185910236
+16,"Westport Light North, Grayland Plains","18",489.251336167619
+16,"Westport Light North, Grayland Plains","19",476.75642076201
+16,"Westport Light North, Grayland Plains","20",426.138351141731
+16,"Westport Light North, Grayland Plains","21",458.569403638967
+17,"Westport Light South, Grayland Plains","97",412.560372635365
+17,"Westport Light South, Grayland Plains","98",406.197236233875
+17,"Westport Light South, Grayland Plains","99",501.055145906153
+17,"Westport Light South, Grayland Plains","10",427.284852180667
+17,"Westport Light South, Grayland Plains","11",480.7443737196
+17,"Westport Light South, Grayland Plains","12",463.872246551837
+17,"Westport Light South, Grayland Plains","13",498.610131397284
+17,"Westport Light South, Grayland Plains","14",519.875889270721
+17,"Westport Light South, Grayland Plains","15",494.311542534698
+17,"Westport Light South, Grayland Plains","16",467.466185429506
+17,"Westport Light South, Grayland Plains","17",425.048975000569
+17,"Westport Light South, Grayland Plains","18",477.814025552882
+17,"Westport Light South, Grayland Plains","19",497.800272065061
+17,"Westport Light South, Grayland Plains","20",502.282437341799
+17,"Westport Light South, Grayland Plains","21",443.605164869655
+17,"Westport Light South, Grayland Plains","22",519.650564493132
+18,"Westport Ocean Ave OBA, Grayland Plains","97",390.94207012274
+18,"Westport Ocean Ave OBA, Grayland Plains","98",404.430070672119
+18,"Westport Ocean Ave OBA, Grayland Plains","99",433.936591197219
+18,"Westport Ocean Ave OBA, Grayland Plains","10",441.449804790842
+18,"Westport Ocean Ave OBA, Grayland Plains","11",445.635528715852
+18,"Westport Ocean Ave OBA, Grayland Plains","12",416.194237292959
+18,"Westport Ocean Ave OBA, Grayland Plains","13",469.798025862034
+18,"Westport Ocean Ave OBA, Grayland Plains","14",509.712964779069
+18,"Westport Ocean Ave OBA, Grayland Plains","15",473.132533508163
+18,"Westport Ocean Ave OBA, Grayland Plains","16",439.258589520872
+18,"Westport Ocean Ave OBA, Grayland Plains","17",384.288114359334
+18,"Westport Ocean Ave OBA, Grayland Plains","18",399.270685540346
+18,"Westport Ocean Ave OBA, Grayland Plains","19",460.348521274751
+18,"Westport Ocean Ave OBA, Grayland Plains","20",430.840038784529
+18,"Westport Ocean Ave OBA, Grayland Plains","21",447.004976849116
+19,"Bonge Ave OBA, Grayland Plains","97",425.648016754197
+19,"Bonge Ave OBA, Grayland Plains","98",434.18627600466
+19,"Bonge Ave OBA, Grayland Plains","99",439.222412217066
+19,"Bonge Ave OBA, Grayland Plains","10",454.850978138761
+19,"Bonge Ave OBA, Grayland Plains","11",481.168284160312
+19,"Bonge Ave OBA, Grayland Plains","12",491.28636880518
+19,"Bonge Ave OBA, Grayland Plains","13",489.646861514291
+19,"Bonge Ave OBA, Grayland Plains","14",498.138990910946
+19,"Bonge Ave OBA, Grayland Plains","15",480.894341482411
+19,"Bonge Ave OBA, Grayland Plains","16",473.00349649321
+19,"Bonge Ave OBA, Grayland Plains","17",484.851495005204
+19,"Bonge Ave OBA, Grayland Plains","18",481.14124070358
+19,"Bonge Ave OBA, Grayland Plains","19",481.283310757606
+19,"Bonge Ave OBA, Grayland Plains","20",502.635998462863
+19,"Bonge Ave OBA, Grayland Plains","21",488.607885508189
+19,"Bonge Ave OBA, Grayland Plains","22",487.54281664052
+20,"Marine Drive OBA, Grayland Plains","97",432.109614277538
+20,"Marine Drive OBA, Grayland Plains","98",451.101176078126
+20,"Marine Drive OBA, Grayland Plains","99",466.949190902036
+20,"Marine Drive OBA, Grayland Plains","10",454.161385214615
+20,"Marine Drive OBA, Grayland Plains","11",500.655309658321
+20,"Marine Drive OBA, Grayland Plains","12",516.955121436154
+20,"Marine Drive OBA, Grayland Plains","13",518.542830860735
+20,"Marine Drive OBA, Grayland Plains","14",531.879088742976
+20,"Marine Drive OBA, Grayland Plains","15",523.570877702397
+20,"Marine Drive OBA, Grayland Plains","16",525.908957965206
+20,"Marine Drive OBA, Grayland Plains","17",521.534776857758
+20,"Marine Drive OBA, Grayland Plains","18",516.306950731913
+20,"Marine Drive OBA, Grayland Plains","19",525.608982650674
+20,"Marine Drive OBA, Grayland Plains","20",547.973414375269
+20,"Marine Drive OBA, Grayland Plains","21",543.444896932583
+20,"Marine Drive OBA, Grayland Plains","22",559.136114702015
+21,"Cranberry Beach Road OBA, Grayland Plains","97",513.835816956872
+21,"Cranberry Beach Road OBA, Grayland Plains","98",493.825558864408
+21,"Cranberry Beach Road OBA, Grayland Plains","99",486.773945603846
+21,"Cranberry Beach Road OBA, Grayland Plains","10",539.682744804521
+21,"Cranberry Beach Road OBA, Grayland Plains","11",595.564111379899
+21,"Cranberry Beach Road OBA, Grayland Plains","12",602.16300604049
+21,"Cranberry Beach Road OBA, Grayland Plains","13",658.064848919724
+21,"Cranberry Beach Road OBA, Grayland Plains","14",676.933753691418
+21,"Cranberry Beach Road OBA, Grayland Plains","15",714.922306716427
+21,"Cranberry Beach Road OBA, Grayland Plains","16",715.937336810102
+21,"Cranberry Beach Road OBA, Grayland Plains","17",695.336700647795
+21,"Cranberry Beach Road OBA, Grayland Plains","18",683.5219638839
+21,"Cranberry Beach Road OBA, Grayland Plains","19",752.642913655444
+21,"Cranberry Beach Road OBA, Grayland Plains","20",717.117860633596
+21,"Cranberry Beach Road OBA, Grayland Plains","21",795.054367142086
+22,"Midway Beach Rd OBA, Grayland Plains","97",549.380880139355
+22,"Midway Beach Rd OBA, Grayland Plains","98",538.49860908983
+22,"Midway Beach Rd OBA, Grayland Plains","99",588.514233614362
+22,"Midway Beach Rd OBA, Grayland Plains","10",1078.52537800123
+22,"Midway Beach Rd OBA, Grayland Plains","11",1044.44011587391
+22,"Midway Beach Rd OBA, Grayland Plains","12",986.608649392811
+22,"Midway Beach Rd OBA, Grayland Plains","13",1109.931227673
+22,"Midway Beach Rd OBA, Grayland Plains","14",1310.05450473319
+22,"Midway Beach Rd OBA, Grayland Plains","15",1348.21491499859
+22,"Midway Beach Rd OBA, Grayland Plains","16",1175.31135478208
+22,"Midway Beach Rd OBA, Grayland Plains","17",1278.02478895
+22,"Midway Beach Rd OBA, Grayland Plains","18",1210.67973719712
+22,"Midway Beach Rd OBA, Grayland Plains","19",1265.67369399846
+22,"Midway Beach Rd OBA, Grayland Plains","20",1289.48738145501
+22,"Midway Beach Rd OBA, Grayland Plains","21",1108.63613466307
+23,"Warrenton Cannery Rd OBA, Grayland Plains","97",737.823045540785
+23,"Warrenton Cannery Rd OBA, Grayland Plains","98",502.121255038111
+23,"Warrenton Cannery Rd OBA, Grayland Plains","99",488.583372644895
+23,"Warrenton Cannery Rd OBA, Grayland Plains","10",139.093853613477
+23,"Warrenton Cannery Rd OBA, Grayland Plains","11",296.749720877805
+23,"Warrenton Cannery Rd OBA, Grayland Plains","12",366.53070917188
+23,"Warrenton Cannery Rd OBA, Grayland Plains","13",315.336060097875
+23,"Warrenton Cannery Rd OBA, Grayland Plains","14",537.298553204879
+23,"Warrenton Cannery Rd OBA, Grayland Plains","15",636.413041908353
+23,"Warrenton Cannery Rd OBA, Grayland Plains","16",537.466727435345
+23,"Warrenton Cannery Rd OBA, Grayland Plains","17",510.934201914541
+23,"Warrenton Cannery Rd OBA, Grayland Plains","18",459.43044463341
+23,"Warrenton Cannery Rd OBA, Grayland Plains","19",582.355168802558
+23,"Warrenton Cannery Rd OBA, Grayland Plains","20",533.294537506301
+23,"Warrenton Cannery Rd OBA, Grayland Plains","21",530.402944184927
+24,"North Cove, Grayland Plains","97",379.284574433178
+24,"North Cove, Grayland Plains","98",369.851935752618
+24,"North Cove, Grayland Plains","99",343.606216558964
+25,"Leadbetter Point North, Long Beach","97",593.289505513072
+25,"Leadbetter Point North, Long Beach","98",583.109491722591
+25,"Leadbetter Point North, Long Beach","99",651.369609886704
+25,"Leadbetter Point North, Long Beach","10",826.082963515108
+25,"Leadbetter Point North, Long Beach","11",794.177081834348
+25,"Leadbetter Point North, Long Beach","12",768.965751507136
+25,"Leadbetter Point North, Long Beach","13",917.478387268044
+25,"Leadbetter Point North, Long Beach","14",863.354978229671
+25,"Leadbetter Point North, Long Beach","15",899.293770510469
+25,"Leadbetter Point North, Long Beach","16",930.501724007513
+25,"Leadbetter Point North, Long Beach","17",861.209045853521
+25,"Leadbetter Point North, Long Beach","18",879.940518805068
+25,"Leadbetter Point North, Long Beach","19",857.630787615489
+26,"Leadbetter Point South, Long Beach","97",364.197894370209
+26,"Leadbetter Point South, Long Beach","98",372.850572708012
+26,"Leadbetter Point South, Long Beach","99",376.482279071269
+26,"Leadbetter Point South, Long Beach","10",573.474744343353
+26,"Leadbetter Point South, Long Beach","11",471.171037099782
+26,"Leadbetter Point South, Long Beach","12",564.514434669027
+26,"Leadbetter Point South, Long Beach","13",483.574096333436
+26,"Leadbetter Point South, Long Beach","14",682.856794524818
+26,"Leadbetter Point South, Long Beach","15",596.745914574778
+26,"Leadbetter Point South, Long Beach","16",647.860677540832
+26,"Leadbetter Point South, Long Beach","17",560.074712569413
+26,"Leadbetter Point South, Long Beach","18",471.499581942223
+26,"Leadbetter Point South, Long Beach","19",575.668050673042
+27,"Leadbetter Point Bearberry Trail, Long Beach","97",431.550460355711
+27,"Leadbetter Point Bearberry Trail, Long Beach","98",471.104866422759
+27,"Leadbetter Point Bearberry Trail, Long Beach","99",462.038934808763
+27,"Leadbetter Point Bearberry Trail, Long Beach","10",521.308027223076
+27,"Leadbetter Point Bearberry Trail, Long Beach","11",516.027404042843
+27,"Leadbetter Point Bearberry Trail, Long Beach","12",549.808254444386
+27,"Leadbetter Point Bearberry Trail, Long Beach","13",525.596002527815
+27,"Leadbetter Point Bearberry Trail, Long Beach","14",556.496372152785
+27,"Leadbetter Point Bearberry Trail, Long Beach","15",532.025813690655
+27,"Leadbetter Point Bearberry Trail, Long Beach","16",509.006096870353
+27,"Leadbetter Point Bearberry Trail, Long Beach","17",476.910746464376
+27,"Leadbetter Point Bearberry Trail, Long Beach","18",497.589518546379
+27,"Leadbetter Point Bearberry Trail, Long Beach","19",481.388813440012
+28,"Leadbetter Point Hines, Long Beach","97",450.232990871638
+28,"Leadbetter Point Hines, Long Beach","98",458.74421317031
+28,"Leadbetter Point Hines, Long Beach","99",467.575637675055
+28,"Leadbetter Point Hines, Long Beach","10",520.811996045813
+28,"Leadbetter Point Hines, Long Beach","11",543.00469109688
+28,"Leadbetter Point Hines, Long Beach","12",577.504972028128
+28,"Leadbetter Point Hines, Long Beach","13",530.23629558081
+28,"Leadbetter Point Hines, Long Beach","14",521.757291944473
+28,"Leadbetter Point Hines, Long Beach","15",537.601377560753
+28,"Leadbetter Point Hines, Long Beach","16",547.393897506372
+28,"Leadbetter Point Hines, Long Beach","17",499.523235616978
+28,"Leadbetter Point Hines, Long Beach","18",497.859983052714
+28,"Leadbetter Point Hines, Long Beach","19",484.474476053435
+29,"Leadbetter Point 357th Pl, Long Beach","97",467.762949005683
+29,"Leadbetter Point 357th Pl, Long Beach","98",456.779063785198
+29,"Leadbetter Point 357th Pl, Long Beach","99",475.361656596846
+29,"Leadbetter Point 357th Pl, Long Beach","10",508.697650685033
+29,"Leadbetter Point 357th Pl, Long Beach","11",531.250520199753
+29,"Leadbetter Point 357th Pl, Long Beach","12",584.908073557294
+29,"Leadbetter Point 357th Pl, Long Beach","13",530.806774648282
+29,"Leadbetter Point 357th Pl, Long Beach","14",517.954451870541
+29,"Leadbetter Point 357th Pl, Long Beach","15",509.766106869127
+29,"Leadbetter Point 357th Pl, Long Beach","16",525.34627438719
+29,"Leadbetter Point 357th Pl, Long Beach","17",509.033151830515
+29,"Leadbetter Point 357th Pl, Long Beach","18",504.762601043795
+29,"Leadbetter Point 357th Pl, Long Beach","19",528.923346112196
+30,"Oysterville Rd OBA, Long Beach","97",437.636618454738
+30,"Oysterville Rd OBA, Long Beach","98",462.821904853781
+30,"Oysterville Rd OBA, Long Beach","99",457.141882037172
+30,"Oysterville Rd OBA, Long Beach","10",491.467258891687
+30,"Oysterville Rd OBA, Long Beach","11",494.771554469823
+30,"Oysterville Rd OBA, Long Beach","12",556.555187346686
+30,"Oysterville Rd OBA, Long Beach","13",544.850182309304
+30,"Oysterville Rd OBA, Long Beach","14",537.544091179958
+30,"Oysterville Rd OBA, Long Beach","15",494.850206943975
+30,"Oysterville Rd OBA, Long Beach","16",525.596360492054
+30,"Oysterville Rd OBA, Long Beach","17",494.012739170248
+30,"Oysterville Rd OBA, Long Beach","18",497.634979791924
+30,"Oysterville Rd OBA, Long Beach","19",511.575155194704
+31,"Oysterville Beach 311th St, Long Beach","97",404.578097817007
+31,"Oysterville Beach 311th St, Long Beach","98",449.443118847332
+31,"Oysterville Beach 311th St, Long Beach","99",450.499195350259
+31,"Oysterville Beach 311th St, Long Beach","10",496.020591190755
+31,"Oysterville Beach 311th St, Long Beach","11",516.020568707538
+31,"Oysterville Beach 311th St, Long Beach","12",533.879596899191
+31,"Oysterville Beach 311th St, Long Beach","13",542.977688181781
+31,"Oysterville Beach 311th St, Long Beach","14",533.672702237274
+31,"Oysterville Beach 311th St, Long Beach","15",545.986377452059
+31,"Oysterville Beach 311th St, Long Beach","16",527.161655158282
+31,"Oysterville Beach 311th St, Long Beach","17",501.577789571293
+31,"Oysterville Beach 311th St, Long Beach","18",496.43783871018
+31,"Oysterville Beach 311th St, Long Beach","19",534.920511477387
+31,"Oysterville Beach 311th St, Long Beach","20",510.596678758541
+32,"Oysterville Beach 295th St, Long Beach","97",382.701113006423
+32,"Oysterville Beach 295th St, Long Beach","98",424.8034188485
+32,"Oysterville Beach 295th St, Long Beach","99",437.645520814901
+32,"Oysterville Beach 295th St, Long Beach","10",462.053051537736
+32,"Oysterville Beach 295th St, Long Beach","11",485.655301937873
+32,"Oysterville Beach 295th St, Long Beach","12",509.69511032514
+32,"Oysterville Beach 295th St, Long Beach","13",494.897561598731
+32,"Oysterville Beach 295th St, Long Beach","14",534.671046834725
+32,"Oysterville Beach 295th St, Long Beach","15",492.45541166012
+32,"Oysterville Beach 295th St, Long Beach","16",498.808846649055
+32,"Oysterville Beach 295th St, Long Beach","17",488.034299043983
+32,"Oysterville Beach 295th St, Long Beach","18",478.587722817188
+32,"Oysterville Beach 295th St, Long Beach","19",496.169914947866
+32,"Oysterville Beach 295th St, Long Beach","20",494.792020255344
+33,"Pacific Pines, Long Beach","97",372.698218248066
+33,"Pacific Pines, Long Beach","98",394.918386342407
+33,"Pacific Pines, Long Beach","99",416.273183082073
+33,"Pacific Pines, Long Beach","10",440.141900515378
+33,"Pacific Pines, Long Beach","11",474.297159828396
+33,"Pacific Pines, Long Beach","12",501.167429767021
+33,"Pacific Pines, Long Beach","13",499.636930193599
+33,"Pacific Pines, Long Beach","14",473.632032068469
+33,"Pacific Pines, Long Beach","15",449.537548708981
+33,"Pacific Pines, Long Beach","16",474.787466902064
+33,"Pacific Pines, Long Beach","17",459.166909560438
+33,"Pacific Pines, Long Beach","18",464.099899966889
+33,"Pacific Pines, Long Beach","19",473.747931697119
+33,"Pacific Pines, Long Beach","20",468.177045179804
+34,"Klipsan Beach, Long Beach","97",459.909466090878
+34,"Klipsan Beach, Long Beach","98",445.920969705379
+34,"Klipsan Beach, Long Beach","99",475.96813795462
+34,"Klipsan Beach, Long Beach","10",499.028488819
+34,"Klipsan Beach, Long Beach","11",538.416095934142
+34,"Klipsan Beach, Long Beach","12",534.68038416608
+34,"Klipsan Beach, Long Beach","13",545.480931174464
+34,"Klipsan Beach, Long Beach","14",558.595979943445
+34,"Klipsan Beach, Long Beach","15",533.681990098961
+34,"Klipsan Beach, Long Beach","16",551.23370942277
+34,"Klipsan Beach, Long Beach","17",511.993698552042
+34,"Klipsan Beach, Long Beach","18",533.670581417018
+34,"Klipsan Beach, Long Beach","19",559.609511398769
+34,"Klipsan Beach, Long Beach","20",542.531751491093
+34,"Klipsan Beach, Long Beach","21",542.10428537412
+34,"Klipsan Beach, Long Beach","22",533.313980266778
+35,"Loomis Lake State Park, Long Beach","97",393.05028654533
+35,"Loomis Lake State Park, Long Beach","98",411.447879022795
+35,"Loomis Lake State Park, Long Beach","99",489.527728392751
+35,"Loomis Lake State Park, Long Beach","10",470.862047401728
+35,"Loomis Lake State Park, Long Beach","11",468.818993549059
+35,"Loomis Lake State Park, Long Beach","12",484.684921857873
+35,"Loomis Lake State Park, Long Beach","13",522.022188873575
+35,"Loomis Lake State Park, Long Beach","14",515.145267826836
+35,"Loomis Lake State Park, Long Beach","15",511.024776691263
+35,"Loomis Lake State Park, Long Beach","16",503.602247624407
+35,"Loomis Lake State Park, Long Beach","17",459.806963730809
+35,"Loomis Lake State Park, Long Beach","18",501.396891240219
+35,"Loomis Lake State Park, Long Beach","19",500.148491766562
+35,"Loomis Lake State Park, Long Beach","20",476.866635588366
+35,"Loomis Lake State Park, Long Beach","21",495.464827845893
+35,"Loomis Lake State Park, Long Beach","22",548.024785192585
+36,"Oceanside 156th Pl, Long Beach","97",366.838371736874
+36,"Oceanside 156th Pl, Long Beach","98",366.610788553156
+36,"Oceanside 156th Pl, Long Beach","99",389.917350354615
+36,"Oceanside 156th Pl, Long Beach","10",491.619064226099
+36,"Oceanside 156th Pl, Long Beach","11",501.846042505634
+36,"Oceanside 156th Pl, Long Beach","12",498.071240494326
+36,"Oceanside 156th Pl, Long Beach","13",524.724211210564
+36,"Oceanside 156th Pl, Long Beach","14",496.224193883731
+36,"Oceanside 156th Pl, Long Beach","15",493.749076526288
+36,"Oceanside 156th Pl, Long Beach","16",458.940534352261
+36,"Oceanside 156th Pl, Long Beach","17",459.530875837039
+36,"Oceanside 156th Pl, Long Beach","18",462.609879751349
+36,"Oceanside 156th Pl, Long Beach","19",484.082968433667
+36,"Oceanside 156th Pl, Long Beach","20",466.616592768171
+37,"Oceanside 115th Ln, Long Beach","97",427.085585152695
+37,"Oceanside 115th Ln, Long Beach","98",403.933779712999
+37,"Oceanside 115th Ln, Long Beach","99",435.887246580162
+37,"Oceanside 115th Ln, Long Beach","10",514.899889051489
+37,"Oceanside 115th Ln, Long Beach","11",518.119062182842
+37,"Oceanside 115th Ln, Long Beach","12",505.073357328654
+37,"Oceanside 115th Ln, Long Beach","13",559.025903765864
+37,"Oceanside 115th Ln, Long Beach","14",544.710151878267
+37,"Oceanside 115th Ln, Long Beach","15",538.528994566908
+37,"Oceanside 115th Ln, Long Beach","16",526.536164857873
+37,"Oceanside 115th Ln, Long Beach","17",537.002622819689
+37,"Oceanside 115th Ln, Long Beach","18",528.55698050942
+37,"Oceanside 115th Ln, Long Beach","19",529.390571103444
+38,"Long Beach 11th St, Long Beach","97",428.629080136232
+38,"Long Beach 11th St, Long Beach","98",414.369478424071
+38,"Long Beach 11th St, Long Beach","99",418.379190982819
+38,"Long Beach 11th St, Long Beach","10",467.590578157242
+38,"Long Beach 11th St, Long Beach","11",479.578187432896
+38,"Long Beach 11th St, Long Beach","12",545.375909186892
+38,"Long Beach 11th St, Long Beach","13",538.733058802279
+38,"Long Beach 11th St, Long Beach","14",491.357188334961
+38,"Long Beach 11th St, Long Beach","15",508.566290598805
+38,"Long Beach 11th St, Long Beach","16",515.941355476024
+38,"Long Beach 11th St, Long Beach","17",465.356195968666
+38,"Long Beach 11th St, Long Beach","18",487.064600267207
+38,"Long Beach 11th St, Long Beach","19",484.89422905663
+39,"Holman, Long Beach","97",449.950039220397
+39,"Holman, Long Beach","98",449.073304735925
+39,"Holman, Long Beach","99",448.048639393601
+39,"Holman, Long Beach","10",473.37402706151
+39,"Holman, Long Beach","11",450.332919234672
+39,"Holman, Long Beach","12",467.037981368136
+39,"Holman, Long Beach","13",482.668510433832
+39,"Holman, Long Beach","14",485.551456237575
+39,"Holman, Long Beach","15",482.265742737803
+39,"Holman, Long Beach","16",485.917549082587
+39,"Holman, Long Beach","17",475.598321307411
+39,"Holman, Long Beach","18",487.624158101771
+39,"Holman, Long Beach","19",438.555175968118
+40,"Oceanview South, Long Beach","97",408.886573173563
+40,"Oceanview South, Long Beach","98",420.89281247086
+40,"Oceanview South, Long Beach","99",391.017131590935
+40,"Oceanview South, Long Beach","10",433.598805609091
+40,"Oceanview South, Long Beach","11",474.78399913079
+40,"Oceanview South, Long Beach","12",448.207542835507
+40,"Oceanview South, Long Beach","13",480.980330780378
+40,"Oceanview South, Long Beach","14",443.560846415267
+40,"Oceanview South, Long Beach","15",475.005203774247
+40,"Oceanview South, Long Beach","16",462.19101947638
+40,"Oceanview South, Long Beach","17",454.353831940084
+40,"Oceanview South, Long Beach","18",456.395869251274
+40,"Oceanview South, Long Beach","19",424.257271778115
+41,"Cape Disappointment CANBY, Long Beach","97",400.947701928331
+41,"Cape Disappointment CANBY, Long Beach","98",398.40320800492
+41,"Cape Disappointment CANBY, Long Beach","99",377.47577877211
+41,"Cape Disappointment CANBY, Long Beach","10",362.168788658836
+41,"Cape Disappointment CANBY, Long Beach","11",379.507107145089
+41,"Cape Disappointment CANBY, Long Beach","12",392.210563767251
+41,"Cape Disappointment CANBY, Long Beach","13",390.272046865555
+41,"Cape Disappointment CANBY, Long Beach","14",382.45637567522
+41,"Cape Disappointment CANBY, Long Beach","15",396.504085215565
+41,"Cape Disappointment CANBY, Long Beach","16",396.793576879242
+41,"Cape Disappointment CANBY, Long Beach","17",332.062198043714
+41,"Cape Disappointment CANBY, Long Beach","18",355.34335115436
+41,"Cape Disappointment CANBY, Long Beach","19",387.283444158929
+41,"Cape Disappointment CANBY, Long Beach","20",363.626936283074
+41,"Cape Disappointment CANBY, Long Beach","21",352.357876465984
+41,"Cape Disappointment CANBY, Long Beach","22",350.200433437218
+42,"Clatsop Spit","97",390.792722990433
+42,"Clatsop Spit","98",462.02115367296
+42,"Clatsop Spit","99",483.517832840004
+42,"Clatsop Spit","10",435.05399292303
+42,"Clatsop Spit","12",420.634616252992
+42,"Clatsop Spit","13",425.155721197889
+42,"Clatsop Spit","14",398.556683914953
+42,"Clatsop Spit","15",435.604917046732
+42,"Clatsop Spit","16",416.942467641862
+42,"Clatsop Spit","17",426.816025756164
+42,"Clatsop Spit","18",445.79792106657
+42,"Clatsop Spit","19",433.594888907029
+43,"Peter Iredale Rd OBA","97",421.124620744519
+43,"Peter Iredale Rd OBA","98",458.280751272864
+43,"Peter Iredale Rd OBA","99",444.386185142155
+43,"Peter Iredale Rd OBA","10",410.39599919981
+43,"Peter Iredale Rd OBA","12",429.399566179568
+43,"Peter Iredale Rd OBA","13",446.960387051464
+43,"Peter Iredale Rd OBA","14",413.326202594536
+43,"Peter Iredale Rd OBA","15",461.907649825385
+43,"Peter Iredale Rd OBA","16",443.437591351046
+43,"Peter Iredale Rd OBA","17",426.215657273647
+43,"Peter Iredale Rd OBA","18",439.364222932638
+43,"Peter Iredale Rd OBA","19",423.828548405132
+44,"Delaura Beach Rd OBA","97",423.2761814642
+44,"Delaura Beach Rd OBA","98",436.801052847558
+44,"Delaura Beach Rd OBA","99",440.10708660088
+44,"Delaura Beach Rd OBA","10",453.136243482364
+44,"Delaura Beach Rd OBA","12",514.758080269665
+44,"Delaura Beach Rd OBA","13",479.78046120991
+44,"Delaura Beach Rd OBA","14",465.011004611442
+44,"Delaura Beach Rd OBA","15",526.044498725455
+44,"Delaura Beach Rd OBA","16",502.655179811408
+44,"Delaura Beach Rd OBA","17",461.649477282719
+44,"Delaura Beach Rd OBA","18",482.417486132122
+44,"Delaura Beach Rd OBA","19",471.777705762065
+44,"Delaura Beach Rd OBA","20",479.355859244597
+44,"Delaura Beach Rd OBA","21",464.614375695186
+44,"Delaura Beach Rd OBA","22",493.421158301332
+45,"Slusher Lake Rd OBA","97",474.272702841283
+45,"Slusher Lake Rd OBA","98",479.27127386834
+45,"Slusher Lake Rd OBA","99",497.872240833321
+45,"Slusher Lake Rd OBA","10",493.053240938905
+45,"Slusher Lake Rd OBA","12",532.942322950987
+45,"Slusher Lake Rd OBA","13",537.668128123991
+45,"Slusher Lake Rd OBA","14",531.321245358545
+45,"Slusher Lake Rd OBA","15",549.300945582105
+45,"Slusher Lake Rd OBA","16",522.197190268559
+45,"Slusher Lake Rd OBA","17",498.091176236195
+45,"Slusher Lake Rd OBA","18",568.04040083114
+45,"Slusher Lake Rd OBA","19",478.024401152658
+45,"Slusher Lake Rd OBA","20",503.691768573163
+45,"Slusher Lake Rd OBA","21",515.1192398672
+45,"Slusher Lake Rd OBA","22",530.508650244619
+46,"Del Rey Beach Rd OBA","97",388.734666401715
+46,"Del Rey Beach Rd OBA","98",419.637877392453
+46,"Del Rey Beach Rd OBA","99",431.466541061352
+46,"Del Rey Beach Rd OBA","10",496.004977711359
+47,"Seaside Beach","97",551.011488542333
+47,"Seaside Beach","98",593.921038963787
+47,"Seaside Beach","99",566.001179639104
+47,"Seaside Beach","10",565.030427433453
+48,"Quinault Beach, North Beach","99",367.416166090578
+48,"Quinault Beach, North Beach","10",460.956019290028
+48,"Quinault Beach, North Beach","11",527.728099547213
+48,"Quinault Beach, North Beach","12",524.598486291842
+48,"Quinault Beach, North Beach","13",525.533140971812
+48,"Quinault Beach, North Beach","14",537.533353613268
+48,"Quinault Beach, North Beach","15",530.162535500862
+48,"Quinault Beach, North Beach","16",530.083351157817
+48,"Quinault Beach, North Beach","17",512.795810958624
+48,"Quinault Beach, North Beach","18",497.078516091496
+48,"Quinault Beach, North Beach","19",536.606492830342
+49,"Chautauqua Resort, Long Beach","10",504.586990349389
+49,"Chautauqua Resort, Long Beach","11",497.010493215043
+49,"Chautauqua Resort, Long Beach","12",491.762368848886
+49,"Chautauqua Resort, Long Beach","13",554.513171603589
+49,"Chautauqua Resort, Long Beach","14",550.405195318733
+49,"Chautauqua Resort, Long Beach","15",528.393281300811
+49,"Chautauqua Resort, Long Beach","16",499.21084004643
+49,"Chautauqua Resort, Long Beach","17",495.282805818918
+49,"Chautauqua Resort, Long Beach","18",530.475192622482
+49,"Chautauqua Resort, Long Beach","19",498.095916359345
+50,"Seaview, Long Beach","10",455.250070305676
+50,"Seaview, Long Beach","11",475.788694335329
+50,"Seaview, Long Beach","12",500.079297215284
+50,"Seaview, Long Beach","13",504.428327578181
+50,"Seaview, Long Beach","14",491.649343169796
+50,"Seaview, Long Beach","15",506.442489610918
+50,"Seaview, Long Beach","16",474.236980303435
+50,"Seaview, Long Beach","17",452.891349664932
+50,"Seaview, Long Beach","18",479.590820441037
+50,"Seaview, Long Beach","19",450.792775269648
+51,"Beard's Hollow Cape Disappointment, Long Beach","10",472.947717944015
+51,"Beard's Hollow Cape Disappointment, Long Beach","11",479.689479276342
+51,"Beard's Hollow Cape Disappointment, Long Beach","12",463.222725349745
+51,"Beard's Hollow Cape Disappointment, Long Beach","13",462.61196060677
+51,"Beard's Hollow Cape Disappointment, Long Beach","14",481.758281907472
+51,"Beard's Hollow Cape Disappointment, Long Beach","15",520.554454882913
+51,"Beard's Hollow Cape Disappointment, Long Beach","16",521.10666082332
+51,"Beard's Hollow Cape Disappointment, Long Beach","17",485.150874164342
+51,"Beard's Hollow Cape Disappointment, Long Beach","18",487.766900720445
+51,"Beard's Hollow Cape Disappointment, Long Beach","19",435.195827174859
+52,"A Loop Cape Disappointment, Long Beach","10",392.292710402886
+52,"A Loop Cape Disappointment, Long Beach","11",388.13279329404
+52,"A Loop Cape Disappointment, Long Beach","12",379.85207113593
+52,"A Loop Cape Disappointment, Long Beach","13",418.207307538072
+52,"A Loop Cape Disappointment, Long Beach","14",394.986775904275
+52,"A Loop Cape Disappointment, Long Beach","15",421.788160308279
+52,"A Loop Cape Disappointment, Long Beach","16",414.343520031687
+52,"A Loop Cape Disappointment, Long Beach","17",353.699645615114
+52,"A Loop Cape Disappointment, Long Beach","18",374.006939929261
+52,"A Loop Cape Disappointment, Long Beach","19",346.896439947494
+53,"Benson Beach North Cape Disappointment, Long Beach","10",404.590976033647
+53,"Benson Beach North Cape Disappointment, Long Beach","11",403.675610296031
+53,"Benson Beach North Cape Disappointment, Long Beach","12",444.137217411329
+53,"Benson Beach North Cape Disappointment, Long Beach","13",450.337194066687
+53,"Benson Beach North Cape Disappointment, Long Beach","14",465.639385677225
+53,"Benson Beach North Cape Disappointment, Long Beach","15",414.598594681501
+53,"Benson Beach North Cape Disappointment, Long Beach","16",350.549595306955
+53,"Benson Beach North Cape Disappointment, Long Beach","17",339.959575926119
+53,"Benson Beach North Cape Disappointment, Long Beach","18",369.573446459385
+53,"Benson Beach North Cape Disappointment, Long Beach","19",361.211326965072
+54,"Benson Beach South Cape Disappointment, Long Beach","10",357.41041398169
+54,"Benson Beach South Cape Disappointment, Long Beach","11",415.712524217822
+54,"Benson Beach South Cape Disappointment, Long Beach","12",429.663834434026
+54,"Benson Beach South Cape Disappointment, Long Beach","13",412.697376105715
+54,"Benson Beach South Cape Disappointment, Long Beach","14",402.331589362001
+54,"Benson Beach South Cape Disappointment, Long Beach","15",415.658108666933
+54,"Benson Beach South Cape Disappointment, Long Beach","16",349.935154602329
+54,"Benson Beach South Cape Disappointment, Long Beach","17",323.597336508745
+54,"Benson Beach South Cape Disappointment, Long Beach","18",365.486981748386
+54,"Benson Beach South Cape Disappointment, Long Beach","19",332.148625113156

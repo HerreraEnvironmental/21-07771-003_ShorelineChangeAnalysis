@@ -9,7 +9,7 @@
 ## The quality of data is variable- does midpoint euclidean gloss over the data too much?
 
 profile.pattern <- "prof_6|prof_7|prof_8|prof_9"
-source("scripts/src/import_profiles.R")
+source("scripts/src/import_profiles2.R")
 source("scripts/src/assign_profile_parks.R")
 
 

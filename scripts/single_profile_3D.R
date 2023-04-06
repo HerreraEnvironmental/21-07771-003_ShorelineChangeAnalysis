@@ -4,8 +4,8 @@
 ## Shoreline Conservation Areas, Washington State Parks
 
 
-#profile.pattern <- "prof_6"
-#year.pattern <- c("00")
+# profile.pattern <- "prof_2_"
+# year.pattern <- c("00")
 
 
 # Import all files --------------------------------------------------

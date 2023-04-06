@@ -23,12 +23,29 @@ source("scripts/src/kableExtrafunction.R")
 
 A bunch of the profiles are weirdly scattered around and they don't all progress sequentially, but they seem to be matching to the NVS Beach and Shoreline Changes database.
 
-The three profiles that don't match up with WCEHA data are 16 and 17 (both Westport) and one of the Leadbetter Point profiles.
+The profiles that don't match up with WCEHA data are:
 
-16 is Westport North, and WCEHA data says eroding, while NANOOS says accreting.
-It's true that Westport North is eroding overall, but WCEHA contains data from 2006 - 2019, and NANOOS contains data from 1997 - 2022.
-NANOOS encompasses the Army Corp nourishment more holistically.
-Both of the Westport profiles were "non significant" accretion, so I think that speaks to how much is moving around on that peninsula.
+-   Profiles 14 and 15 at the North Jetty
+
+    -   These ones are the most significant "at odds" data, so warrant a second look.
+        NANOOS indicates significant accretion, while WCEHA indicates erosion.
+
+-   Profiles 16 and 17 (Westport North and South)
+
+    -   16 is Westport North, and WCEHA data says eroding, while NANOOS says accreting.
+        It's true that Westport North is eroding overall, but WCEHA contains data from 2006 - 2019, and NANOOS contains data from 1997 - 2022.
+        NANOOS encompasses the Army Corp nourishment more holistically.
+        Both of the Westport profiles were "non significant" accretion, so I think that speaks to how much is moving around on that peninsula.
+
+-   Profile 26, one of the Leadbetter Point profiles, which falls in a very small 'erosion' window on the WCEHA dataset, and is also the site of vegetation clearance for snowy plover habitat.
+
+-    Profile 50, located at Seaview.
+    NANOOS says erosion but WCEHA says accretion, however, the NANOOS data is non significant.
+
+-    Profile 51, just north of the North Head lighthouse.
+    This is the opposite of 50, where NANOOS says accretion but WCEHA says erosion, and also is a non-significant data point from the NANOOS profile.
+
+-   
 
 *The NANOOS site appears to be missing profiles 42 - 47, but we have them on our list of profiles.*
 
@@ -81,7 +98,7 @@ The graph can be rotated using the mouse.
 Hover over the lines to see the seasonal data.
 
 ```{r prep, echo=FALSE}
-profile.pattern <- "prof_1"
+profile.pattern <- "prof_15"
 year.pattern <- c("19")
 
 source("scripts/single_profile_3D.R")
@@ -96,7 +113,7 @@ Create a visual for the complete profile with all years.
 The orange horizontal plane is the MHHW mark.
 
 ```{r, echo=FALSE}
-profile.pattern <- "prof_17"
+profile.pattern <- "prof_3"
 
 source("scripts/complete_profile_plane.R")
 
@@ -106,7 +123,7 @@ suppressWarnings(print(complete.profile.plot))
 It is also helpful to see the above plot spread over time, to provide a clearer picture of profile migration.
 
 ```{r, echo=FALSE}
-profile.pattern <- "prof_15"
+profile.pattern <- "prof_21"
 
 source("scripts/complete_profile_timeseries.R")
 
@@ -183,7 +200,7 @@ On the right, the linear quartiles are added for more detailed data description 
 These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with standard boxplot parameters, although they are calculated using *only distance* and not boxplot delineations.
 
 ```{r, echo=FALSE}
-profile.pattern <- "prof_15"
+profile.pattern <- "prof_7"
 year.pattern <- "00"
 
 source("scripts/single_linear_quartiles.R")

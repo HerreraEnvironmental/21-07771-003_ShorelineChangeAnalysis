@@ -97,24 +97,35 @@ all.quartile.rates <- quartile.rates %>%
   arrange(profile, year) %>%
   mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion"))
 
-## Plot only mean for now
-park.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na(), #%>% filter(quartile == "mean"), 
-                            aes(x = year, y = rate_of_change, fill = profile_direction)) +
-  facet_wrap(~Park) +
-  geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
-  scale_fill_manual(values=c("#04A1FF", "tomato2")) +
-  theme(axis.text.x = element_blank()) +
-  ggtitle("Combined Rates of Change per Park") 
-park.ROC.plot
-
-profile.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na(), # %>% filter(quartile == "mean"), 
-                        aes(x = year, y = rate_of_change, fill = profile_direction)) +
+## Plot each rate of change for each profile
+profile.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na(),  
+                           aes(x = year, y = rate_of_change, fill = profile_direction)) +
   facet_wrap(~profile) +
   geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
   scale_fill_manual(values=c("#04A1FF", "tomato2")) +
   theme(axis.text.x = element_blank()) +
   ggtitle("Individual Profile Rates of Change") 
 profile.ROC.plot
+
+## Group the rates by park
+
+park.quartile.rates <- quartile.rates %>%
+  rbind(mean.rate.df) %>%
+  arrange(profile, year) %>%
+  mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion")) %>%
+  separate(Park, into = c("Park", "Region"), sep = ",")
+
+
+region.ROC.plot <- ggplot(data = park.quartile.rates %>% drop_na(),  
+                            aes(x = year, y = rate_of_change, fill = profile_direction)) +
+  facet_wrap(~Region, scales = "free") +
+  geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
+  scale_fill_manual(values=c("#04A1FF", "tomato2")) +
+  theme(axis.text.x = element_blank()) +
+  ggtitle("Combined Rates of Change per Region") 
+region.ROC.plot
+
+
 
 
 
