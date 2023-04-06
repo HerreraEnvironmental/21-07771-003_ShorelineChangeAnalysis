@@ -278,11 +278,23 @@ The distances of merge between clusters, called heights, are illustrated on the 
 ```{r, echo=FALSE}
 source("scripts/cluster_analysis.R")
 
-plot(df.hclust)
-rect.hclust(df.hclust,
-            k = 3, # k is used to specify the number of clusters, taken from previous steps.
-            border = "blue")
+```
 
-kmeans.plot
-kmeans.dendogram
+
+## Final Output for Attribute Table
+
+This is the attribute table csv for the final product of the interactive
+GIS map. The table includes:
+1. Profile
+2. Geographic Location
+3. Overall movement of each
+4. RAtes of change of each
+5. Subreach delineated by clustering
+6. Inflection point if I have time
+7. Quality of profile data if I have time
+
+
+```{r, echo=FALSE}
+source("scripts/final_output.R")
+
 ```
