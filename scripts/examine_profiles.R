@@ -33,17 +33,17 @@ setdiff(1:54, numbers.only)
 #   mutate(profile = as.numeric(gsub(" ", "", profile))) %>%
 #   mutate(OBA = replace(OBA, OBA == "One Missing at 13?", "Ocean City"))
 
-complete.geo.profiles <- read_csv("data_raw/NANOOS_WCEHA_validation.csv",
+profiles.w.location <- read_csv("data_raw/NANOOS_WCEHA_validation.csv",
                       col_names = c("profile", "WCEHA", "location", "notes"),
                       col_select = c(-WCEHA),
                       skip = 1,
                       show_col_types = FALSE)
 
-sequence <- complete.geo.profiles$profile 
+sequence <- profiles.w.location$profile 
 seq2 <- min(sequence, na.rm = TRUE):max(sequence, na.rm = TRUE)
 missing <- seq2[!seq2 %in% sequence]
 
 print("Profiles without a geographic location included:")
 print(missing)
 
-
+write.csv(profiles.w.location, "data_secondary/profiles_with_location.csv", row.names = FALSE)

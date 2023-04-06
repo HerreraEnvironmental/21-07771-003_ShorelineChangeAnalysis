@@ -10,7 +10,7 @@ wash.data <- read_csv("data_raw/NANOOS_WCEHA_validation.csv",
 wash.data$WCEHA <- gsub(", below noise level", "", wash.data$WCEHA)
 wash.data$WCEHA <- gsub(", no change rates available", "", wash.data$WCEHA)
 
-nanoos.data <- read_csv("data_secondary/midpoint_profile_results.csv",
+nanoos.data <- read_csv("data_secondary/profiles_with_equations.csv",
                         show_col_types = FALSE)
 
 all.data <- nanoos.data %>%
@@ -19,4 +19,6 @@ all.data <- nanoos.data %>%
   mutate(shoreline_profile = ifelse(shoreline_profile == "Significant Accretion"| shoreline_profile == "Non Significant Accretion",
                                     "Accreted", "Erosion")) %>%
   mutate(conflict = ifelse(shoreline_profile != WCEHA, "flag", NA))
+
+write.csv(all.data, "data_secondary/profiles_with_WCEHA.csv", row.names = FALSE)
 

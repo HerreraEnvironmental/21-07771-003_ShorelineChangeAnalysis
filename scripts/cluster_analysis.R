@@ -3,7 +3,7 @@
 ## Load and prepare data.
 ## Import midpoint euclidean data. Order the profiles by geographic location,
 ## not by whatever order it was in. 
-df <- read_csv("data_secondary/profiles_to_cluster.csv", show_col_types = FALSE) %>%
+df <- read_csv("data_secondary/profiles_with_distance.csv", show_col_types = FALSE) %>%
   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
                                          "04", "05", "06", "07", "08", "09", "10", 
                                          "11", "12", "13", "14", "15", "16", "17",
@@ -115,21 +115,27 @@ res.hc <- df.scaled %>%
 
 kmeans.dendogram <- fviz_dend(res.hc, k = 4, ## Assigning 4 clusters based on viewing the graph.
           cex = 0.5,
-          k_colors = c("#04A1FF",'#FFC42E','#3ECDA3','#1D455C'),
+          k_colors = c('#FC4E07',"seagreen4", 'darkorchid4','#1D455C'),
+          show_labels = TRUE,
           color_labels_by_k = TRUE,
-          rect = TRUE)
+          rect = TRUE,
+          main = "HCA variance minimization dendogram")
 kmeans.dendogram
 
 
 # Assign clusters based on the last HCA --------------------------------------------------------
-## Add back in profiles 21 - 25
+df.direction <- read.csv("data_secondary/profiles_with_WCEHA.csv") %>%
+  mutate(profile = as.character(profile))
+  
+
 df.clustered <- cutree(res.hc, k = 4) %>%
   as.data.frame() %>%
   rownames_to_column(var = "profile") %>%
   rename(cluster_id = 2) %>%
   full_join(df %>% select(profile, Park, euc_dist_to_BP), 
             by = "profile", multiple = "all") %>%
-  select(profile, Park, cluster_id, euc_dist_to_BP) %>%
+  full_join(df.direction %>% select(1, 4), by = "profile") %>%
+  select(profile, Park, cluster_id, euc_dist_to_BP, shoreline_profile) %>%
   unique() %>%
   mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
                                               "8", "9", "10", "48", "11", "12",
@@ -142,12 +148,34 @@ df.clustered <- cutree(res.hc, k = 4) %>%
                                               "43", "44", "45", "46", "47"))) %>%
   arrange(profile)
 
+## Use accretion and erosion to do the final delineation
+# Clusters 1, 2 are entirely accreting
+# Clusters 3, 4 contain both
+
+test <- df.clustered %>%
+  select(-euc_dist_to_BP) %>%
+  unique() %>%
+  mutate(type = case_when(
+    (profile == "1") ~ "X",
+    (profile == "2") ~ "A",
+    (profile %in% c("3", "4")) ~ "B",
+    (profile %in% c("5", "6", "7", "8")) ~ "C",
+    (profile %in% c("9")) ~ "D")) %>%
+  mutate(clustering_notes = case_when(
+    (type == "X") ~ "Missing lots of data",
+    (type == "D") ~ "Could be grouped in with C"
+  ))
+  
+
+
+
+
 
 cluster.plot <- ggplot(df.clustered) +
   geom_col(aes(euc_dist_to_BP, profile, 
                group = factor(profile), fill = factor(cluster_id)), 
            width = 0.6) +
-  scale_fill_manual(values = c("#04A1FF",'#FFC42E','#3ECDA3','#1D455C')) +
+  scale_fill_manual(values = c('#FC4E07',"seagreen4", 'darkorchid4','#1D455C')) +
   scale_y_discrete(limits = rev, position = "right")
 
 cluster.plot

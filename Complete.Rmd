@@ -8,46 +8,31 @@ editor_options:
     wrap: sentence
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T,
-                      results = "hide")
-source("scripts/src/kableExtrafunction.R")
-```
+## **DOUBLE CHECK ANNUALIZED RATES OF CHANGE**
 
-# *TODO BEFORE COMPLETION*
-
--   I still need to get the complete list of profiles. I don't think I can do this in time without Jon. I have submitted a GIS request for help. Cluster analysis won't be complete until then.
--   Move to pdf/presentation format?
-
-## Notes
-
-A bunch of the profiles are weirdly scattered around and they don't all progress sequentially, but they seem to be matching to the NVS Beach and Shoreline Changes database.
+## Notes from analysis
 
 The profiles that don't match up with WCEHA data are:
 
 -   Profiles 14 and 15 at the North Jetty
 
-    -   These ones are the most significant "at odds" data, so warrant a second look.
-        NANOOS indicates significant accretion, while WCEHA indicates erosion.
+    -   These ones are the most significant "at odds" data, so warrant a second look. NANOOS indicates significant accretion, while WCEHA indicates erosion.
 
 -   Profiles 16 and 17 (Westport North and South)
 
-    -   16 is Westport North, and WCEHA data says eroding, while NANOOS says accreting.
-        It's true that Westport North is eroding overall, but WCEHA contains data from 2006 - 2019, and NANOOS contains data from 1997 - 2022.
-        NANOOS encompasses the Army Corp nourishment more holistically.
-        Both of the Westport profiles were "non significant" accretion, so I think that speaks to how much is moving around on that peninsula.
+    -   16 is Westport North, and WCEHA data says eroding, while NANOOS says accreting. It's true that Westport North is eroding overall, but WCEHA contains data from 2006 - 2019, and NANOOS contains data from 1997 - 2022. NANOOS encompasses the Army Corp nourishment more holistically. Both of the Westport profiles were "non significant" accretion, so I think that speaks to how much is moving around on that peninsula.
 
 -   Profile 26, one of the Leadbetter Point profiles, which falls in a very small 'erosion' window on the WCEHA dataset, and is also the site of vegetation clearance for snowy plover habitat.
 
--    Profile 50, located at Seaview.
+-   Profile 50, located at Seaview.
     NANOOS says erosion but WCEHA says accretion, however, the NANOOS data is non significant.
 
--    Profile 51, just north of the North Head lighthouse.
+-   Profile 51, just north of the North Head lighthouse.
     This is the opposite of 50, where NANOOS says accretion but WCEHA says erosion, and also is a non-significant data point from the NANOOS profile.
 
--   
+*Profiles 42 - 47 are in Oregon, and so have been excluded from much of the analysis.*
 
-*The NANOOS site appears to be missing profiles 42 - 47, but we have them on our list of profiles.*
+*Profiles do not proceed sequentially.*
 
 # Overview
 
@@ -67,6 +52,14 @@ Two duplicates were removed from original set: see accompanying script "duplicat
 The vertical datum is NAVD88.
 The horizontal is WA State Plane South.
 All of the units are in meters.
+
+### Script setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T,
+                      results = "hide")
+source("scripts/src/kableExtrafunction.R")
+```
 
 ## Load required packages
 
@@ -98,12 +91,12 @@ The graph can be rotated using the mouse.
 Hover over the lines to see the seasonal data.
 
 ```{r prep, echo=FALSE}
-profile.pattern <- "prof_15"
-year.pattern <- c("19")
+profile.pattern <- "prof_1"
+year.pattern <- c("99")
 
 source("scripts/single_profile_3D.R")
 
-single.profile.plot
+suppressWarnings(single.profile.plot)
 ```
 
 ## Individual profile, all available years visualization
@@ -170,7 +163,7 @@ Below is a table with the relevant results of each profile's linear regression o
 
 ```{r prep, echo=FALSE}
 knitr::kable(results.table, caption = "Linear equation parameters") %>%
-  kableExtra::kable_styling()
+  kableExtra::kable_styling(fixed_thead = T)
 ```
 
 ## Comparison of results to Washington Coastal Erosion Hazard Assessment (WCEHA)
@@ -180,8 +173,9 @@ The WCEHA (<https://waecy.maps.arcgis.com/apps/View/index.html?appid=389d0a3ce64
 ```{r}
 source("scripts/WCEHA_validation.R")
 knitr::kable(all.data, caption = "Comparison with WCEHA data") %>%
-  kableExtra::kable_styling() %>%
-  row_spec(which(all.data$conflict == "flag"), bold = T, color = "white", background = "tomato")
+  kableExtra::kable_styling(fixed_thead = T) %>%
+  row_spec(which(all.data$conflict == "flag"), bold = T, color = "white",
+           background = "tomato")
 
 ```
 
@@ -204,7 +198,6 @@ profile.pattern <- "prof_7"
 year.pattern <- "00"
 
 source("scripts/single_linear_quartiles.R")
-#source("scripts/test_boxplot.R")
 single.linear.plot + single.quartiles.plot
 ```
 
@@ -218,7 +211,7 @@ The rates can be viewed by park or by profile.
 ```{r, echo=FALSE}
 profile.pattern <- "prof"
 source("scripts/rates_of_change.R")
-park.ROC.plot
+region.ROC.plot
 profile.ROC.plot
 ```
 
@@ -280,19 +273,26 @@ source("scripts/cluster_analysis.R")
 
 ```
 
-
 ## Final Output for Attribute Table
 
-This is the attribute table csv for the final product of the interactive
-GIS map. The table includes:
-1. Profile
-2. Geographic Location
-3. Overall movement of each
-4. RAtes of change of each
-5. Subreach delineated by clustering
-6. Inflection point if I have time
-7. Quality of profile data if I have time
+This is the attribute table csv for the final product of the interactive GIS map.
+The table includes:
 
+1.  Profile
+
+2.  Geographic Location
+
+3.  Overall movement of each (euclidean distance)
+
+4.  Designation of accretion/erosion and accompanying significance
+
+5.  Rates of change of each
+
+6.  Subreach delineated by clustering
+
+7.  Inflection point if I have time
+
+8.  Quality of profile data if I have time
 
 ```{r, echo=FALSE}
 source("scripts/final_output.R")

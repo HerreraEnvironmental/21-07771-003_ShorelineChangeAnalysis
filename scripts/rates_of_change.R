@@ -53,38 +53,20 @@ euc.quartile.distances <- quartiles.df %>%
   mutate(q3_dist_to_BP = sqrt(((BasePoint_X - x_quartile3)^2) + ((BasePoint_Y -  y_quartile3)^2))) %>%
   mutate(max_dist_to_BP = sqrt(((BasePoint_X - x_max)^2) + ((BasePoint_Y -  y_max)^2)))
 
-## Visualize the spatial migration minimum (furthest seaward) point over time;
-## increasing means accretion, decreasing means erosion.
-# seaward.point.plot <- ggplot(data = euc.quartile.distances, aes(x = year, y = min_dist_to_BP)) +
-#   facet_wrap(~profile) +
-#   geom_bar(position = "dodge", stat = "identity", alpha = 0.5) +
-#   ggtitle("Accretion and Erosion of Seaward Point")
-# seaward.point.plot
-
-## Visualize each quartile's migration
-# Messy, so commented out for now
-# all.quartiles <- euc.quartile.distances %>%
-#   select(profile:year, contains("dist")) %>%
-#   pivot_longer(cols = contains("dist"))
-# 
-# all.quartiles.plot <- ggplot(all.quartiles, aes(fill=name, y=value, x=year)) + 
-#   geom_bar(position="dodge", stat="identity")
-# all.quartiles.plot
-
 ## Calculate rates of change by quartile
-euclidean.rates <- euc.quartile.distances %>%
+quartile.rates <- euc.quartile.distances %>%
   select(profile:year, contains("dist")) %>%
   arrange(profile, year) %>%
   group_by(profile) %>%
   mutate(across(min_dist_to_BP:max_dist_to_BP, ~ ((.x/lag(.x) - 1) * 100), .names = "rate_{.col}"))
 
-quartile.rates <- euclidean.rates %>%
+quartile.rates.long <- quartile.rates %>%
   select(profile:year, contains("rate")) %>%
   pivot_longer(cols = contains("rate"), 
                names_to = "quartile", values_to = "rate_of_change") 
 
 ## Add in the average rate of all quartiles.
-mean.rate.df <- euclidean.rates %>%
+mean.rate.df <- quartile.rates %>%
   drop_na() %>%
   group_by(profile, year) %>%
   mutate(mean_rate = mean(rate_min_dist_to_BP:rate_max_dist_to_BP)) %>%
@@ -92,10 +74,13 @@ mean.rate.df <- euclidean.rates %>%
   mutate(quartile = "mean")
 
 ## Combine for a complete df of quartile rates with mean
-all.quartile.rates <- quartile.rates %>%
+all.quartile.rates <- quartile.rates.long %>%
   rbind(mean.rate.df) %>%
   arrange(profile, year) %>%
   mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion"))
+
+## Write csv with all quartile rates
+write.csv(all.quartile.rates, "data_secondary/profiles_with_quartROC.csv", row.names = FALSE)
 
 ## Plot each rate of change for each profile
 profile.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na(),  
@@ -108,14 +93,16 @@ profile.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na(),
 profile.ROC.plot
 
 ## Group the rates by park
-
-park.quartile.rates <- quartile.rates %>%
+park.quartile.rates <- quartile.rates.long %>%
   rbind(mean.rate.df) %>%
   arrange(profile, year) %>%
   mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion")) %>%
   separate(Park, into = c("Park", "Region"), sep = ",")
 
+## Write ROC by NANOOS-defined region
+write.csv(park.quartile.rates, "data_secondary/NANOOSRegions_with_quartROC.csv", row.names = FALSE)
 
+## Plot each rate of change for the three NANOOS-defined regions
 region.ROC.plot <- ggplot(data = park.quartile.rates %>% drop_na(),  
                             aes(x = year, y = rate_of_change, fill = profile_direction)) +
   facet_wrap(~Region, scales = "free") +
@@ -126,13 +113,12 @@ region.ROC.plot <- ggplot(data = park.quartile.rates %>% drop_na(),
 region.ROC.plot
 
 
-
+# Annualized ROC ----------------------------------------------------------
 
 
 ## Annualized rates (not different from quartile rates)
-# annualized.ROC <- euc.quartile.distances %>%
-#   select(profile:year, med_dist_to_BP) %>%
-#   arrange(profile, year) %>% 
+# annualized.ROC <- all.quartile.rates %>%
+#   arrange(profile, year) %>%
 #   group_by(profile) %>%
 #   mutate(change=(med_dist_to_BP-lag(med_dist_to_BP,1))/lag(med_dist_to_BP,1)*100)
 
