@@ -123,7 +123,7 @@ suppressWarnings(print(complete.profile.plot))
 It is also helpful to see the above plot spread over time, to provide a clearer picture of profile migration.
 
 ```{r, echo=FALSE}
-profile.pattern <- "prof_21"
+profile.pattern <- "prof_23"
 
 source("scripts/complete_profile_timeseries.R")
 
@@ -285,9 +285,4 @@ rect.hclust(df.hclust,
 
 kmeans.plot
 kmeans.dendogram
-```
-
-```{r}
-source("scripts/cluster_dumbbell.R")
-dumbbell.plot
 ```
