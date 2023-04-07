@@ -45,14 +45,28 @@ MHHW.dist.plot
 ## Rates of change
 MHHW.ROC <- MHHW.dist %>%
   group_by(profile) %>% 
-  mutate(pct_change = (MHHW_to_BP/lead(MHHW_to_BP) - 1) * 100) %>%
-  mutate(profile_direction = ifelse(pct_change > 0, "Accretion", "Erosion"))
+  #######
+  select(profile:year, MHHW_to_BP:profile_slope) %>%
+  mutate(dummy_year = row_number()) %>%
+  mutate(diff_year = dummy_year - lag(dummy_year),  
+         diff_growth = MHHW_to_BP - lag(MHHW_to_BP)) %>% 
+  mutate(rate_percent = (diff_growth / diff_year)/MHHW_to_BP * 100) %>% 
+  #######
+  #mutate(pct_change = (MHHW_to_BP/lead(MHHW_to_BP) - 1) * 100) %>%
+  mutate(profile_direction = ifelse(rate_percent > 0, "Accretion", "Erosion"))
 
-MHHW.ROC.plot <- ggplot(MHHW.ROC, aes(x = year, y = pct_change, fill = profile_direction)) +
+MHHW.ROC.plot <- ggplot(MHHW.ROC, aes(x = year, y = rate_percent, fill = profile_direction)) +
   facet_wrap( ~ profile, scales = "free") +
   geom_bar(position = "dodge", stat = "identity") +
   scale_fill_manual(values=c("#04A1FF", "tomato2")) +
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank()) +
   ggtitle("Erosion and Accretion Rates of Change at the MHHW Mark") 
 MHHW.ROC.plot
+
+
+## Write csv with MHHW rates of change
+write.csv(MHHW.ROC %>% select(profile, Park, year, rate_percent),
+          "data_secondary/profiles_with_MHHW_ROC.csv", row.names = FALSE)
+
 

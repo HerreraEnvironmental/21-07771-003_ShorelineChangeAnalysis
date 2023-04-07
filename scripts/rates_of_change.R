@@ -140,6 +140,6 @@ annualized.median.plot
 
 ## Write csv with annualized median rates per plot
 write.csv(annualized.rate %>% select(profile, Park, year, rate_percent),
-          "data_secondary/NANOOSRegions_with_annualROC.csv", row.names = FALSE)
+          "data_secondary/profiles_with_annualROC.csv", row.names = FALSE)
 
 

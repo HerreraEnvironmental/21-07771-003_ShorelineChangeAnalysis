@@ -151,19 +151,43 @@ df.clustered <- cutree(res.hc, k = 4) %>%
 ## Use accretion and erosion to do the final delineation
 # Clusters 1, 2 are entirely accreting
 # Clusters 3, 4 contain both
+significant <- read.csv("data_secondary/profiles_with_equations.csv") %>%
+  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                              "8", "9", "10", "48", "11", "12",
+                                              "13", "14", "15", "16", "17", "18",
+                                              "19", "20", "21", "22", "23", "24",
+                                              "25", "26", "27", "28", "29", "30",
+                                              "31", "32", "33", "34", "35", "36",
+                                              "37", "49", "38", "50", "39", "40",
+                                              "51", "52", "41", "53", "54", "42",
+                                              "43", "44", "45", "46", "47"))) %>%
+  select(profile, shoreline_profile)
 
 test <- df.clustered %>%
-  select(-euc_dist_to_BP) %>%
+  select(-euc_dist_to_BP, -shoreline_profile) %>%
+  left_join(significant, by = "profile") %>%
   unique() %>%
   mutate(type = case_when(
     (profile == "1") ~ "X",
-    (profile == "2") ~ "A",
-    (profile %in% c("3", "4")) ~ "B",
-    (profile %in% c("5", "6", "7", "8")) ~ "C",
-    (profile %in% c("9")) ~ "D")) %>%
+    (profile %in% c("2", "3", "4", "5", "6", "7", "8",
+                    "9", "10","48", "11", "12")) ~ "A",
+    (profile %in% c("13", "14", "15", "16", "17", "18", "19")) ~ "B",
+    (profile %in% c("20")) ~ "C",
+    (profile %in% c("21", "22", "23", "24", "25", "26")) ~ "D",
+    (profile %in% c("27", "28", "29", "30", "31")) ~ "E",
+    (profile %in% c("32", "33")) ~ "F",
+    (profile %in% c("34")) ~ "G",
+    (profile %in% c("35", "36")) ~ "H",
+    (profile %in% c("37", "49")) ~ "I",
+    (profile %in% c("38")) ~ "J",
+    (profile %in% c("50")) ~ "K",
+    (profile %in% c("39", "40", "51")) ~ "L",
+    (profile %in% c("52")) ~ "M",
+    (profile %in% c("41", "53", "54")) ~ "N")) %>%
   mutate(clustering_notes = case_when(
-    (type == "X") ~ "Missing lots of data",
-    (type == "D") ~ "Could be grouped in with C"
+    (type == "X") ~ "Missing lots of data, could probably be in subreach A",
+    (type == "D") ~ "Own subreach of outliers",
+    (type %in% c("J", "K", "L")) ~ "Could probably be grouped together as one"
   ))
   
 
@@ -179,3 +203,12 @@ cluster.plot <- ggplot(df.clustered) +
   scale_y_discrete(limits = rev, position = "right")
 
 cluster.plot
+
+## Clustered again
+t <- ggplot(test) +
+  geom_col(aes(euc_dist_to_BP, profile, 
+               group = type, fill = type), 
+           width = 0.6) +
+  scale_y_discrete(limits = rev, position = "right")
+
+t
