@@ -114,7 +114,6 @@ region.ROC.plot
 
 
 # Annualized ROC ----------------------------------------------------------
-
 annualized.rate <- quartiles.df %>%
   select(profile, Park, year, contains("BasePoint"), contains("median")) %>%
   unique() %>%
