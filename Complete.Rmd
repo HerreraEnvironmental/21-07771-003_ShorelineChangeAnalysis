@@ -76,8 +76,8 @@ source("scripts/examine_profiles.R")
 ## View profiles and their locations
 
 ```{r prep, echo=FALSE, warning=FALSE}
-knitr::kable(complete.geo.profiles, caption = "Profiles with matching geographic location") %>%
-  kableExtra::kable_styling()
+knitr::kable(profiles.w.location, caption = "Profiles with matching geographic location") %>%
+  kableExtra::kable_styling(fixed_thead = T)
 ```
 
 ## Individual profile, single year visualization
@@ -290,9 +290,11 @@ The table includes:
 
 6.  Subreach delineated by clustering
 
-7.  Inflection point if I have time
+Things that I would like to include if I have a few more hours:
 
-8.  Quality of profile data if I have time
+1.  Inflection point if I have time
+
+2.  Quality of profile data if I have time
 
 ```{r, echo=FALSE}
 source("scripts/final_output.R")

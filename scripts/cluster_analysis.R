@@ -3,7 +3,7 @@
 ## Load and prepare data.
 ## Import midpoint euclidean data. Order the profiles by geographic location,
 ## not by whatever order it was in. 
-df <- read_csv("data_secondary/profiles_with_distance.csv", show_col_types = FALSE) %>%
+df <- read_csv("data_secondary/profiles_with_midpoint_distance.csv", show_col_types = FALSE) %>%
   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
                                          "04", "05", "06", "07", "08", "09", "10", 
                                          "11", "12", "13", "14", "15", "16", "17",
@@ -148,6 +148,17 @@ df.clustered <- cutree(res.hc, k = 4) %>%
                                               "43", "44", "45", "46", "47"))) %>%
   arrange(profile)
 
+
+## Cluster plot with raw clustering
+cluster.plot <- ggplot(df.clustered) +
+  geom_col(aes(euc_dist_to_BP, profile, 
+               group = factor(profile), fill = factor(cluster_id)), 
+           width = 0.6) +
+  scale_fill_manual(values = c('#FC4E07',"seagreen4", 'darkorchid4','#1D455C')) +
+  scale_y_discrete(limits = rev, position = "right")
+cluster.plot
+
+
 ## Use accretion and erosion to do the final delineation
 # Clusters 1, 2 are entirely accreting
 # Clusters 3, 4 contain both
@@ -163,8 +174,8 @@ significant <- read.csv("data_secondary/profiles_with_equations.csv") %>%
                                               "43", "44", "45", "46", "47"))) %>%
   select(profile, shoreline_profile)
 
-test <- df.clustered %>%
-  select(-euc_dist_to_BP, -shoreline_profile) %>%
+manual.cluster <- df.clustered %>%
+  select(-shoreline_profile) %>%
   left_join(significant, by = "profile") %>%
   unique() %>%
   mutate(type = case_when(
@@ -183,32 +194,38 @@ test <- df.clustered %>%
     (profile %in% c("50")) ~ "K",
     (profile %in% c("39", "40", "51")) ~ "L",
     (profile %in% c("52")) ~ "M",
-    (profile %in% c("41", "53", "54")) ~ "N")) %>%
+    (profile %in% c("41", "53", "54")) ~ "N",
+    (profile %in% c("42", "43", "44", "45", "46", "47")) ~ "Oregon")) %>%
   mutate(clustering_notes = case_when(
     (type == "X") ~ "Missing lots of data, could probably be in subreach A",
     (type == "D") ~ "Own subreach of outliers",
     (type %in% c("J", "K", "L")) ~ "Could probably be grouped together as one"
   ))
-  
 
-
-
-
-
-cluster.plot <- ggplot(df.clustered) +
-  geom_col(aes(euc_dist_to_BP, profile, 
-               group = factor(profile), fill = factor(cluster_id)), 
-           width = 0.6) +
-  scale_fill_manual(values = c('#FC4E07',"seagreen4", 'darkorchid4','#1D455C')) +
-  scale_y_discrete(limits = rev, position = "right")
-
-cluster.plot
 
 ## Clustered again
-t <- ggplot(test) +
+manual.cluster.plot <- ggplot(manual.cluster) +
   geom_col(aes(euc_dist_to_BP, profile, 
                group = type, fill = type), 
            width = 0.6) +
+  geom_hline(yintercept = 1.5) +
   scale_y_discrete(limits = rev, position = "right")
+manual.cluster.plot
 
-t
+## Write manual clustering
+write.csv(manual.cluster %>% select(-euc_dist_to_BP, -shoreline_profile) %>% unique(),
+          "data_secondary/profiles_with_clusters.csv", row.names = FALSE)
+
+test <- manual.cluster %>%
+  group_by(type) %>%
+  mutate(dist_by_type = mean(euc_dist_to_BP)) %>%
+  select(profile, Park, type, shoreline_profile, dist_by_type) %>%
+  unique()
+
+another.cluster.plot <- ggplot(test) +
+  geom_col(aes(dist_by_type, profile, 
+               group = shoreline_profile, fill = shoreline_profile), 
+           width = 0.6) +
+  scale_y_discrete(limits = rev, position = "right") +
+  ggtitle("Profiles averaged by type")
+another.cluster.plot

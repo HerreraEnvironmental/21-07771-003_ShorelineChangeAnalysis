@@ -92,4 +92,4 @@ write.csv(results.table, "data_secondary/profiles_with_equations.csv", row.names
 cluster <- euclidean %>%
   select(profile:year, euc_dist_to_BP) %>%
   unique()
-write.csv(cluster, "data_secondary/profiles_with_distance.csv", row.names = FALSE)
+write.csv(cluster, "data_secondary/profiles_with_midpoint_distance.csv", row.names = FALSE)
