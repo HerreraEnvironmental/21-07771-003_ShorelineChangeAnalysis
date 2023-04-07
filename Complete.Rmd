@@ -8,8 +8,6 @@ editor_options:
     wrap: sentence
 ---
 
-## **DOUBLE CHECK ANNUALIZED RATES OF CHANGE**
-
 ## Notes from analysis
 
 The profiles that don't match up with WCEHA data are:

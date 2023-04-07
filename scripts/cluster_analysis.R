@@ -178,7 +178,7 @@ manual.cluster <- df.clustered %>%
   select(-shoreline_profile) %>%
   left_join(significant, by = "profile") %>%
   unique() %>%
-  mutate(type = case_when(
+  mutate(first_delineation = case_when(
     (profile == "1") ~ "X",
     (profile %in% c("2", "3", "4", "5", "6", "7", "8",
                     "9", "10","48", "11", "12")) ~ "A",
@@ -197,18 +197,17 @@ manual.cluster <- df.clustered %>%
     (profile %in% c("41", "53", "54")) ~ "N",
     (profile %in% c("42", "43", "44", "45", "46", "47")) ~ "Oregon")) %>%
   mutate(clustering_notes = case_when(
-    (type == "X") ~ "Missing lots of data, could probably be in subreach A",
-    (type == "D") ~ "Own subreach of outliers",
-    (type %in% c("J", "K", "L")) ~ "Could probably be grouped together as one"
+    (first_delineation == "X") ~ "Missing lots of data, could probably be in subreach A",
+    (first_delineation == "D") ~ "Own subreach of outliers",
+    (first_delineation %in% c("J", "K", "L")) ~ "Could probably be grouped together as one"
   ))
 
 
 ## Clustered again
 manual.cluster.plot <- ggplot(manual.cluster) +
   geom_col(aes(euc_dist_to_BP, profile, 
-               group = type, fill = type), 
+               group = first_delineation, fill = first_delineation), 
            width = 0.6) +
-  geom_hline(yintercept = 1.5) +
   scale_y_discrete(limits = rev, position = "right")
 manual.cluster.plot
 
@@ -217,15 +216,17 @@ write.csv(manual.cluster %>% select(-euc_dist_to_BP, -shoreline_profile) %>% uni
           "data_secondary/profiles_with_clusters.csv", row.names = FALSE)
 
 test <- manual.cluster %>%
-  group_by(type) %>%
+  group_by(first_delineation) %>%
   mutate(dist_by_type = mean(euc_dist_to_BP)) %>%
-  select(profile, Park, type, shoreline_profile, dist_by_type) %>%
+  select(profile, Park, first_delineation, shoreline_profile, dist_by_type) %>%
   unique()
 
 another.cluster.plot <- ggplot(test) +
   geom_col(aes(dist_by_type, profile, 
-               group = shoreline_profile, fill = shoreline_profile), 
+               group = first_delineation, fill = first_delineation), 
            width = 0.6) +
   scale_y_discrete(limits = rev, position = "right") +
-  ggtitle("Profiles averaged by type")
+  ggtitle("Profiles averaged by first_delineation")
 another.cluster.plot
+
+  
