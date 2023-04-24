@@ -28,7 +28,7 @@ df <- read_csv("data_secondary/profiles_with_midpoint_distance.csv", show_col_ty
 ggplot(df, aes(x = factor(profile), y = euc_dist_to_BP, group = profile)) +
   geom_boxplot(outlier.color = "red") +
   theme(panel.grid = element_line(color = "grey",
-                                     size = 0.01))
+                                     linewidth = 0.01))
 
 ## Munge data so that rows are observations and columns are variables.
 df.arranged <- df %>%
@@ -74,7 +74,7 @@ barplot(df.hclust$height,
 abline(h = 1.5, col = "blue")
 
 
-## Largest, most conservative grouping is 3. Next best is 12.
+## Plot according to clusters
 plot(df.hclust)
 rect.hclust(df.hclust,
             k = 5, # k is used to specify the number of clusters, taken from previous steps.
@@ -214,19 +214,3 @@ manual.cluster.plot
 ## Write manual clustering
 write.csv(manual.cluster %>% select(-euc_dist_to_BP, -shoreline_profile) %>% unique(),
           "data_secondary/profiles_with_clusters.csv", row.names = FALSE)
-
-test <- manual.cluster %>%
-  group_by(first_delineation) %>%
-  mutate(dist_by_type = mean(euc_dist_to_BP)) %>%
-  select(profile, Park, first_delineation, shoreline_profile, dist_by_type) %>%
-  unique()
-
-another.cluster.plot <- ggplot(test) +
-  geom_col(aes(dist_by_type, profile, 
-               group = first_delineation, fill = first_delineation), 
-           width = 0.6) +
-  scale_y_discrete(limits = rev, position = "right") +
-  ggtitle("Profiles averaged by first_delineation")
-another.cluster.plot
-
-  

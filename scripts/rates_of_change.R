@@ -114,6 +114,8 @@ region.ROC.plot
 
 
 # Annualized ROC ----------------------------------------------------------
+## Use the median of each transect and find the euclidean distance to the basepoint.
+## Calculate growth (change) rate for each year and then average that for each profile. 
 annualized.rate <- quartiles.df %>%
   select(profile, Park, year, contains("BasePoint"), contains("median")) %>%
   unique() %>%
@@ -125,7 +127,8 @@ annualized.rate <- quartiles.df %>%
   mutate(dummy_year = row_number()) %>%
   mutate(diff_year = dummy_year - lag(dummy_year),  # Difference in time (just in case there are gaps)
          diff_growth = med_dist_to_BP - lag(med_dist_to_BP)) %>% # Difference in route between years
-  mutate(rate_percent = (diff_growth / diff_year)/med_dist_to_BP * 100) # growth rate in percent
+  mutate(rate_percent = (diff_growth / diff_year)/lag(med_dist_to_BP) * 100) %>% # growth rate in percent
+  mutate(avg_annual_rate = mean(rate_percent, na.rm = TRUE)) # average percent growth rate
 
 
 annualized.median.plot <- ggplot(data = annualized.rate %>% drop_na(),  
@@ -138,7 +141,7 @@ annualized.median.plot <- ggplot(data = annualized.rate %>% drop_na(),
 annualized.median.plot
 
 ## Write csv with annualized median rates per plot
-write.csv(annualized.rate %>% select(profile, Park, year, rate_percent),
+write.csv(annualized.rate %>% select(profile, Park, year, rate_percent, avg_annual_rate),
           "data_secondary/profiles_with_annualROC.csv", row.names = FALSE)
 
 
