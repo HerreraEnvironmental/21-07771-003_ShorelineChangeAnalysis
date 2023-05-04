@@ -56,6 +56,23 @@ All of the units are in meters.
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T,
                       results = "hide")
+knitr::opts_hooks$set(label = function(options) {
+   if (is.null(options$fig.cap)) {
+    stop("Every figure has to have a caption!")  
+   }
+   return(options)
+})
+
+knitr::opts_hooks$set(label = function(options) {
+  default_label <- knitr::opts_knit$get("unnamed.chunk.label")
+  has_default_label <- grepl(default_label, options$label)
+  
+  if (has_default_label) {
+    stop("Name your chunks!")
+  }
+  return(options)
+})
+
 source("scripts/src/kableExtrafunction.R")
 ```
 
@@ -290,9 +307,9 @@ The table includes:
 
 Things that I would like to include if I have a few more hours:
 
-1.  Inflection point if I have time
+1.  Inflection points
 
-2.  Quality of profile data if I have time
+2.  Quality of profile data
 
 ```{r, echo=FALSE}
 source("scripts/final_output.R")
