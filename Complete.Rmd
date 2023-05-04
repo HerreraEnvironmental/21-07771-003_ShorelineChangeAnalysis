@@ -121,7 +121,7 @@ Create a visual for the complete profile with all years.
 The orange horizontal plane is the MHHW mark.
 
 ```{r, echo=FALSE}
-profile.pattern <- "prof_3"
+profile.pattern <- "prof_16"
 
 source("scripts/complete_profile_plane.R")
 
