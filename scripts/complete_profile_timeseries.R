@@ -24,14 +24,23 @@ prof.data <- profiles.df %>%
 my.data <- prof.data %>%
   select(-profile, -season, -y) %>%
   group_by(year) 
+m <- list(
+  l = 20,
+  r = 20,
+  b = 100,
+  t = 100,
+  pad = 4
+)
 
 profile.timeseries.fig <- plot_ly(my.data, x = ~x, y = ~as.numeric(year), z = ~z, 
                     type = "scatter3d", mode = "lines",
                     width = 3, color=~year) %>%
   layout(
-    scene = list(xaxis = list(title = "x"),
-                 yaxis = list(title = "y"),
-                 zaxis = list(title = "z")),
+    scene = list(xaxis = list(title = "Position", showticklabels = FALSE),
+                 yaxis = list(title = "Year"),
+                 zaxis = list(title = "Elevation")),
     title = list(text = paste("Profile:", profile.pattern), y = 0.95),
-    legend = levels(year))
+    legend = levels(year),
+    showlegend = FALSE,
+    autosize = F, width = 750, height = 750, margin = m)
 

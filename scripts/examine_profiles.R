@@ -9,12 +9,12 @@ numbers.only <- unique(sub("^[^_]*_([^_]*).*", "\\1", profile.names)) %>%
   sort()
 
 print(paste("Total number of files:", length(profile.names)))
-print("Fullnames of unique profiles:")
-print(full.names)
+# print("Fullnames of unique profiles:")
+# print(full.names)
 print("Unique numbers of profiles:")
 print(numbers.only)
-print("Missing profiles from sequential data:")
-setdiff(1:54, numbers.only)
+# print("Missing profiles from sequential data:")
+# setdiff(1:54, numbers.only)
 
 
 ## Import csv with geographic profile locations
@@ -29,7 +29,7 @@ sequence <- profiles.w.location$profile
 seq2 <- min(sequence, na.rm = TRUE):max(sequence, na.rm = TRUE)
 missing <- seq2[!seq2 %in% sequence]
 
-print("Profiles without a geographic location included:")
-print(missing)
+# print("Profiles without a geographic location included:")
+# print(missing)
 
 write.csv(profiles.w.location, "data_secondary/profiles_with_location.csv", row.names = FALSE)

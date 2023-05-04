@@ -27,5 +27,6 @@ complete.profile.plot <- plot_ly(complete.profile %>% drop_na(), x = ~x, y = ~y,
     scene = list(xaxis = list(title = "x"),
                  yaxis = list(title = "y"),
                  zaxis = list(title = "z")),
+    scene = list(xaxis = element_blank),
     title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
     legend = levels(year))

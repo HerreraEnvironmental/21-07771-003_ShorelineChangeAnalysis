@@ -38,3 +38,4 @@ single.basepoint.plot <- ggplot(data = partial.visual %>% group_by(profile, year
   geom_point(aes(x = BasePoint_X, y = BasePoint_Y), color = "red", size = 3) +
   ggtitle("Profile 6")
 single.basepoint.plot
+
