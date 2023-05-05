@@ -79,9 +79,10 @@ knitr::kable(profiles.w.location, caption = "Profiles with matching geographic l
 
 ## Individual profile, single year visualization
 
-Below is a rendering of a single profile for a single year (in this case, profile 17, located near Westport Light State Park). 
+Below is a rendering of a single profile for a single year (in this case, profile 17, located near Westport Light State Park).
 
-This is a direct plot of the x y z coordinates to understand the general idea of the data format. It is *not* a geographic representation of the data.
+This is a direct plot of the x y z coordinates to understand the general idea of the data format.
+It is *not* a geographic representation of the data.
 
 ```{r single_profile_visualization, include=FALSE, echo=FALSE}
 profile.pattern <- "prof_17"
@@ -96,7 +97,8 @@ suppressWarnings(single.profile.plot)
 
 ## Individual profile, all available years visualization
 
-Below is a rendering of a single profile (again, profile 17 from Westport State Light) over all the available years. The orange horizontal plane represents the approximate mean high high water (MHHW) mark, as a proxy for understanding how the transect data is shifting over time. 
+Below is a rendering of a single profile (again, profile 17 from Westport State Light) over all the available years.
+The orange horizontal plane represents the approximate mean high high water (MHHW) mark, as a proxy for understanding how the transect data is shifting over time.
 
 ```{r complete_profile_visualization, echo=FALSE, include=FALSE}
 profile.pattern <- "prof_17"
@@ -105,7 +107,6 @@ source("scripts/complete_profile_plane.R")
 
 suppressWarnings(print(complete.profile.plot))
 ```
-
 
 ![Profile 17 near Westport Light State Park, including all available years of data.](figures/pdf_plots/Profile17_allyears.png)
 
@@ -124,7 +125,7 @@ suppressWarnings(print(profile.timeseries.fig))
 
 ## The "BasePoint" reference line and Euclidean distance as an accretion/erosion proxy
 
-In order to quantify shoreline change, an arbitrary "BasePoint" reference line, approximately parallel to the shoreline, was drawn at a reasonable distance from the profiles so as to be unaffected by temporal change. 
+In order to quantify shoreline change, an arbitrary "BasePoint" reference line, approximately parallel to the shoreline, was drawn at a reasonable distance from the profiles so as to be unaffected by temporal change.
 
 The NANOOS profiles are perpendicular to this BasePoint, allowing for a reference against which to calculate spatial change.
 
@@ -135,14 +136,20 @@ source("scripts/profiles_and_BasePoint.R")
 print(all.basepoint.plot)
 print(single.basepoint.plot)
 ```
+
 ![Profile 6 plotted in x y format, compared to a fixed inland basepoint.](figures/pdf_plots/profile6_basepoint.png)
 
 ![Profiles 6 - 9 plotted in x y format, compared to a fixed inland basepoint.](figures/pdf_plots/multipleprofiles_basepoint.png)
 
-
 Using Euclidean distance, migrations of the transects over time as compared to the BasePoint act as proxies for accretion and erosion.
 
-The 
+The midpoint of each transect is calculated to determine a single comparative point using the midpoint formula pictured below.
+
+$$\left(\frac{x_1+x_2}{2}, \frac{y_1+y_2}{2}\right)$$
+
+The Euclidean distance between the midpoint and the fixed BasePoint is calculated for each transect and each year, resulting in an increasing or decreasing Euclidean distance. This distances correlates to an accreting or eroding transect.
+
+$$d=\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$$
 
 |                               |           |
 |-------------------------------|-----------|
