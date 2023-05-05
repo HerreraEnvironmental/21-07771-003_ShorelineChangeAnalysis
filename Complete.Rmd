@@ -141,7 +141,7 @@ print(single.basepoint.plot)
 
 ![Profiles 6 - 9 plotted in x y format, compared to a fixed inland basepoint.](figures/pdf_plots/multipleprofiles_basepoint.png)
 
-Using Euclidean distance, migrations of the transects over time as compared to the BasePoint act as proxies for accretion and erosion.
+Using Euclidean distance, migrations of the transects over time as compared to the BasePoint act as proxies for accretion and erosion. 
 
 The midpoint of each transect is calculated to determine a single comparative point using the midpoint formula pictured below.
 
@@ -156,20 +156,21 @@ $$d=\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$$
 | Increasing Euclidean distance | Accretion |
 | Decreasing Euclidean distance | Erosion   |
 
-## Characterizing profile elements to use for accretion and erosion proxies.
+## Determining significance in accretion and erosion classifications for profiles. 
 
-Find the midpoint of each profile to acquire a single data point to describe the overall migration of the profile.
-See where that midpoint (and by extension the entire profile) is migrating with time.
+Apply the midpoint formula and distance formula to each transect/BasePoint pair, and plot the movement of the midpoint over time. This produces an x:y, distance:time relationship to which a linear model can be fitted. Once the linear model has been produced, the slope and p values can be extracted and used as respective indicators of transect characterization and significance. 
 
-```{r midepoint_euclidean, echo=FALSE}
+If the slope of a given distance:time relationship is positive, this indicates the distance between the transect midpoint and the BasePoint is increasing and the shoreline is accreting. If the slope is negative, the distance is decreasing and the shoreline is eroding. Linear models with a pvalue < 0.05 are considered significant.
+
+```{r midpoint_euclidean, echo=FALSE, include=FALSE}
 profile.pattern <- "prof" ## Adjust this to see specific profiles.
 source("scripts/midpoint_euclidean_distance.R")
 midpoint.euc.dist.plot
 ```
 
-## Assign status to each profile according to linear regression equation details.
+![Euclidean distance of transect midpoints over time.](figures/pdf_plots/net_profile_movement.png)
 
-Once the midpoint euclidean distance has been plotted against time, a linear regression can be applied to understand how time is a predictor of erosion or accretion, and whether that profile movement is considered significant or not.
+## Assign status to each profile according to linear regression equation details.
 
 Below is a table with the relevant results of each profile's linear regression over time, including pvalues (less than 0.05 indicates a significant relationship), rsquared values (indicitive of how good the fit of the regression is) and the Pearson correlation (how closely are time and euclidean distance, or x and y, related).
 
@@ -191,19 +192,19 @@ knitr::kable(all.data, caption = "Comparison with WCEHA data") %>%
 
 ```
 
-## Notes from analysis
+## Some notes on comparisons between the NANOOS analysis and the WCEHA data
 
 The profiles that don't match up with WCEHA data are:
 
 -   Profiles 14 and 15 at the North Jetty
 
-    -   These ones are the most significant "at odds" data, so warrant a second look. NANOOS indicates significant accretion, while WCEHA indicates erosion.
+    -   These two profiles fall into a small "erosion" classification according to the WCEHA data, and are located at a highly dynamic shoreline zone.
 
--   Profiles 16 and 17 (Westport North and South)
+-   Profiles 16 and 17 (Westport Light North and South)
 
-    -   16 is Westport North, and WCEHA data says eroding, while NANOOS says accreting. It's true that Westport North is eroding overall, but WCEHA contains data from 2006 - 2019, and NANOOS contains data from 1997 - 2022. NANOOS encompasses the Army Corp nourishment more holistically. Both of the Westport profiles were "non significant" accretion, so I think that speaks to how much is moving around on that peninsula.
+    -   Both profiles' NANOOS classification of "accretion" conflicts with the WCEHA classifcation of "erosion". It's true that Westport North is eroding overall, but WCEHA contains data from 2006 - 2019, and NANOOS contains data from 1997 - 2022. NANOOS incorporates the geomorphologically impactful Army Corp nourishment more holistically. Both of the Westport profiles were "non significant" accretion, and speaks to the volatility of shorelines on the peninsula.
 
--   Profile 26, one of the Leadbetter Point profiles, which falls in a very small 'erosion' window on the WCEHA dataset, and is also the site of vegetation clearance for snowy plover habitat.
+-   Profile 26, one of the Leadbetter Point profiles, falls in a very small 'erosion' window on the WCEHA dataset on an otherwise accreting peninsula. This slice of land is also the site of vegetation clearance for snowy plover habitat, potentially complicating the aerial-imagery-based WCEHA designation.
 
 -   Profile 50, located at Seaview.
     NANOOS says erosion but WCEHA says accretion, however, the NANOOS data is non significant.

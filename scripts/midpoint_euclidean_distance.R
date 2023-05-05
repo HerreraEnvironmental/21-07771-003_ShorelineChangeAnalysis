@@ -45,7 +45,16 @@ toplot <- euclidean %>%
   mutate(shoreline_profile = ifelse(pvalue < 0.05 & slope > 0, "Significant Accretion",
                           ifelse(pvalue > 0.05 & slope > 0, "Non Significant Accretion", 
                                  ifelse(pvalue < 0.05 & slope < 0, "Significant Erosion", 
-                                        ifelse(pvalue > 0.05 & slope < 0, "Non Significant Erosion", "Other")))))
+                                        ifelse(pvalue > 0.05 & slope < 0, "Non Significant Erosion", "Other"))))) %>%
+  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                              "8", "9", "10", "48", "11", "12",
+                                              "13", "14", "15", "16", "17", "18",
+                                              "19", "20", "21", "22", "23", "24",
+                                              "25", "26", "27", "28", "29", "30",
+                                              "31", "32", "33", "34", "35", "36",
+                                              "37", "49", "38", "50", "39", "40",
+                                              "51", "52", "41", "53", "54", "42",
+                                              "43", "44", "45", "46", "47")))
 
 
 ## Visualize euclidean distance from average Euclidean distance of each year
@@ -61,7 +70,8 @@ midpoint.euc.dist.plot <- ggplot(toplot %>% drop_na(),
   geom_smooth(method = "lm", se = TRUE, color="black") +
   xlab("Year") +
   ylab("Distance in m from BasePoint") + 
-  theme(axis.text.x = element_blank()) +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank()) +
   guides(fill=guide_legend(title="")) +
   ggtitle("Net Accretion or Erosion per Profile")
 midpoint.euc.dist.plot
