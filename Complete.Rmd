@@ -86,7 +86,7 @@ Below is a rendering of a single profile for a single year (in this case, profil
 This is a direct plot of the x y z coordinates to understand the general idea of the data format.
 It is *not* a geographic representation of the data.
 
-```{r single_profile_visualization, include=FALSE, echo=FALSE}
+```{r single_profile_visualization, include=TRUE, echo=FALSE}
 profile.pattern <- "prof_17"
 year.pattern <- c("99")
 
@@ -102,7 +102,7 @@ suppressWarnings(single.profile.plot)
 Below is a rendering of a single profile (again, profile 17 from Westport State Light) over all the available years.
 The orange horizontal plane represents the approximate mean high high water (MHHW) mark, as a proxy for understanding how the transect data is shifting over time.
 
-```{r complete_profile_visualization, echo=FALSE, include=FALSE}
+```{r complete_profile_visualization, echo=FALSE, include=TRUE}
 profile.pattern <- "prof_17"
 
 source("scripts/complete_profile_plane.R")
@@ -114,8 +114,8 @@ suppressWarnings(print(complete.profile.plot))
 
 It can also be helpful to see the above plot spread over time, to provide a clearer picture of profile migration.
 
-```{r complete_profile_timeseries, echo=FALSE, include=FALSE}
-profile.pattern <- "prof_17"
+```{r complete_profile_timeseries, echo=FALSE, include=TRUE}
+profile.pattern <- "prof_23"
 
 source("scripts/complete_profile_timeseries.R")
 
@@ -133,7 +133,7 @@ The NANOOS profiles are perpendicular to this BasePoint, allowing for a referenc
 
 In order to visualize this concept, the images below display 1) a simplified selection of profiles (plotted in black) compared to the BasePoint (plotted in red) and 2) an individual profile (plotted in black) and its BasePoint (plotted in red).
 
-```{r profiles_BasePoint, echo=FALSE, include=FALSE}
+```{r profiles_BasePoint, echo=FALSE, include=TRUE}
 source("scripts/profiles_and_BasePoint.R")
 print(all.basepoint.plot)
 print(single.basepoint.plot)
@@ -164,13 +164,14 @@ Apply the midpoint formula and distance formula to each transect/BasePoint pair,
 
 If the slope of a given distance:time relationship is positive, this indicates the distance between the transect midpoint and the BasePoint is increasing and the shoreline is accreting. If the slope is negative, the distance is decreasing and the shoreline is eroding. Linear models with a pvalue < 0.05 are considered significant.
 
-```{r midpoint_euclidean, echo=FALSE, include=FALSE}
-profile.pattern <- "prof" ## Adjust this to see specific profiles.
+```{r midpoint_euclidean, echo=FALSE, include=TRUE}
+profile.pattern <- "prof" 
 source("scripts/midpoint_euclidean_distance.R")
 midpoint.euc.dist.plot
 ```
 
 ![Euclidean distance of transect midpoints over time.](figures/pdf_plots/net_profile_movement.png)
+
 
 ## Assign status to each profile according to linear regression equation details.
 
@@ -205,10 +206,10 @@ The profiles that don't match up with WCEHA data are:
 -   Profiles 16 and 17 (Westport Light North and South)
 
     -   Both profiles' NANOOS classification of "accretion" conflicts with the WCEHA classifcation of "erosion". It's true that Westport North is eroding overall, but WCEHA contains data from 2006 - 2019, and NANOOS contains data from 1997 - 2022. NANOOS incorporates the geomorphologically impactful Army Corp nourishment more holistically. Both of the Westport profiles were "non significant" accretion, and speaks to the volatility of shorelines on the peninsula.
+    
+-   Profile 23, located at Warrenton Cannery road, is delineated as non-significant erosion within the NANOOS profiles. This results from a dramatic shoreline change around 2008 where a large chunk of the coast was eroded very quickly before returning to accretion. Profile 23 falls within a section of coastline that has been subject to extreme erosion and accretion over the past several decades, and is currently accreting. 
 
 -   Profile 26, one of the Leadbetter Point profiles, falls into a very small 'erosion' window on the WCEHA dataset on an otherwise accreting peninsula. This slice of land is also the site of vegetation clearance for snowy plover habitat, potentially complicating the aerial-imagery-based WCEHA designation.
-
--   Profile 50, located at Seaview. NANOOS indicates erosion and WCEHA indicates accretion, however, the NANOOS data is non significant.
 
 -   Profile 51, slightly north of the North Head lighthouse. NANOOS indicates accretion and WCEHA indicates erosion, however, this is also a non-significant data point from the NANOOS profile. Additionally, this point is influenced by the presence of the North Head outcropping.
     
@@ -225,7 +226,7 @@ Below are images of a single profile and year to see the applied linear regressi
 
 These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with standard boxplot parameters, although they are calculated using *only distance* and not boxplot delineations.
 
-```{r single_linear_quartiles, echo=FALSE, include=FALSE}
+```{r single_linear_quartiles, echo=FALSE, include=TRUE}
 profile.pattern <- "prof_16"
 year.pattern <- "00"
 
@@ -245,7 +246,7 @@ $$\frac{EucDist_2 - EucDist_1}{EucDist_1} \times 100\%$$
 EucDist2 is the more recent year, and EucDist1 is the older year. This is calculated for each set of years from 1997 - 2022. 
 For each profile, the average rate of change (ROC) between all quartiles is taken. 
 
-```{r rates_of_change, echo=FALSE, include=FALSE}
+```{r rates_of_change, echo=FALSE, include=TRUE}
 profile.pattern <- "prof"
 source("scripts/rates_of_change.R")
 profile.ROC.plot

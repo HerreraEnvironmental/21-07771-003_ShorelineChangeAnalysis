@@ -28,3 +28,5 @@ profiles.df <- rbindlist(dfs.filtered, idcol = TRUE, fill = FALSE) %>%
                                          "04", "05", "06", "07", "08", "09", "10",
                                          "11", "12", "13", "14", "15", "16", "17",
                                          "18", "19", "20", "21", "22")))
+
+#write.csv(profiles.df, "data_secondary/all_imported_profiles.csv", row.names = FALSE)

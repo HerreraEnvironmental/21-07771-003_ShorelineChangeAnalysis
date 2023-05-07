@@ -28,7 +28,9 @@ if (str_detect(profile.pattern, "\\(?[0-9,.]+\\)?")) {
   profile.erosion <- profile.erosion %>%
     filter(profile %in% str_extract_all(profile.pattern,"\\(?[0-9,.]+\\)?")[[1]])
 } else {
-  profiles.df <- read.csv("data_secondary/all_imported_profiles.csv")
+  profiles.df <- read.csv("data_secondary/all_imported_profiles.csv",
+                          colClasses = c("numeric", "factor", "factor", "numeric",
+                                         "numeric", "numeric"))
 }
 
 wash.data <- read_csv("data_raw/NANOOS_WCEHA_validation.csv",

@@ -9,7 +9,7 @@ numbers.only <- unique(sub("^[^_]*_([^_]*).*", "\\1", profile.names)) %>%
   sort()
 
 print(paste("Total number of files:", length(profile.names)))
-# print("Fullnames of unique profiles:")
+# print("Full names of unique profiles:")
 # print(full.names)
 print("Unique numbers of profiles:")
 print(numbers.only)

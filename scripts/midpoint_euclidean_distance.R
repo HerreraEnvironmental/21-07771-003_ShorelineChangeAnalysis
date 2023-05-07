@@ -21,7 +21,16 @@ euclidean <- complete.profile %>%
   mutate(euc_dist_to_BP = sqrt(((BasePoint_X - x_midpoint)^2) + ((BasePoint_Y -  y_midpoint)^2))) %>%
   drop_na() %>%
   mutate(net_profile_slope = ifelse(euc_dist_to_BP[which.min(year)] < euc_dist_to_BP[which.max(year)],
-                                "Accretion", "Erosion"))
+                                "Accretion", "Erosion")) %>%
+  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                              "8", "9", "10", "48", "11", "12",
+                                              "13", "14", "15", "16", "17", "18",
+                                              "19", "20", "21", "22", "23", "24",
+                                              "25", "26", "27", "28", "29", "30",
+                                              "31", "32", "33", "34", "35", "36",
+                                              "37", "49", "38", "50", "39", "40",
+                                              "51", "52", "41", "53", "54", "42",
+                                              "43", "44", "45", "46", "47")))
 
 
 ### Extract equation parameters
@@ -38,7 +47,16 @@ equation.details <- euclidean %>%
          se = summary(model)$sigma,
          pvalue = glance(model)$p.value) %>%
   mutate(profile_direction = ifelse(slope > 0, "Accretion", "Erosion")) %>%
-  select(profile, slope, rsq, se, pvalue)
+  select(profile, slope, rsq, se, pvalue) %>%
+  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                              "8", "9", "10", "48", "11", "12",
+                                              "13", "14", "15", "16", "17", "18",
+                                              "19", "20", "21", "22", "23", "24",
+                                              "25", "26", "27", "28", "29", "30",
+                                              "31", "32", "33", "34", "35", "36",
+                                              "37", "49", "38", "50", "39", "40",
+                                              "51", "52", "41", "53", "54", "42",
+                                              "43", "44", "45", "46", "47")))
 
 toplot <- euclidean %>%
   left_join(equation.details, by = "profile") %>%
@@ -84,7 +102,16 @@ pearson.correlation <- toplot %>%
   group_by(profile) %>%
   summarize(pearson_correlation=cor(dummy_year, euc_dist_to_BP)) %>%
   mutate(relationship = ifelse(pearson_correlation > 0 & pearson_correlation < 1, 
-                               "Accretion", "Erosion")) 
+                               "Accretion", "Erosion")) %>%
+  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                              "8", "9", "10", "48", "11", "12",
+                                              "13", "14", "15", "16", "17", "18",
+                                              "19", "20", "21", "22", "23", "24",
+                                              "25", "26", "27", "28", "29", "30",
+                                              "31", "32", "33", "34", "35", "36",
+                                              "37", "49", "38", "50", "39", "40",
+                                              "51", "52", "41", "53", "54", "42",
+                                              "43", "44", "45", "46", "47")))
 
 ## Table of results
 results.table <- toplot %>%

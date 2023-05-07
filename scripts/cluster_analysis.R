@@ -63,11 +63,16 @@ df.arranged <- df %>%
 
 ## Clustering cannot be performed on missing data. NA data needs to be removed.
 ## Locate which rows to drop
+
 missing.rows <- which(rownames(df.arranged) %in% c("Haynisisoos Park, North Beach_1",
-                                                   "Del Rey Beach Rd OBA_46", 
+                                                   "Del Rey Beach Rd OBA_46",
                                                    "Seaside Beach_47"))
 
-df.drop <- df.arranged[-c(missing.rows), -c(1:3, 5, 14:16)]
+#df.drop <- df.arranged[-c(missing.rows), -c(1:3, 5, 14:16)]
+df.drop <- df.arranged[-c(missing.rows), 
+                       !colnames(df.arranged) %in% c("97", "98", "99", "00",
+                                                    "01", "02", "03", "04",
+                                                    "20", "21", "22", "11")]
 
 ## Since the two variables do not have the same units, one may have more weight.
 ## Scale the data to compare variables independent of units.
