@@ -54,6 +54,9 @@ euc.quartile.distances <- quartiles.df %>%
   mutate(q3_dist_to_BP = sqrt(((BasePoint_X - x_quartile3)^2) + ((BasePoint_Y -  y_quartile3)^2))) %>%
   mutate(max_dist_to_BP = sqrt(((BasePoint_X - x_max)^2) + ((BasePoint_Y -  y_max)^2)))
 
+write.csv(euc.quartile.distances %>% select(profile:year, contains("dist")), "data_secondary/profiles_with_quartile_distance.csv", 
+          row.names = FALSE)
+
 ## Calculate rates of change by quartile
 quartile.rates <- euc.quartile.distances %>%
   select(profile:year, contains("dist")) %>%

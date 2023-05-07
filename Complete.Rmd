@@ -12,7 +12,7 @@ TODO: SET ALL NUMBERS TO SIG FIGS
 
 # Overview
 
-This analysis aims to characterize approximately 25 years of shoreline profile transect data, provided by NANOOS (Northwest Assocation of Networked Ocean Observing Systems).
+This analysis aims to characterize approximately 25 years of shoreline profile transect data, provided by NANOOS (Northwest Association of Networked Ocean Observing Systems).
 Using this data combined with area expertise, the relevant coastal areas have been delineated into reaches.
 
 The raw data consists of approximately 4500 individual profiles across 54 coastal sites in Washington and Oregon.
@@ -280,17 +280,22 @@ profile.ROC.plot
 
 ## Clustering profiles into geographic reaches.
 
-Using the Euclidean distance between the profile midpoint and the 
+Using the Euclidean distance between the quartile mean and the BasePoint, there is now data available for clustering. By clustering the Euclidean movement of the profiles over time, geographic reaches of profiles with similar movements can be determined. 
 
-This analysis applies unsupervised clustering, as we want are inputting unlabeled data without training.
+This analysis applies unsupervised clustering, as the input is unlabeled data without training.
 Relevant types of unsupervised clustering are k-means clustering and hierarchical agglomerative clustering (HCA).
 
-Pure kmeans requires some advance knowledge of the number of clusters k, while HCA seeks to build a hierarchy of clusters without a predetermined k.
+Pure kmeans requires some advance knowledge of the number of clusters, the "k" variable, while HCA seeks to build a hierarchy of clusters without a predetermined k.
 
 Because we are trying to determine the sub reaches, we will use HCA for this analysis.
 The number of classes is not specified in advance; hierarchical clustering will determine that.
 
 Our variables are distance to baseline (euclidean midpoint movement over time, aka erosion and accretion), and year.
+
+## Clustering is very sensitive to outliers,
+## so those profiles that display high variability will be removed.
+## Profiles 21 - 26 will be considered their own subreach, according to the 
+## below boxplot. 
 
 HCA Approach 1.
 Create a distance matrix that computes and returns the distance between rows.

@@ -3,7 +3,27 @@
 ## Load and prepare data.
 ## Import midpoint euclidean data. Order the profiles by geographic location,
 ## not by whatever order it was in. 
-df <- read_csv("data_secondary/profiles_with_midpoint_distance.csv", show_col_types = FALSE) %>%
+# df <- read_csv("data_secondary/profiles_with_midpoint_distance.csv", show_col_types = FALSE) %>%
+#   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
+#                                          "04", "05", "06", "07", "08", "09", "10", 
+#                                          "11", "12", "13", "14", "15", "16", "17",
+#                                          "18", "19", "20", "21", "22"))) %>%
+#   mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+#                                               "8", "9", "10", "48", "11", "12",
+#                                               "13", "14", "15", "16", "17", "18",
+#                                               "19", "20", "21", "22", "23", "24",
+#                                               "25", "26", "27", "28", "29", "30",
+#                                               "31", "32", "33", "34", "35", "36",
+#                                               "37", "49", "38", "50", "39", "40",
+#                                               "51", "52", "41", "53", "54", "42",
+#                                               "43", "44", "45", "46", "47"))) %>%
+#   select(profile:year, euc_dist_to_BP) %>%
+#   unique() %>%
+#   arrange(profile)
+
+df <- read_csv("data_secondary/profiles_with_quartile_distance.csv", show_col_types = FALSE) %>%
+  rowwise() %>%
+  mutate(euc_dist_to_BP = mean(min_dist_to_BP:max_dist_to_BP)) %>%
   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
                                          "04", "05", "06", "07", "08", "09", "10", 
                                          "11", "12", "13", "14", "15", "16", "17",
@@ -18,17 +38,21 @@ df <- read_csv("data_secondary/profiles_with_midpoint_distance.csv", show_col_ty
                                               "51", "52", "41", "53", "54", "42",
                                               "43", "44", "45", "46", "47"))) %>%
   select(profile:year, euc_dist_to_BP) %>%
-  unique() %>%
   arrange(profile)
 
-
-## Clustering is very sensitive to outliers, so we will remove them for now. 
+## Clustering is very sensitive to outliers,
+## so those profiles that display high variability will be removed.
 ## Profiles 21 - 26 will be considered their own subreach, according to the 
 ## below boxplot. 
 ggplot(df, aes(x = factor(profile), y = euc_dist_to_BP, group = profile)) +
   geom_boxplot(outlier.color = "red") +
   theme(panel.grid = element_line(color = "grey",
-                                     linewidth = 0.01))
+                                     linewidth = 0.01)) +
+  geom_rect(xmin = 20, xmax = 27, ymin = 250, ymax = 1400,
+                alpha = 0.008, fill="white", color = "red") +
+  xlab("Profile Number") +
+  ylab("Euclidean Distance") +
+  ggtitle("Variation of Euclidean Distance to BasePoint")
 
 ## Munge data so that rows are observations and columns are variables.
 df.arranged <- df %>%
