@@ -8,7 +8,7 @@
 
 # -------------------------------------------------------------------------
 
-profile.pattern <- "prof_22"
+profile.pattern <- "prof_16"
 year.pattern <- c("00")
 
 source("scripts/src/load_packages.R")
@@ -29,7 +29,7 @@ complete.profile.plot <- plot_ly(complete.profile %>% drop_na(), x = ~x, y = ~y,
     scene = list(xaxis = list(title = "x"),
                  yaxis = list(title = "y"),
                  zaxis = list(title = "z")),
-    title = list(text = paste("Profile:", profile.pattern, "Years:"), y = 0.9),
+    title = list(text = paste("Profile:", profile.pattern), y = 0.9),
     legend = levels(year))
 
 complete.profile.plot

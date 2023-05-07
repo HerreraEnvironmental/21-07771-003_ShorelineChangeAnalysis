@@ -3,9 +3,10 @@
 ## February 2023
 ## Shoreline Conservation Areas, Washington State Parks
 
-## Take quartile points along profiles and use euclidean distance to BP as the change rate.
+## Take quartile points along profile linear models,
+## and use euclidean distance to BasePoint as the change rate.
 
-#profile.pattern <- "prof"
+profile.pattern <- "prof"
 
 source("scripts/src/load_packages.R")
 #source("scripts/src/import_profiles.R")
@@ -56,28 +57,42 @@ euc.quartile.distances <- quartiles.df %>%
 ## Calculate rates of change by quartile
 quartile.rates <- euc.quartile.distances %>%
   select(profile:year, contains("dist")) %>%
-  arrange(profile, year) %>%
   group_by(profile) %>%
-  mutate(across(min_dist_to_BP:max_dist_to_BP, ~ ((.x/lag(.x) - 1) * 100), .names = "rate_{.col}"))
+  arrange(profile, year) %>%
+  mutate(across(min_dist_to_BP:max_dist_to_BP, ~ (100 * (.x - dplyr::lag(.x))/lag(.x)), .names = "yearly_ROC_{.col}"))# %>%
+  # ungroup() %>%
+  # group_by(profile) %>%
+  # mutate(across(min_dist_to_BP:max_dist_to_BP, ~ (100 * ((.x[year==last(year)] - .x[year==first(year)])/.x[year==first(year)])),
+  #               .names = "total_ROC_{.col}"))
 
 quartile.rates.long <- quartile.rates %>%
-  select(profile:year, contains("rate")) %>%
-  pivot_longer(cols = contains("rate"), 
+  select(profile:year, contains("ROC")) %>%
+  pivot_longer(cols = contains("ROC"), 
                names_to = "quartile", values_to = "rate_of_change") 
 
 ## Add in the average rate of all quartiles.
 mean.rate.df <- quartile.rates %>%
   drop_na() %>%
   group_by(profile, year) %>%
-  mutate(mean_rate = mean(rate_min_dist_to_BP:rate_max_dist_to_BP)) %>%
-  select(profile, Park, year, rate_of_change = mean_rate) %>%
+  mutate(mean_yearly_rate = mean(yearly_ROC_min_dist_to_BP:yearly_ROC_max_dist_to_BP)) %>%
+  #mutate(mean_total_rate = mean(total_ROC_min_dist_to_BP:total_ROC_max_dist_to_BP)) %>%
+  select(profile, Park, year, rate_of_change = mean_yearly_rate) %>%#, total_rate_of_change = mean_total_rate) %>%
   mutate(quartile = "mean")
 
 ## Combine for a complete df of quartile rates with mean
 all.quartile.rates <- quartile.rates.long %>%
   rbind(mean.rate.df) %>%
   arrange(profile, year) %>%
-  mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion"))
+  mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion")) %>%
+  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                              "8", "9", "10", "48", "11", "12",
+                                              "13", "14", "15", "16", "17", "18",
+                                              "19", "20", "21", "22", "23", "24",
+                                              "25", "26", "27", "28", "29", "30",
+                                              "31", "32", "33", "34", "35", "36",
+                                              "37", "49", "38", "50", "39", "40",
+                                              "51", "52", "41", "53", "54", "42",
+                                              "43", "44", "45", "46", "47")))
 
 ## Write csv with all quartile rates
 write.csv(all.quartile.rates, "data_secondary/profiles_with_quartROC.csv", row.names = FALSE)
@@ -93,55 +108,55 @@ profile.ROC.plot <- ggplot(data = all.quartile.rates %>% drop_na(),
 profile.ROC.plot
 
 ## Group the rates by park
-park.quartile.rates <- quartile.rates.long %>%
-  rbind(mean.rate.df) %>%
-  arrange(profile, year) %>%
-  mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion")) %>%
-  separate(Park, into = c("Park", "Region"), sep = ",")
+# park.quartile.rates <- quartile.rates.long %>%
+#   rbind(mean.rate.df) %>%
+#   arrange(profile, year) %>%
+#   mutate(profile_direction = ifelse(rate_of_change > 0, "Accretion", "Erosion")) %>%
+#   separate(Park, into = c("Park", "Region"), sep = ",")
 
 ## Write ROC by NANOOS-defined region
-write.csv(park.quartile.rates, "data_secondary/NANOOSRegions_with_quartROC.csv", row.names = FALSE)
+#write.csv(park.quartile.rates, "data_secondary/NANOOSRegions_with_quartROC.csv", row.names = FALSE)
 
 ## Plot each rate of change for the three NANOOS-defined regions
-region.ROC.plot <- ggplot(data = park.quartile.rates %>% drop_na(),  
-                            aes(x = year, y = rate_of_change, fill = profile_direction)) +
-  facet_wrap(~Region, scales = "free") +
-  geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
-  scale_fill_manual(values=c("#04A1FF", "tomato2")) +
-  theme(axis.text.x = element_blank()) +
-  ggtitle("Combined Rates of Change per Region") 
-region.ROC.plot
+# region.ROC.plot <- ggplot(data = park.quartile.rates %>% drop_na(),  
+#                             aes(x = year, y = rate_of_change, fill = profile_direction)) +
+#   facet_wrap(~Region, scales = "free") +
+#   geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
+#   scale_fill_manual(values=c("#04A1FF", "tomato2")) +
+#   theme(axis.text.x = element_blank()) +
+#   ggtitle("Combined Rates of Change per Region") 
+# region.ROC.plot
 
 
 # Annualized ROC ----------------------------------------------------------
 ## Use the median of each transect and find the euclidean distance to the basepoint.
 ## Calculate growth (change) rate for each year and then average that for each profile. 
-annualized.rate <- quartiles.df %>%
-  select(profile, Park, year, contains("BasePoint"), contains("median")) %>%
-  unique() %>%
-  arrange(profile, year) %>%
-  rowwise() %>%
-  mutate(med_dist_to_BP = sqrt(((BasePoint_X - x_median)^2) + ((BasePoint_Y -  y_median)^2))) %>%
-  select(-c(BasePoint_X:y_median)) %>%
-  group_by(profile) %>%
-  mutate(dummy_year = row_number()) %>%
-  mutate(diff_year = dummy_year - lag(dummy_year),  # Difference in time (just in case there are gaps)
-         diff_growth = med_dist_to_BP - lag(med_dist_to_BP)) %>% # Difference in route between years
-  mutate(rate_percent = (diff_growth / diff_year)/lag(med_dist_to_BP) * 100) %>% # growth rate in percent
-  mutate(avg_annual_rate = mean(rate_percent, na.rm = TRUE)) # average percent growth rate
-
-
-annualized.median.plot <- ggplot(data = annualized.rate %>% drop_na(),  
-                          aes(x = year, y = rate_percent)) +
-  facet_wrap(~profile, scales = "free") +
-  geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
-  scale_fill_manual(values=c("#04A1FF", "tomato2")) +
-  theme(axis.text.x = element_blank()) +
-  ggtitle("Annualized Rates of Change per Profile") 
-annualized.median.plot
+# annualized.rate <- quartiles.df %>%
+#   select(profile, Park, year, contains("BasePoint"), contains("median")) %>%
+#   unique() %>%
+#   arrange(profile, year) %>%
+#   rowwise() %>%
+#   mutate(med_dist_to_BP = sqrt(((BasePoint_X - x_median)^2) + ((BasePoint_Y -  y_median)^2))) %>%
+#   select(-c(BasePoint_X:y_median)) %>%
+#   group_by(profile) %>%
+#   mutate(dummy_year = row_number()) %>%
+#   mutate(diff_year = dummy_year - lag(dummy_year),  # Difference in time (just in case there are gaps)
+#          diff_growth = med_dist_to_BP - lag(med_dist_to_BP)) %>% # Difference in route between years
+#   mutate(rate_percent = (diff_growth / diff_year)/lag(med_dist_to_BP) * 100) %>% # growth rate in percent
+#   mutate(avg_annual_rate = mean(rate_percent, na.rm = TRUE)) # average percent growth rate
+# 
+# 
+# annualized.median.plot <- ggplot(data = annualized.rate %>% drop_na(),  
+#                           aes(x = year, y = rate_percent)) +
+#   facet_wrap(~profile, scales = "free") +
+#   geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
+#   scale_fill_manual(values=c("#04A1FF", "tomato2")) +
+#   theme(axis.text.x = element_blank()) +
+#   ggtitle("Annualized Rates of Change per Profile") 
+# annualized.median.plot
 
 ## Write csv with annualized median rates per plot
-write.csv(annualized.rate %>% select(profile, Park, year, rate_percent, avg_annual_rate),
-          "data_secondary/profiles_with_annualROC.csv", row.names = FALSE)
+# write.csv(annualized.rate %>% select(profile, Park, year, rate_percent, avg_annual_rate),
+#           "data_secondary/profiles_with_annualROC.csv", row.names = FALSE)
 
 

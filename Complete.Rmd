@@ -8,6 +8,8 @@ editor_options:
     wrap: sentence
 ---
 
+TODO: SET ALL NUMBERS TO SIG FIGS
+
 # Overview
 
 This analysis aims to characterize approximately 25 years of shoreline profile transect data, provided by NANOOS (Northwest Assocation of Networked Ocean Observing Systems).
@@ -204,72 +206,81 @@ The profiles that don't match up with WCEHA data are:
 
     -   Both profiles' NANOOS classification of "accretion" conflicts with the WCEHA classifcation of "erosion". It's true that Westport North is eroding overall, but WCEHA contains data from 2006 - 2019, and NANOOS contains data from 1997 - 2022. NANOOS incorporates the geomorphologically impactful Army Corp nourishment more holistically. Both of the Westport profiles were "non significant" accretion, and speaks to the volatility of shorelines on the peninsula.
 
--   Profile 26, one of the Leadbetter Point profiles, falls in a very small 'erosion' window on the WCEHA dataset on an otherwise accreting peninsula. This slice of land is also the site of vegetation clearance for snowy plover habitat, potentially complicating the aerial-imagery-based WCEHA designation.
+-   Profile 26, one of the Leadbetter Point profiles, falls into a very small 'erosion' window on the WCEHA dataset on an otherwise accreting peninsula. This slice of land is also the site of vegetation clearance for snowy plover habitat, potentially complicating the aerial-imagery-based WCEHA designation.
 
--   Profile 50, located at Seaview.
-    NANOOS says erosion but WCEHA says accretion, however, the NANOOS data is non significant.
+-   Profile 50, located at Seaview. NANOOS indicates erosion and WCEHA indicates accretion, however, the NANOOS data is non significant.
 
--   Profile 51, just north of the North Head lighthouse.
-    This is the opposite of 50, where NANOOS says accretion but WCEHA says erosion, and also is a non-significant data point from the NANOOS profile.
-    ## Linear Regressions and Change Rates
+-   Profile 51, slightly north of the North Head lighthouse. NANOOS indicates accretion and WCEHA indicates erosion, however, this is also a non-significant data point from the NANOOS profile. Additionally, this point is influenced by the presence of the North Head outcropping.
+    
+    
+## Quartile Points and Change Rates
 
-The midpoint of each profile selects a single point as a proxy for erosion through time.
-This obscures the variation inherent in the collection of profiles.
+Using the midpoint of each transect selects a single point as a proxy for erosion through time.
+This can obscure the inherent variation in the collection of profiles.
 
-Therefore it is important to find a method of individual profile characterization that will apply to all 4500 profiles, and can act as a reliable proxy to determine rates of erosion or accretion.
-
-The profiles have linear relationships due to the geographic layout: in general, a change in x (moving along the Easting plane) will result in a *roughly* equal change in y (the Northing plane).
+The profiles have roughly linear relationships due to the geographic layout: in general, a change in x (moving along the Easting plane) will result in a *roughly* equal change in y (the Northing plane).
 Therefore, a linear regression can be applied to the x and y variables of each profile to obtain a line proxy rather than a single point.
 
-Look at a single profile and year to see the applied linear regression.
-On the right, the linear quartiles are added for more detailed data description of accretion and erosion.
+Below are images of a single profile and year to see the applied linear regression. In the first image, a linear regression is overlaid onto a single profile, and in the second, the linear quartiles of the regression are added. Note that in the second image, the red "BasePoint" has been included to visualize distance. 
+
 These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with standard boxplot parameters, although they are calculated using *only distance* and not boxplot delineations.
 
-```{r single_linear_quartiles, echo=FALSE}
-profile.pattern <- "prof_7"
+```{r single_linear_quartiles, echo=FALSE, include=FALSE}
+profile.pattern <- "prof_16"
 year.pattern <- "00"
 
 source("scripts/single_linear_quartiles.R")
 single.linear.plot + single.quartiles.plot
 ```
 
+
+![Linear regression overlaid on the profile 16 transect from 2000.](figures/pdf_plots/profile16_linearregression.png)
+![Distance-calculated quartiles of profile 16 in the year 2000, including the fixed BasePoint.](figures/pdf_plots/profile16_quartiles.png)
+
 Characterizing the profiles with more points allows for a more detailed look at erosion and accretion rates.
 
-Each quartile's movement is tracked over time, same as the midpoint proxy used above.
-Then the means of the movement was taken and used to determine a rate of change for each profile.
+Each quartile's Euclidean movement is tracked over time, using the same calculations as the midpoint proxy used above. The rate of change is then calculated for each quartile of each profile, using a standard rate of change calculation between each year:
 
-The rates can be viewed by park or by profile.
+$$\frac{EucDist_2 - EucDist_1}{EucDist_1} \times 100\%$$
+EucDist2 is the more recent year, and EucDist1 is the older year. This is calculated for each set of years from 1997 - 2022. 
+For each profile, the average rate of change (ROC) between all quartiles is taken. 
 
-```{r rates_of_change, echo=FALSE}
+```{r rates_of_change, echo=FALSE, include=FALSE}
 profile.pattern <- "prof"
 source("scripts/rates_of_change.R")
-region.ROC.plot
 profile.ROC.plot
 ```
 
-## Using Mean High High Water (MHHW) as a proxy for shoreline change
+![Annual rates of change for each profile.](figures/pdf_plots/profiles_ROC.png)
 
-As the profiles (and the shoreline) change over time, the coordinate at which a profile crosses the mean high high water mark shifts, acting as a reliable indicator of accretion and erosion.
 
-Visualize where the profiles cross the MHHW mark.
+<!-- ## Using Mean High High Water (MHHW) as a proxy for shoreline change -->
 
-```{r MHHW_visualization, echo=FALSE}
-source("scripts/MHHW_to_BasePoint.R")
+<!-- As the profiles (and the shoreline) change over time, the coordinate at which a profile crosses the mean high high water mark shifts, acting as a reliable indicator of accretion and erosion. -->
 
-complete.profile.plot
-MHHW.to.BasePoint
-```
+<!-- Visualize where the profiles cross the MHHW mark. -->
 
-How does the euclidean distance from the MHHW to the BasePoint move with time?
-What are the rates of change when the proxy is the MHHW mark?
+<!-- ```{r MHHW_visualization, echo=FALSE, include=FALSE} -->
+<!-- source("scripts/MHHW_to_BasePoint.R") -->
 
-```{r MHHW_rates_of_change, echo=FALSE}
-profile.pattern <- "prof"
-source("scripts/MHHW_RatesOfChange.R")
-MHHW.ROC.plot
-```
+<!-- complete.profile.plot -->
+<!-- MHHW.to.BasePoint -->
+<!-- ``` -->
 
-Clustering using the midpoint euclidean distance data.
+<!-- ![Profile 22 crossing the Mean High High Water mark for all years of data collection.](figures/pdf_plots/Profile22_allyears.png) -->
+
+<!-- How does the euclidean distance from the MHHW to the BasePoint move with time? -->
+<!-- What are the rates of change when the proxy is the MHHW mark? -->
+
+<!-- ```{r MHHW_rates_of_change, echo=FALSE, include=FALSE} -->
+<!-- profile.pattern <- "prof" -->
+<!-- source("scripts/MHHW_RatesOfChange.R") -->
+<!-- MHHW.ROC.plot -->
+<!-- ``` -->
+
+## Clustering profiles into geographic reaches.
+
+Using the Euclidean distance between the profile midpoint and the 
 
 This analysis applies unsupervised clustering, as we want are inputting unlabeled data without training.
 Relevant types of unsupervised clustering are k-means clustering and hierarchical agglomerative clustering (HCA).
