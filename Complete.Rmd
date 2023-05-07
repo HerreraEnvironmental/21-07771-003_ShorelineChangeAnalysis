@@ -255,30 +255,6 @@ profile.ROC.plot
 ![Annual rates of change for each profile.](figures/pdf_plots/profiles_ROC.png)
 
 
-<!-- ## Using Mean High High Water (MHHW) as a proxy for shoreline change -->
-
-<!-- As the profiles (and the shoreline) change over time, the coordinate at which a profile crosses the mean high high water mark shifts, acting as a reliable indicator of accretion and erosion. -->
-
-<!-- Visualize where the profiles cross the MHHW mark. -->
-
-<!-- ```{r MHHW_visualization, echo=FALSE, include=FALSE} -->
-<!-- source("scripts/MHHW_to_BasePoint.R") -->
-
-<!-- complete.profile.plot -->
-<!-- MHHW.to.BasePoint -->
-<!-- ``` -->
-
-<!-- ![Profile 22 crossing the Mean High High Water mark for all years of data collection.](figures/pdf_plots/Profile22_allyears.png) -->
-
-<!-- How does the euclidean distance from the MHHW to the BasePoint move with time? -->
-<!-- What are the rates of change when the proxy is the MHHW mark? -->
-
-<!-- ```{r MHHW_rates_of_change, echo=FALSE, include=FALSE} -->
-<!-- profile.pattern <- "prof" -->
-<!-- source("scripts/MHHW_RatesOfChange.R") -->
-<!-- MHHW.ROC.plot -->
-<!-- ``` -->
-
 ## Clustering profiles into geographic reaches.
 
 Using the Euclidean distance between the quartile mean and the BasePoint, there is now data available for clustering. By clustering the Euclidean movement of the profiles over time, geographic reaches of profiles with similar movements can be determined. 
