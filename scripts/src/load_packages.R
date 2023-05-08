@@ -8,6 +8,7 @@ required_Packages_Install <- c("broom",
                                "data.table",
                                "factoextra",
                                "ggmap",
+                               "gtsummary",
                                "kableExtra",
                                "patchwork",
                                "rgl",
@@ -22,5 +23,4 @@ for(Package in required_Packages_Install) {
   }
   suppressWarnings(library(Package, character.only = TRUE))
 }
-
 

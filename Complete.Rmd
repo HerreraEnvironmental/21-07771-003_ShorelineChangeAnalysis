@@ -1,12 +1,29 @@
 ---
 title: 'NANOOS Profiles: SCA Shoreline Characterization'
 author: "Regina Lionheart"
-date: "2023-03-01"
-output: pdf_document
+date: "`r Sys.Date()`"
+output:
+  pdf_document: 
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    keep_tex: yes
 editor_options: 
   markdown: 
     wrap: sentence
+latex_engine: pdflatex
+always_allow_html: yes 
+classoption: landscape
+header-includes:
+  \usepackage{helvet}
+  \renewcommand\familydefault{\sfdefault}
+include-before:
+- '`\newpage{}`{=latex}'
 ---
+
+\let\oldsection\section
+\renewcommand\section{\clearpage\oldsection}
+
 
 TODO: SET ALL NUMBERS TO SIG FIGS
 
@@ -16,7 +33,7 @@ This analysis aims to characterize approximately 25 years of shoreline profile t
 Using this data combined with area expertise, the relevant coastal areas have been delineated into reaches.
 
 The raw data consists of approximately 4500 individual profiles across 54 coastal sites in Washington and Oregon.
-The profiles are in x y z format (Easting Northing elevation).The naming convention is prof_X\_ssYY.out where prof is short for profile, X is the profile number, ss is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (e.g. "98" is 1998", "00" is 2000, "08" is 2008, etc).
+The profiles are in x y z format (Easting Northing elevation).The naming convention is prof_X_ssYY.out where prof is short for profile, X is the profile number, ss is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (e.g. "98" is 1998", "00" is 2000, "08" is 2008, etc).
 
 Quite a few profiles are null (empty) and have been removed and noted.
 See the "Explore Profiles" section for more information.
@@ -26,7 +43,7 @@ These files do not represent a large percentage of the files and have not been i
 
 Profiles 42 - 47 are in Oregon, and so have been excluded from much of the analysis.
 
-*Geographically speaking, profiles do not proceed sequentially.*
+*Geographically, profiles do not proceed sequentially.*
 
 ### Metadata
 
@@ -37,27 +54,42 @@ All of the units are in meters.
 ```{r knit_setup, include=FALSE}
 
 ## Script Setup
+# 
+# knitr::opts_chunk$set(echo = T,
+#                       results = "hide")
+# knitr::opts_hooks$set(label = function(options) {
+#    if (is.null(options$fig.cap)) {
+#     stop("Every figure has to have a caption!")  
+#    }
+#    return(options)
+# })
+# 
+# knitr::opts_hooks$set(label = function(options) {
+#   default_label <- knitr::opts_knit$get("unnamed.chunk.label")
+#   has_default_label <- grepl(default_label, options$label)
+#   
+#   if (has_default_label) {
+#     stop("Name your chunks!")
+#   }
+#   return(options)
+# })
+# options(knitr.table.format = "latex")
 
-knitr::opts_chunk$set(echo = T,
-                      results = "hide")
-knitr::opts_hooks$set(label = function(options) {
-   if (is.null(options$fig.cap)) {
-    stop("Every figure has to have a caption!")  
-   }
-   return(options)
-})
+#source("scripts/src/kableExtrafunction.R")
+```
 
-knitr::opts_hooks$set(label = function(options) {
-  default_label <- knitr::opts_knit$get("unnamed.chunk.label")
-  has_default_label <- grepl(default_label, options$label)
-  
-  if (has_default_label) {
-    stop("Name your chunks!")
-  }
-  return(options)
-})
 
-source("scripts/src/kableExtrafunction.R")
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE
+  )
+```
+
+```{r knitr-options}
+# Displays blank instead of NA for missing values
+options(knitr.kable.NA = '') 
 ```
 
 ```{r load_packages, include=FALSE, echo=FALSE, results='hide'}
@@ -66,18 +98,34 @@ source("scripts/src/kableExtrafunction.R")
 source("scripts/src/load_packages.R")
 ```
 
-## Explore profiles
-
-```{r examine_profiles, echo=FALSE}
+```{r examine_profiles, echo=FALSE, include=FALSE}
 source("scripts/examine_profiles.R")
 ```
 
 ## View profiles and their geographic locations
 
-```{r profile_location, echo=FALSE, warning=FALSE}
-knitr::kable(profiles.w.location, caption = "Profiles with matching geographic location") %>%
-  kableExtra::kable_styling(fixed_thead = T)
+```{r profile_location, echo=TRUE, warning=FALSE}
+# knitr::kable(profiles.w.location, caption = "Profiles with matching geographic location",
+#              format = "html") %>%
+#   kableExtra::kable_styling(fixed_thead = T)
+
+profiles.w.location %>% 
+  # first few rows as an example
+  knitr::kable(
+    format = "latex",
+    booktabs = TRUE,
+    longtable = TRUE,
+    linesep = "",
+    align = "l"
+    ) %>%
+  kableExtra::kable_styling(
+      position = "left",
+      latex_options = c("striped", "repeat_header"),
+      stripe_color = "gray!15"
+    )
 ```
+
+
 
 ## Individual profile, single year visualization
 
@@ -86,7 +134,9 @@ Below is a rendering of a single profile for a single year (in this case, profil
 This is a direct plot of the x y z coordinates to understand the general idea of the data format.
 It is *not* a geographic representation of the data.
 
-```{r single_profile_visualization, include=TRUE, echo=FALSE}
+```{r single_profile_visualization, include=FALSE, echo=FALSE}
+
+knitr::knit_exit()
 profile.pattern <- "prof_17"
 year.pattern <- c("99")
 
@@ -296,7 +346,7 @@ The above dendogram shows the clustering process, and highlights the decision to
 With each profile assigned a cluster, the final table of reaches is made combining geographic knowledge informed by the numerical clustering.
 
 
-```{r final_output, echo=FALSE}
+```{r final_output, echo=FALSE, include=FALSE}
 source("scripts/final_output.R")
 ```
 ```{r final_table, echo=FALSE}
