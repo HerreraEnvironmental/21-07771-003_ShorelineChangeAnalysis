@@ -95,7 +95,7 @@ df.clustered <- cutree(res.hc, k = 4) %>%
   rename(cluster_id = 2) %>%
   full_join(df %>% select(profile, Park, euc_dist_to_BP), 
             by = "profile", multiple = "all") %>%
-  full_join(df.direction %>% select(1, 4), by = "profile") %>%
+  full_join(df.direction %>% select(1, 3), by = "profile") %>%
   select(profile, Park, cluster_id, euc_dist_to_BP, shoreline_profile) %>%
   unique() %>%
   mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",

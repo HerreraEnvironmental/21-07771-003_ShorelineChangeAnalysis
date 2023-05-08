@@ -120,6 +120,9 @@ results.table <- toplot %>%
   left_join(equation.details, by = "profile") %>%
   left_join(pearson.correlation, by = "profile") %>%
   select(-relationship)
+results.table <- lapply(results.table, function(x) if(is.numeric(x)) round(x, 2) else x) %>%
+  as.data.frame()
+  
 
 
 ## Download equations for WCEHA comparison

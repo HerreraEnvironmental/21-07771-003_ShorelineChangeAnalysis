@@ -15,7 +15,7 @@ nanoos.data <- read_csv("data_secondary/profiles_with_equations.csv",
 
 all.data <- nanoos.data %>%
   left_join(wash.data, by = "profile") %>%
-  select(profile, Park, location, shoreline_profile, WCEHA, -c(slope:pvalue, notes)) %>%
+  select(profile, Park, shoreline_profile, WCEHA, -c(slope:pvalue, notes)) %>%
   mutate(shoreline_profile = ifelse(shoreline_profile == "Significant Accretion"| shoreline_profile == "Non Significant Accretion",
                                     "Accreted", "Erosion")) %>%
   mutate(conflict = ifelse(shoreline_profile != WCEHA, "flag", NA))

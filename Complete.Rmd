@@ -1,5 +1,5 @@
 ---
-title: 'NANOOS Profiles: SCA Shoreline Characterization'
+title: "NANOOS Profiles: SCA Shoreline Characterization"
 author: "Regina Lionheart"
 date: "`r Sys.Date()`"
 output:
@@ -41,7 +41,7 @@ See the "Explore Profiles" section for more information.
 A small portion of the profiles had non-conforming filenames: "BigE06", "beachface", etc.
 These files do not represent a large percentage of the files and have not been included in the analysis.
 
-Profiles 42 - 47 are in Oregon, and so have been excluded from much of the analysis.
+Profiles 42 - 47 are in Oregon and have been excluded from most of the analysis.
 
 *Geographically, profiles do not proceed sequentially.*
 
@@ -54,28 +54,8 @@ All of the units are in meters.
 ```{r knit_setup, include=FALSE}
 
 ## Script Setup
-# 
-# knitr::opts_chunk$set(echo = T,
-#                       results = "hide")
-# knitr::opts_hooks$set(label = function(options) {
-#    if (is.null(options$fig.cap)) {
-#     stop("Every figure has to have a caption!")  
-#    }
-#    return(options)
-# })
-# 
-# knitr::opts_hooks$set(label = function(options) {
-#   default_label <- knitr::opts_knit$get("unnamed.chunk.label")
-#   has_default_label <- grepl(default_label, options$label)
-#   
-#   if (has_default_label) {
-#     stop("Name your chunks!")
-#   }
-#   return(options)
-# })
-# options(knitr.table.format = "latex")
 
-#source("scripts/src/kableExtrafunction.R")
+source("scripts/src/kableExtrafunction.R")
 ```
 
 
@@ -85,10 +65,6 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
   )
-```
-
-```{r knitr-options}
-# Displays blank instead of NA for missing values
 options(knitr.kable.NA = '') 
 ```
 
@@ -102,16 +78,12 @@ source("scripts/src/load_packages.R")
 source("scripts/examine_profiles.R")
 ```
 
-## View profiles and their geographic locations
+## List of profiles and their geographic locations
 
-```{r profile_location, echo=TRUE, warning=FALSE}
-# knitr::kable(profiles.w.location, caption = "Profiles with matching geographic location",
-#              format = "html") %>%
-#   kableExtra::kable_styling(fixed_thead = T)
-
+```{r profile_location, echo=FALSE, warning=FALSE}
 profiles.w.location %>% 
-  # first few rows as an example
   knitr::kable(
+    caption = "Profiles with Corresponding Geographic Location",
     format = "latex",
     booktabs = TRUE,
     longtable = TRUE,
@@ -121,22 +93,22 @@ profiles.w.location %>%
   kableExtra::kable_styling(
       position = "left",
       latex_options = c("striped", "repeat_header"),
-      stripe_color = "gray!15"
+      stripe_color = "gray!15",
+      fixed_thead = TRUE
     )
 ```
 
 
-
-## Individual profile, single year visualization
+# Individual profiles, single year visualization
 
 Below is a rendering of a single profile for a single year (in this case, profile 17, located near Westport Light State Park).
 
 This is a direct plot of the x y z coordinates to understand the general idea of the data format.
 It is *not* a geographic representation of the data.
 
+![Profile 17 near Westport Light State Park, from the year 1999.](figures/pdf_plots/Profile17_1999.png)
 ```{r single_profile_visualization, include=FALSE, echo=FALSE}
 
-knitr::knit_exit()
 profile.pattern <- "prof_17"
 year.pattern <- c("99")
 
@@ -145,26 +117,25 @@ source("scripts/single_profile_3D.R")
 suppressWarnings(single.profile.plot)
 ```
 
-![Profile 17 near Westport Light State Park, from the year 1999.](figures/pdf_plots/Profile17_1999.png)
 
-## Individual profile, all available years visualization
+# Individual profiles, all available years visualization
 
 Below is a rendering of a single profile (again, profile 17 from Westport State Light) over all the available years.
 The orange horizontal plane represents the approximate mean high high water (MHHW) mark, as a proxy for understanding how the transect data is shifting over time.
 
-```{r complete_profile_visualization, echo=FALSE, include=TRUE}
+![Profile 17 near Westport Light State Park, including all available years of data.](figures/pdf_plots/Profile17_allyears.png)
+```{r complete_profile_visualization, echo=FALSE, include=FALSE}
 profile.pattern <- "prof_17"
 
 source("scripts/complete_profile_plane.R")
 
-suppressWarnings(print(complete.profile.plot))
+#suppressWarnings(print(complete.profile.plot))
 ```
 
-![Profile 17 near Westport Light State Park, including all available years of data.](figures/pdf_plots/Profile17_allyears.png)
 
 It can also be helpful to see the above plot spread over time, to provide a clearer picture of profile migration.
 
-```{r complete_profile_timeseries, echo=FALSE, include=TRUE}
+```{r complete_profile_timeseries, echo=FALSE, include=FALSE}
 profile.pattern <- "prof_23"
 
 source("scripts/complete_profile_timeseries.R")
@@ -173,9 +144,9 @@ suppressWarnings(print(profile.timeseries.fig))
 
 ```
 
-![Profile 17 near Westport Light State Park, including all available years of data.](figures/pdf_plots/Profile17_timeseries.png)
+![Profile 17 near Westport Light State Park, including all available years of data.](figures/pdf_plots/Profile22_timeseries.png)
 
-## The "BasePoint" reference line and Euclidean distance as an accretion/erosion proxy
+# The "BasePoint" reference line and Euclidean distance as an accretion/erosion proxy
 
 In order to quantify shoreline change, an arbitrary "BasePoint" reference line, approximately parallel to the shoreline, was drawn at a reasonable distance from the profiles so as to be unaffected by temporal change.
 
@@ -183,7 +154,7 @@ The NANOOS profiles are perpendicular to this BasePoint, allowing for a referenc
 
 In order to visualize this concept, the images below display 1) a simplified selection of profiles (plotted in black) compared to the BasePoint (plotted in red) and 2) an individual profile (plotted in black) and its BasePoint (plotted in red).
 
-```{r profiles_BasePoint, echo=FALSE, include=TRUE}
+```{r profiles_BasePoint, echo=FALSE, include=FALSE}
 source("scripts/profiles_and_BasePoint.R")
 print(all.basepoint.plot)
 print(single.basepoint.plot)
@@ -208,13 +179,13 @@ $$d=\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$$
 | Increasing Euclidean distance | Accretion |
 | Decreasing Euclidean distance | Erosion   |
 
-## Determining significance in accretion and erosion classifications for profiles. 
+# Determining significance in accretion and erosion classifications for profiles. 
 
 Apply the midpoint formula and distance formula to each transect/BasePoint pair, and plot the movement of the midpoint over time. This produces an x:y, distance:time relationship to which a linear model can be fitted. Once the linear model has been produced, the slope and p values can be extracted and used as respective indicators of transect characterization and significance. 
 
 If the slope of a given distance:time relationship is positive, this indicates the distance between the transect midpoint and the BasePoint is increasing and the shoreline is accreting. If the slope is negative, the distance is decreasing and the shoreline is eroding. Linear models with a pvalue < 0.05 are considered significant.
 
-```{r midpoint_euclidean, echo=FALSE, include=TRUE}
+```{r midpoint_euclidean, echo=FALSE, include=FALSE}
 profile.pattern <- "prof" 
 source("scripts/midpoint_euclidean_distance.R")
 midpoint.euc.dist.plot
@@ -223,25 +194,52 @@ midpoint.euc.dist.plot
 ![Euclidean distance of transect midpoints over time.](figures/pdf_plots/net_profile_movement.png)
 
 
-## Assign status to each profile according to linear regression equation details.
+# Assign status to each profile according to linear regression equation details.
 
 Below is a table with the relevant results of each profile's linear regression over time, including pvalues (less than 0.05 indicates a significant relationship), rsquared values (indicitive of how good the fit of the regression is) and the Pearson correlation (how closely are time and euclidean distance, or x and y, related).
 
 ```{r linear_parameters, echo=FALSE}
-knitr::kable(results.table, caption = "Linear equation parameters") %>%
-  kableExtra::kable_styling(fixed_thead = T)
+results.table %>% 
+  knitr::kable(
+    caption = "Linear equation parameters",
+    format = "latex",
+    booktabs = TRUE,
+    longtable = TRUE,
+    linesep = "",
+    align = "l"
+    ) %>%
+  kableExtra::kable_styling(
+      position = "left",
+      latex_options = c("striped", "repeat_header", "scale_down"),
+      stripe_color = "gray!15",
+      fixed_thead = TRUE
+    )
 ```
 
-## Comparison of results to Washington Coastal Erosion Hazard Assessment (WCEHA)
+# Comparison of results to Washington Coastal Erosion Hazard Assessment (WCEHA)
 
 The WCEHA (<https://waecy.maps.arcgis.com/apps/View/index.html?appid=389d0a3ce642485db912d4a416a56e25>) is a second database that can be used as a comparison to the results from the NANOOS profiles.
 
 ```{r WCEHA_validation, echo=FALSE}
 source("scripts/WCEHA_validation.R")
-knitr::kable(all.data, caption = "Comparison with WCEHA data") %>%
-  kableExtra::kable_styling(fixed_thead = T) %>%
+
+all.data %>% 
+  knitr::kable(
+    caption = "Comparison with WCEHA data",
+    format = "latex",
+    booktabs = TRUE,
+    longtable = TRUE,
+    linesep = "",
+    align = "l"
+    ) %>%
+  kableExtra::kable_styling(
+      position = "left",
+      latex_options = c("scale_down", "repeat_header"),
+      stripe_color = "gray!15",
+      fixed_thead = TRUE
+    ) %>%
   row_spec(which(all.data$conflict == "flag"), bold = T, color = "white",
-           background = "tomato")
+           background = "red")
 
 ```
 
@@ -264,7 +262,7 @@ The profiles that don't match up with WCEHA data are:
 -   Profile 51, slightly north of the North Head lighthouse. NANOOS indicates accretion and WCEHA indicates erosion, however, this is also a non-significant data point from the NANOOS profile. Additionally, this point is influenced by the presence of the North Head outcropping.
     
     
-## Quartile Points and Change Rates
+# Quartile Points and Change Rates
 
 Using the midpoint of each transect selects a single point as a proxy for erosion through time.
 This can obscure the inherent variation in the collection of profiles.
@@ -276,16 +274,16 @@ Below are images of a single profile and year to see the applied linear regressi
 
 These quartiles are labeled "minimum", "quartile1", "median", "quartile3", and "maximum" in accordance with standard boxplot parameters, although they are calculated using *only distance* and not boxplot delineations.
 
-```{r single_linear_quartiles, echo=FALSE, include=TRUE}
+```{r single_linear_quartiles, echo=FALSE, include=FALSE}
 profile.pattern <- "prof_16"
 year.pattern <- "00"
 
 source("scripts/single_linear_quartiles.R")
-single.linear.plot + single.quartiles.plot
 ```
 
 
 ![Linear regression overlaid on the profile 16 transect from 2000.](figures/pdf_plots/profile16_linearregression.png)
+
 ![Distance-calculated quartiles of profile 16 in the year 2000, including the fixed BasePoint.](figures/pdf_plots/profile16_quartiles.png)
 
 Characterizing the profiles with more points allows for a more detailed look at erosion and accretion rates.
@@ -296,7 +294,7 @@ $$\frac{EucDist_2 - EucDist_1}{EucDist_1} \times 100\%$$
 EucDist2 is the more recent year, and EucDist1 is the older year. This is calculated for each set of years from 1997 - 2022. 
 For each profile, the average rate of change (ROC) between all quartiles is taken. 
 
-```{r rates_of_change, echo=FALSE, include=TRUE}
+```{r rates_of_change, echo=FALSE, include=FALSE}
 profile.pattern <- "prof"
 source("scripts/rates_of_change.R")
 profile.ROC.plot
@@ -305,7 +303,7 @@ profile.ROC.plot
 ![Annual rates of change for each profile.](figures/pdf_plots/profiles_ROC.png)
 
 
-## Clustering profiles into geographic reaches.
+# Clustering profiles into geographic reaches.
 
 Using the Euclidean distance between the quartile mean and the BasePoint, there is now data available for clustering. By clustering the Euclidean movement of the profiles over time, geographic reaches of profiles with similar movements can be determined. 
 
@@ -332,6 +330,8 @@ Next, data must be scaled. Clustering algorithms are distance-based and can be s
 
 Create a distance matrix that computes and returns the distance between rows, using the default "euclidean" method.
 
+## Clustering and dendograms
+
 Next, the clustering algorithm will be applied to this distance matrix using a variance-minimizing method known as "ward.D2". This is a hierarchical clustering algorithm that seeks to minimize the variance within each cluster, rather than using simple "closest neighbor" clustering.
 
 Merge the two points that are closest to each other based on this variance minimization. This removes one cluster and also corresponds to the first height of the cluster dendogram. Reapply the algorithm with the new number of clusters and continue to combine. This continues until all clusters have been merged.
@@ -343,14 +343,30 @@ The distances of merge between clusters, called heights, are illustrated on the 
 
 The above dendogram shows the clustering process, and highlights the decision to "cut" the tree into four clusters based on dendogram height. 
 
-With each profile assigned a cluster, the final table of reaches is made combining geographic knowledge informed by the numerical clustering.
+## Final table with clustering and change rates
 
+With each profile assigned a cluster, the final table of reaches is made combining geographic knowledge informed by the numerical clustering.
 
 ```{r final_output, echo=FALSE, include=FALSE}
 source("scripts/final_output.R")
 ```
+
 ```{r final_table, echo=FALSE}
-knitr::kable(barebones.final, caption = "Final table") %>%
-  kableExtra::kable_styling(fixed_thead = T) 
+
+barebones.final %>% 
+  knitr::kable(
+    caption = "Final table",
+    format = "latex",
+    booktabs = TRUE,
+    longtable = TRUE,
+    linesep = "",
+    align = "l"
+    ) %>%
+  kableExtra::kable_styling(
+      position = "left",
+      latex_options = c("striped", "repeat_header"),
+      stripe_color = "gray!15",
+      fixed_thead = TRUE
+    )
 
 ```
