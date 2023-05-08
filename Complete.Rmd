@@ -323,5 +323,4 @@ Things that I would like to include if I have a few more hours:
 
 ```{r final_output, echo=FALSE}
 source("scripts/final_output.R")
-
 ```

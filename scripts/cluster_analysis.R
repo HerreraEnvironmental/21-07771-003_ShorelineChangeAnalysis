@@ -3,29 +3,12 @@
 ## Load and prepare data.
 ## Import midpoint euclidean data. Order the profiles by geographic location,
 ## not by whatever order it was in. 
-# df <- read_csv("data_secondary/profiles_with_midpoint_distance.csv", show_col_types = FALSE) %>%
-#   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
-#                                          "04", "05", "06", "07", "08", "09", "10", 
-#                                          "11", "12", "13", "14", "15", "16", "17",
-#                                          "18", "19", "20", "21", "22"))) %>%
-#   mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
-#                                               "8", "9", "10", "48", "11", "12",
-#                                               "13", "14", "15", "16", "17", "18",
-#                                               "19", "20", "21", "22", "23", "24",
-#                                               "25", "26", "27", "28", "29", "30",
-#                                               "31", "32", "33", "34", "35", "36",
-#                                               "37", "49", "38", "50", "39", "40",
-#                                               "51", "52", "41", "53", "54", "42",
-#                                               "43", "44", "45", "46", "47"))) %>%
-#   select(profile:year, euc_dist_to_BP) %>%
-#   unique() %>%
-#   arrange(profile)
 
 df <- read_csv("data_secondary/profiles_with_quartile_distance.csv", show_col_types = FALSE) %>%
   rowwise() %>%
   mutate(euc_dist_to_BP = mean(min_dist_to_BP:max_dist_to_BP)) %>%
   mutate(year = factor(year, levels =  c("97", "98", "99","00", "01", "02", "03",
-                                         "04", "05", "06", "07", "08", "09", "10", 
+                                         "04", "05", "06", "07", "08", "09", "10",
                                          "11", "12", "13", "14", "15", "16", "17",
                                          "18", "19", "20", "21", "22"))) %>%
   mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
@@ -62,8 +45,7 @@ df.arranged <- df %>%
   t()
 
 ## Clustering cannot be performed on missing data. NA data needs to be removed.
-## Locate which rows to drop
-
+## Locate which rows to drop and retain as many individual cells as possible.
 missing.rows <- which(rownames(df.arranged) %in% c("Haynisisoos Park, North Beach_1",
                                                    "Del Rey Beach Rd OBA_46",
                                                    "Seaside Beach_47"))
@@ -83,73 +65,23 @@ row.names(df.scaled) <- new.rownames
 
 # HCA ---------------------------------------------------------------------
 # Hierarchical agglomerative clustering
+# Create the distance matrix by calculating the Euclidean distance between each pair of points
 
-
-## Create the distance matrix. 
-## This calculates the Euclidean distance between each pair of points
-df.dist <- dist(df.scaled)
-
-## Apply HCA using "single" distance method
-df.hclust <- hclust(df.dist, method = "single")
-
-## Determine optimal number of clusters from dendogram, using largest height difference.
-plot(df.hclust, main = "Dendogram using 'single' distance method")
-
-## Difficult to see , so let's do a barplot 
-## where the columns correspond to the height of the dendogram.
-barplot(df.hclust$height,
-        names.arg = (nrow(df.scaled) - 1):1,
-        main = "Barplot of Dendogram Heights, 'single' distance method")
-abline(h = 1.5, col = "blue")
-
-
-## Plot according to clusters
-plot(df.hclust)
-rect.hclust(df.hclust,
-            k = 5, # k is used to specify the number of clusters, taken from previous steps.
-            border = "blue")
-
-  
-# kmeans Cluster analysis --------------------------------------------------------
-## The below analysis uses a similar method but applies gap statistics to obtain k,
-## then clusters from there.
-
-## "Enhanced" distance matrix, still uses euclidean. Identical to dist() when stand = FALSE.
-res.dist <- get_dist(df.scaled, stand = FALSE, method = "euclidean")
-
-## Visualize the distance matrix.
-fviz_dist(res.dist, 
-          gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
-
-## Use the elbow and the silhouette method to determine optimal number of clusters.
-## So far, they're both landing at 3.
-fviz_nbclust(df.scaled, kmeans, method = "wss")
-fviz_nbclust(df.scaled, kmeans, method = "silhouette")
-
-# Visualize the clustering
-km.res <- kmeans(df.scaled, 3, nstart = 25)
-kmeans.plot <- fviz_cluster(km.res, data = df.scaled,
-             ellipse.type = "convex",
-             palette = "jco",
-             main = "Kmeans with 3 clusters according to wss and silhouette",
-             ggtheme = theme_light())
-kmeans.plot
-
-# Another hierarchical cluster --------------------------------------------------------
-## Hclustering again, but this time using a variance minimizing method
+## Hcluster using a variance minimizing method
 ## rather than a distance-based, nearest neighboring method.
 res.hc <- df.scaled %>%
   dist(method = "euclidean") %>% 
   hclust(method = "ward.D2") 
 
-kmeans.dendogram <- fviz_dend(res.hc, k = 4, ## Assigning 4 clusters based on viewing the graph.
+## Assign number of clusters based on viewing the graph. Two or four clusters would work. 
+hca.dendogram <- fviz_dend(res.hc, k = 4, ## Assigning 4 clusters based on viewing the graph.
           cex = 0.5,
           k_colors = c('#FC4E07',"seagreen4", 'darkorchid4','#1D455C'),
           show_labels = TRUE,
           color_labels_by_k = TRUE,
           rect = TRUE,
           main = "HCA variance minimization dendogram")
-kmeans.dendogram
+hca.dendogram
 
 
 # Assign clusters based on the last HCA --------------------------------------------------------
@@ -243,3 +175,59 @@ manual.cluster.plot
 ## Write manual clustering
 write.csv(manual.cluster %>% select(-euc_dist_to_BP, -shoreline_profile) %>% unique(),
           "data_secondary/profiles_with_clusters.csv", row.names = FALSE)
+
+
+
+
+
+# 
+# 
+# ## Create the distance matrix. 
+# ## This calculates the Euclidean distance between each pair of points
+# df.dist <- dist(df.scaled)
+# 
+# ## Apply HCA using "single" distance method
+# df.hclust <- hclust(df.dist, method = "single")
+# 
+# ## Determine optimal number of clusters from dendogram, using largest height difference.
+# plot(df.hclust, main = "Dendogram using 'single' distance method")
+# 
+# ## Difficult to see , so let's do a barplot 
+# ## where the columns correspond to the height of the dendogram.
+# barplot(df.hclust$height,
+#         names.arg = (nrow(df.scaled) - 1):1,
+#         main = "Barplot of Dendogram Heights, 'single' distance method")
+# abline(h = 1.5, col = "blue")
+# 
+# 
+# ## Plot according to clusters
+# plot(df.hclust)
+# rect.hclust(df.hclust,
+#             k = 5, # k is used to specify the number of clusters, taken from previous steps.
+#             border = "blue")
+# 
+# 
+# # kmeans Cluster analysis --------------------------------------------------------
+# ## The below analysis uses a similar method but applies gap statistics to obtain k,
+# ## then clusters from there.
+# 
+# ## "Enhanced" distance matrix, still uses euclidean. Identical to dist() when stand = FALSE.
+# res.dist <- get_dist(df.scaled, stand = FALSE, method = "euclidean")
+# 
+# ## Visualize the distance matrix.
+# fviz_dist(res.dist, 
+#           gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+# 
+# ## Use the elbow and the silhouette method to determine optimal number of clusters.
+# ## So far, they're both landing at 3.
+# fviz_nbclust(df.scaled, kmeans, method = "wss")
+# fviz_nbclust(df.scaled, kmeans, method = "silhouette")
+# 
+# # Visualize the clustering
+# km.res <- kmeans(df.scaled, 3, nstart = 25)
+# kmeans.plot <- fviz_cluster(km.res, data = df.scaled,
+#                             ellipse.type = "convex",
+#                             palette = "jco",
+#                             main = "Kmeans with 3 clusters according to wss and silhouette",
+#                             ggtheme = theme_light())
+# kmeans.plot

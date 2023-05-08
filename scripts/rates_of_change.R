@@ -121,45 +121,45 @@ profile.ROC.plot
 #write.csv(park.quartile.rates, "data_secondary/NANOOSRegions_with_quartROC.csv", row.names = FALSE)
 
 ## Plot each rate of change for the three NANOOS-defined regions
-# region.ROC.plot <- ggplot(data = park.quartile.rates %>% drop_na(),  
+# region.ROC.plot <- ggplot(data = park.quartile.rates %>% drop_na(),
 #                             aes(x = year, y = rate_of_change, fill = profile_direction)) +
 #   facet_wrap(~Region, scales = "free") +
 #   geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
 #   scale_fill_manual(values=c("#04A1FF", "tomato2")) +
 #   theme(axis.text.x = element_blank()) +
-#   ggtitle("Combined Rates of Change per Region") 
+#   ggtitle("Combined Rates of Change per Region")
 # region.ROC.plot
 
 
 # Annualized ROC ----------------------------------------------------------
 ## Use the median of each transect and find the euclidean distance to the basepoint.
-## Calculate growth (change) rate for each year and then average that for each profile. 
-# annualized.rate <- quartiles.df %>%
-#   select(profile, Park, year, contains("BasePoint"), contains("median")) %>%
-#   unique() %>%
-#   arrange(profile, year) %>%
-#   rowwise() %>%
-#   mutate(med_dist_to_BP = sqrt(((BasePoint_X - x_median)^2) + ((BasePoint_Y -  y_median)^2))) %>%
-#   select(-c(BasePoint_X:y_median)) %>%
-#   group_by(profile) %>%
-#   mutate(dummy_year = row_number()) %>%
-#   mutate(diff_year = dummy_year - lag(dummy_year),  # Difference in time (just in case there are gaps)
-#          diff_growth = med_dist_to_BP - lag(med_dist_to_BP)) %>% # Difference in route between years
-#   mutate(rate_percent = (diff_growth / diff_year)/lag(med_dist_to_BP) * 100) %>% # growth rate in percent
-#   mutate(avg_annual_rate = mean(rate_percent, na.rm = TRUE)) # average percent growth rate
-# 
-# 
-# annualized.median.plot <- ggplot(data = annualized.rate %>% drop_na(),  
-#                           aes(x = year, y = rate_percent)) +
-#   facet_wrap(~profile, scales = "free") +
-#   geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
-#   scale_fill_manual(values=c("#04A1FF", "tomato2")) +
-#   theme(axis.text.x = element_blank()) +
-#   ggtitle("Annualized Rates of Change per Profile") 
-# annualized.median.plot
+## Calculate growth (change) rate for each year and then average that for each profile.
+annualized.rate <- quartiles.df %>%
+  select(profile, Park, year, contains("BasePoint"), contains("median")) %>%
+  unique() %>%
+  arrange(profile, year) %>%
+  rowwise() %>%
+  mutate(med_dist_to_BP = sqrt(((BasePoint_X - x_median)^2) + ((BasePoint_Y -  y_median)^2))) %>%
+  select(-c(BasePoint_X:y_median)) %>%
+  group_by(profile) %>%
+  mutate(dummy_year = row_number()) %>%
+  mutate(diff_year = dummy_year - lag(dummy_year),  # Difference in time (just in case there are gaps)
+         diff_growth = med_dist_to_BP - lag(med_dist_to_BP)) %>% # Difference in route between years
+  mutate(rate_percent = (diff_growth / diff_year)/lag(med_dist_to_BP) * 100) %>% # growth rate in percent
+  mutate(avg_annual_rate = mean(rate_percent, na.rm = TRUE)) # average percent growth rate
+
+
+annualized.median.plot <- ggplot(data = annualized.rate %>% drop_na(),
+                          aes(x = year, y = rate_percent)) +
+  facet_wrap(~profile, scales = "free") +
+  geom_bar(position = "dodge", stat = "identity", width = 1, color = "black") +
+  scale_fill_manual(values=c("#04A1FF", "tomato2")) +
+  theme(axis.text.x = element_blank()) +
+  ggtitle("Annualized Rates of Change per Profile")
+annualized.median.plot
 
 ## Write csv with annualized median rates per plot
-# write.csv(annualized.rate %>% select(profile, Park, year, rate_percent, avg_annual_rate),
-#           "data_secondary/profiles_with_annualROC.csv", row.names = FALSE)
+write.csv(annualized.rate %>% select(profile, Park, year, rate_percent, avg_annual_rate),
+          "data_secondary/profiles_with_annualROC.csv", row.names = FALSE)
 
 
