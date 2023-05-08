@@ -259,68 +259,48 @@ profile.ROC.plot
 
 Using the Euclidean distance between the quartile mean and the BasePoint, there is now data available for clustering. By clustering the Euclidean movement of the profiles over time, geographic reaches of profiles with similar movements can be determined. 
 
-This analysis applies unsupervised clustering, as the input is unlabeled data without training.
-Relevant types of unsupervised clustering are k-means clustering and hierarchical agglomerative clustering (HCA).
+This analysis applies unsupervised clustering, as the input is unlabeled, untrained data.No prior information will be given to complete the analysis, such as the number of groups into which the data could be sorted. The unsupervised clustering applied in this analysis is hierarchical agglomerative clustering, a type of clustering algorithm used to group together similar data points based on pairwise similarity.
 
-Pure kmeans requires some advance knowledge of the number of clusters, the "k" variable, while HCA seeks to build a hierarchy of clusters without a predetermined k.
+The algorithm starts with each data point in its own cluster, and then iteratively merges clusters that are most similar to each other, based on a chosen distance or similarity metric. This merging process continues until all the data points belong to a single cluster, forming a dendrogram, or hierarchical tree of clusters.
 
-Because we are trying to determine the sub reaches, we will use HCA for this analysis.
-The number of classes is not specified in advance; hierarchical clustering will determine that.
+This is an appropriate technique for this analysis because the reaches will be determined first by the clustering, and then geographic expertise will be applied to ensure the numerical clustering is properly delineated by geographic features.
 
-Our variables are distance to baseline (euclidean midpoint movement over time, aka erosion and accretion), and year.
+## Preparing the data
 
-## Clustering is very sensitive to outliers,
-## so those profiles that display high variability will be removed.
-## Profiles 21 - 26 will be considered their own subreach, according to the 
-## below boxplot. 
-
-HCA Approach 1.
-Create a distance matrix that computes and returns the distance between rows.
-2.
-Start with every point in its own cluster and compare distances.
-3.
-Merge the two points that are closest to each other based on "distance" (distance method is variable), from the calculated distance matrix in step 1.
-This removes one cluster.
-This also corresponds to the first height of the luster dendogram.
-- Measure cluster distance by single linkage: compute minimum distance before merging.
-- "Single" is the default distance measure but may not be the most effective.
-- "Single" also falls under the umbrella of nearest neighbor method, which builds branches off of smallest distances.
-4.
-Recalculate all distances with the new number of clusters and continue to combine.
-5.
-Continue this until all clusters have been merged.
-6.
-Create a dendogram using the history of the point combination, which shows the sequence of combinations of the clusters.
-The distances of merge between clusters, called heights, are illustrated on the y-axis.
+Clustering is very sensitive to outliers, so those profiles that display high variability compared to the full dataset will be removed and grouped into their own reach. Profiles 21 - 26 will be considered their own subreach, according to the boxplot below. 
 
 ```{r cluster_analysis, echo=FALSE}
 source("scripts/cluster_analysis.R")
-
 ```
 
-## Final Output for Attribute Table
 
-This is the attribute table csv for the final product of the interactive GIS map.
-The table includes:
+![Boxplot of Euclidean distances, highlighting those profiles that will be removed before clustering analysis.](figures/pdf_plots/boxplot.png)
 
-1.  Profile
+Once the outliers have been removed, all missing values must also be removed. Clustering can only be performed on complete data, and so any profiles are years that are incomplete must be dropped. 
 
-2.  Geographic Location
+Next, data must be scaled. Clustering algorithms are distance-based and can be sensitive to the different scales of input variables. For example, if one variable has a range of values between 0 and 1, and another variable has a range of values between 0 and 1000, the latter variable may dominate the distance measure and make the clusters more sensitive to changes in that variable.
 
-3.  Overall movement of each (euclidean distance)
+Create a distance matrix that computes and returns the distance between rows, using the default "euclidean" method.
 
-4.  Designation of accretion/erosion and accompanying significance
+Next, the clustering algorithm will be applied to this distance matrix using a variance-minimizing method known as "ward.D2". This is a hierarchical clustering algorithm that seeks to minimize the variance within each cluster, rather than using simple "closest neighbor" clustering.
 
-5.  Rates of change of each
+Merge the two points that are closest to each other based on this variance minimization. This removes one cluster and also corresponds to the first height of the cluster dendogram. Reapply the algorithm with the new number of clusters and continue to combine. This continues until all clusters have been merged.
 
-6.  Subreach delineated by clustering
+Create a dendogram using the history of the point combination, which shows the sequence of combinations of the clusters.
+The distances of merge between clusters, called heights, are illustrated on the y-axis.
 
-Things that I would like to include if I have a few more hours:
+![Dendogram of clustered profiles.](figures/pdf_plots/dendogram.png)
 
-1.  Inflection points
+The above dendogram shows the clustering process, and highlights the decision to "cut" the tree into four clusters based on dendogram height. 
 
-2.  Quality of profile data
+With each profile assigned a cluster, the final table of reaches is made combining geographic knowledge informed by the numerical clustering.
+
 
 ```{r final_output, echo=FALSE}
 source("scripts/final_output.R")
+```
+```{r final_table, echo=FALSE}
+knitr::kable(barebones.final, caption = "Final table") %>%
+  kableExtra::kable_styling(fixed_thead = T) 
+
 ```

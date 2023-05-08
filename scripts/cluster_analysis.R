@@ -60,7 +60,7 @@ df.drop <- df.arranged[-c(missing.rows),
 ## Scale the data to compare variables independent of units.
 df.scaled <- scale(df.drop)
 
-new.rownames <- gsub(".*_","",rownames(df.scaled))
+new.rownames <- gsub(".*_", "", rownames(df.scaled))
 row.names(df.scaled) <- new.rownames
 
 # HCA ---------------------------------------------------------------------
@@ -180,7 +180,7 @@ write.csv(manual.cluster %>% select(-euc_dist_to_BP, -shoreline_profile) %>% uni
 
 
 
-# 
+# Original clustering script. 
 # 
 # ## Create the distance matrix. 
 # ## This calculates the Euclidean distance between each pair of points
