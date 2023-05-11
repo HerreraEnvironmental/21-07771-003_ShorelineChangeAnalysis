@@ -1,5 +1,5 @@
 ---
-title: "NANOOS Profiles: SCA Shoreline Characterization"
+title: "Department of Ecology Shoreline Monitoring Profiles"
 author: "Regina Lionheart"
 date: "`r Sys.Date()`"
 output:
@@ -25,15 +25,17 @@ include-before:
 \renewcommand\section{\clearpage\oldsection}
 
 
-TODO: SET ALL NUMBERS TO SIG FIGS
-
 # Overview
+
+## Project Description
 
 This analysis aims to characterize approximately 25 years of shoreline profile transect data, provided by NANOOS (Northwest Association of Networked Ocean Observing Systems).
 Using this data combined with area expertise, the relevant coastal areas have been delineated into reaches.
 
 The raw data consists of approximately 4500 individual profiles across 54 coastal sites in Washington and Oregon.
 The profiles are in x y z format (Easting Northing elevation).The naming convention is prof_X_ssYY.out where prof is short for profile, X is the profile number, ss is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (e.g. "98" is 1998", "00" is 2000, "08" is 2008, etc).
+
+## Data Discrepancies
 
 Quite a few profiles are null (empty) and have been removed and noted.
 See the "Explore Profiles" section for more information.
@@ -45,7 +47,7 @@ Profiles 42 - 47 are in Oregon and have been excluded from most of the analysis.
 
 *Geographically, profiles do not proceed sequentially.*
 
-### Metadata
+## Metadata
 
 The vertical datum is NAVD88.
 The horizontal is WA State Plane South.
@@ -132,6 +134,7 @@ source("scripts/complete_profile_plane.R")
 #suppressWarnings(print(complete.profile.plot))
 ```
 
+## Times series representation
 
 It can also be helpful to see the above plot spread over time, to provide a clearer picture of profile migration.
 
@@ -360,13 +363,12 @@ barebones.final %>%
     booktabs = TRUE,
     longtable = TRUE,
     linesep = "",
-    align = "l"
-    ) %>%
+    align = "l") %>%
+  column_spec(1, width = "10em") %>%
   kableExtra::kable_styling(
       position = "left",
       latex_options = c("striped", "repeat_header"),
       stripe_color = "gray!15",
-      fixed_thead = TRUE
-    )
+      fixed_thead = TRUE)
 
 ```
