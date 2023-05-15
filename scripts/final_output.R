@@ -74,9 +74,10 @@ write.csv(final, "data_secondary/final_subreach_characterization.csv", row.names
 
 ## Drop all extra columns 
 barebones.final <- final %>%
-  select(reach_delineation, mean_reach_change_rate, zone_name, zone_description) %>%
-  filter(!reach_delineation == "Oregon") %>%
-  mutate(across(mean_reach_change_rate, round, 2)) %>%
+  select(Reach = reach_delineation, Change_Rate = mean_reach_change_rate,
+         Zone = zone_name, Description = zone_description) %>%
+  filter(!Reach == "Oregon") %>%
+  mutate(across(Change_Rate, round, 2)) %>%
   unique()
 
 write.csv(barebones.final, "data_secondary/reach_characterization_change_rates.csv", row.names = FALSE)

@@ -1,6 +1,8 @@
 ---
 title: "Department of Ecology Shoreline Monitoring Profiles"
-author: "Regina Lionheart"
+subtitle: "Herrera Environmental Consultants"
+author: 
+- "2200 6th Ave #1100, Seattle WA 98121 | (206) 441-9080"
 date: "`r Sys.Date()`"
 output:
   pdf_document: 
@@ -27,7 +29,7 @@ include-before:
 
 # Overview
 
-## Project Description
+## Project description
 
 This analysis aims to characterize approximately 25 years of shoreline profile transect data, provided by NANOOS (Northwest Association of Networked Ocean Observing Systems).
 Using this data combined with area expertise, the relevant coastal areas have been delineated into reaches.
@@ -35,7 +37,7 @@ Using this data combined with area expertise, the relevant coastal areas have be
 The raw data consists of approximately 4500 individual profiles across 54 coastal sites in Washington and Oregon.
 The profiles are in x y z format (Easting Northing elevation).The naming convention is prof_X_ssYY.out where prof is short for profile, X is the profile number, ss is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (e.g. "98" is 1998", "00" is 2000, "08" is 2008, etc).
 
-## Data Discrepancies
+## Data discrepancies
 
 Quite a few profiles are null (empty) and have been removed and noted.
 See the "Explore Profiles" section for more information.
@@ -125,7 +127,7 @@ suppressWarnings(single.profile.plot)
 Below is a rendering of a single profile (again, profile 17 from Westport State Light) over all the available years.
 The orange horizontal plane represents the approximate mean high high water (MHHW) mark, as a proxy for understanding how the transect data is shifting over time.
 
-![Profile 17 near Westport Light State Park, including all available years of data.](figures/pdf_plots/Profile17_allyears.png)
+![Profile 17 near Westport Light State Park, including all available years of data and a horizontal plane of the Mean High High Water mark.](figures/pdf_plots/Profile17_allyears.png)
 ```{r complete_profile_visualization, echo=FALSE, include=FALSE}
 profile.pattern <- "prof_17"
 
@@ -163,9 +165,9 @@ print(all.basepoint.plot)
 print(single.basepoint.plot)
 ```
 
-![Profile 6 plotted in x y format, compared to a fixed inland basepoint.](figures/pdf_plots/profile6_basepoint.png)
+![Profile 6 plotted in x y format, compared to a fixed inland basepoint (plotted in red in the upper right hand corner).](figures/pdf_plots/profile6_basepoint.png)
 
-![Profiles 6 - 9 plotted in x y format, compared to a fixed inland basepoint.](figures/pdf_plots/multipleprofiles_basepoint.png)
+![Profiles 6 - 9 plotted in x y format, compared to a fixed inland basepoint (plotted in red).](figures/pdf_plots/multipleprofiles_basepoint.png)
 
 Using Euclidean distance, migrations of the transects over time as compared to the BasePoint act as proxies for accretion and erosion. 
 
@@ -285,9 +287,9 @@ source("scripts/single_linear_quartiles.R")
 ```
 
 
-![Linear regression overlaid on the profile 16 transect from 2000.](figures/pdf_plots/profile16_linearregression.png)
+![Linear regression (plotted in blue) overlaid on the profile 16 transect data points (plotted in black) from 2000.](figures/pdf_plots/profile16_linearregression.png)
 
-![Distance-calculated quartiles of profile 16 in the year 2000, including the fixed BasePoint.](figures/pdf_plots/profile16_quartiles.png)
+![Distance-calculated quartiles (plotted in colorful points over the black data points) of profile 16 in the year 2000, including the fixed BasePoint (plotted in red, upper right corner).](figures/pdf_plots/profile16_quartiles.png)
 
 Characterizing the profiles with more points allows for a more detailed look at erosion and accretion rates.
 
@@ -364,11 +366,12 @@ barebones.final %>%
     longtable = TRUE,
     linesep = "",
     align = "l") %>%
-  column_spec(1, width = "10em") %>%
+  column_spec(4, width = "5in") %>%
   kableExtra::kable_styling(
       position = "left",
       latex_options = c("striped", "repeat_header"),
       stripe_color = "gray!15",
-      fixed_thead = TRUE)
+      fixed_thead = TRUE,
+      full_width = FALSE)
 
 ```
