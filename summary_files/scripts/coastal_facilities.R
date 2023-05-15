@@ -24,7 +24,7 @@ polygons <- read.csv("summary_files/data_raw/Scored_WA_Parks_Facilities_20230511
 lines <- read.csv("summary_files/data_raw/Scored_WA_Parks_Facilities_20230511_lines.csv") %>%
   select(any_of(relevant_column)) %>%
   mutate(feature_class = "line")
-points <- read.csv("summary_files/data_raw/AJM_Coast&PugetSound_Copy of Facilities_Review_20230510_points.csv") %>%
+points <- read.csv("summary_files/data_raw/Scored_WA_Parks_Facilities_20230511_points.csv") %>%
   select(2, any_of(relevant_column)) %>%
   rename(ParkLocation = 1) %>%
   mutate(feature_class = "point")
@@ -46,8 +46,7 @@ parks.data <- polygons %>%
     (ParkName == "Shine Tidelands") ~ "Puget Sound")) %>%
   mutate(ParkLocation = ifelse(is.na(ParkLocation), ParkLocation2, ParkLocation))
 
-
-palette =c("#04A1FF",'#048CBD','#3ECDA3','#DBA827','#395C51')
+group.colors <- c(Erosion = "#DBA827", Inundation = "#04A1FF", Both ='#3ECDA3')
 
 asset <- parks.data %>%
   select(-OID_, -feature_class, -ParkLocation2, -Hazard_Inundation,
@@ -87,15 +86,20 @@ toplot <- both %>%
   rbind(inundation) %>%
   group_by(Asset_Broad) %>%
   mutate(complete_count = sum(facility_count))
+toplot[toplot == "Shoreline"] <- "Shoreline Armor"
 
-ggplot(toplot, aes(fill=hazard_type, y=facility_count, 
+currently.impacted <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
+                                         y=facility_count, 
                    x=reorder(Asset_Broad, - complete_count)),
        labels = labels) + 
   geom_bar(position="stack", stat="identity") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1)) +
-  scale_fill_manual(values = palette) +
-  xlab("Broad Description of Assets") +
-  ylab("Facility Count") +
+  scale_fill_manual(values=group.colors) +
+  xlab("Coastal Facility Type") +
+  ylab("Number of Coastal Facilities") +
   labs(fill = "Hazard Type") +
   ggtitle("Coastal Facilities Currently Impacted")
+currently.impacted
 
+ggsave("~/Downloads/CoastalFacilitiesCurrentlyImpacted.png", currently.impacted, width = 130,
+       height = 130, units = "mm")

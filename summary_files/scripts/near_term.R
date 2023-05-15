@@ -44,7 +44,7 @@ parks.data <- polygons %>%
 
 # Graph -------------------------------------------------------------------
 
-palette =c("#04A1FF",'#048CBD','#3ECDA3','#DBA827','#395C51')
+group.colors <- c(Erosion = "#DBA827", Inundation = "#04A1FF", Both ='#3ECDA3')
 
 asset <- parks.data %>%
   select(-feature_class, -ParkLocation2)
@@ -92,15 +92,21 @@ toplot <- both %>%
   rbind(inundation) %>%
   group_by(Asset_Broad) %>%
   mutate(complete_count = sum(facility_count))
+toplot[toplot == "Shoreline"] <- "Shoreline Armor"
 
-ggplot(toplot, aes(fill=hazard_type, y=facility_count, 
-                   x=reorder(Asset_Broad, - complete_count)),
+
+near.term <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
+                                            y=facility_count, 
+                                            x=reorder(Asset_Broad, - complete_count)),
        labels = labels) + 
   geom_bar(position="stack", stat="identity") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1)) +
-  scale_fill_manual(values = palette) +
-  xlab("Broad Description of Assets") +
-  ylab("Facility Count") +
+  scale_fill_manual(values=group.colors) +
+  xlab("Coastal Facility Type") +
+  ylab("Number of Coastal Facilities") +
   labs(fill = "Hazard Type") +
   ggtitle("Coastal Facilities Impacted in the Near-Term")
+near.term
 
+ggsave("~/Downloads/CoastalFacilitiesImpactNearTerm.png", near.term, width = 130,
+       height = 130, units = "mm")
