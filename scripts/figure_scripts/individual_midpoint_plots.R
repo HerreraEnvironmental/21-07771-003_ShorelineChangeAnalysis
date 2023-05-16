@@ -4,6 +4,7 @@
 ## Shoreline Conservation Areas, Washington State Parks
 
 profile.pattern <- "prof"
+source("scripts/src/load_packages.R")
 source("scripts/src/assign_profile_parks.R")
 
 
@@ -56,44 +57,7 @@ equation.details <- euclidean %>%
                                               "51", "52", "41", "53", "54", "42",
                                               "43", "44", "45", "46", "47")))
 
-# toplot <- euclidean %>%
-#   left_join(equation.details, by = "profile") %>%
-#   mutate(shoreline_profile = ifelse(pvalue < 0.05 & slope > 0, "Significant Accretion",
-#                                     ifelse(pvalue > 0.05 & slope > 0, "Non Significant Accretion", 
-#                                            ifelse(pvalue < 0.05 & slope < 0, "Significant Erosion", 
-#                                                   ifelse(pvalue > 0.05 & slope < 0, "Non Significant Erosion", "Other"))))) %>%
-#   mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
-#                                               "8", "9", "10", "48", "11", "12",
-#                                               "13", "14", "15", "16", "17", "18",
-#                                               "19", "20", "21", "22", "23", "24",
-#                                               "25", "26", "27", "28", "29", "30",
-#                                               "31", "32", "33", "34", "35", "36",
-#                                               "37", "49", "38", "50", "39", "40",
-#                                               "51", "52", "41", "53", "54", "42",
-#                                               "43", "44", "45", "46", "47")))
 
-
-## Visualize euclidean distance from average Euclidean distance of each year
-# midpoint.euc.dist.plot <- ggplot(toplot %>% drop_na(), 
-#                                  aes(year, euc_dist_to_BP, 
-#                                      fill = shoreline_profile, group = shoreline_profile)) +
-#   scale_fill_manual(values=c("grey55", "grey54", "#04A1FF", "tomato2", "grey")) +
-#   facet_wrap(~profile) +
-#   geom_col(position = position_dodge(width = 1)) +
-#   geom_line(aes(group = shoreline_profile), position = position_dodge(width = 1),
-#             linewidth = 1, color = "black") +
-#   geom_smooth(method = "lm", se = TRUE, color="black") +
-#   xlab("Year") +
-#   ylab("Distance in m from BasePoint") + 
-#   theme(axis.text.x = element_blank(),
-#         axis.text.y = element_blank()) +
-#   guides(fill=guide_legend(title="")) +
-#   ggtitle("Net Accretion or Erosion per Profile")
-# midpoint.euc.dist.plot
-
-
-
-###
 
 t <- euclidean %>%
   left_join(equation.details, by = "profile") %>%
@@ -102,13 +66,13 @@ t <- euclidean %>%
                                            ifelse(pvalue < 0.05 & slope < 0, "Significant Erosion", 
                                                   ifelse(pvalue > 0.05 & slope < 0, "Non Significant Erosion", "Other"))))) %>%
   drop_na() %>%
-  select(profile, year, euc_dist_to_BP, shoreline_profile) %>%
-  ####
-  filter(profile %in% c(1, 5, 7, 22, 41)) 
+  select(profile, year, euc_dist_to_BP, shoreline_profile)
 
-  t$year <- as.Date(  t$year, format="%y")
-  ####
-t <- t %>%
+t$year <- as.Date(t$year, format="%y")
+t$profile <- as.numeric(t$profile)
+mytitles <- unique(t$profile)
+
+toplot <- t %>%
   group_by(profile) %>%
   group_map(
     .f = ~ggplot(.x, aes(x = year, y = euc_dist_to_BP, fill = shoreline_profile)) +
@@ -118,42 +82,21 @@ t <- t %>%
                                     "Significant Accretion" = "#04A1FF",
                                     "Significant Erosion" = "tomato2")) +
       geom_smooth(method = "lm", se = TRUE, color = "black") +
-      # geom_line(aes(group = shoreline_profile), position = position_dodge(width = 1),
-      #           linewidth = 1, color = "black") +
+
 
       xlab("Year") +
-      ylab("Distance in m from BasePoint") +
+      ylab("Distance in meters from BasePoint") +
       theme(axis.text.x = element_blank(),
             axis.text.y = element_blank()) +
-      guides(fill=guide_legend(title="")) +
-      ggtitle("Net Accretion or Erosion per Profile")
-  )
+      guides(fill = guide_legend(title="")) +
+      ggtitle(paste("Net Accretion or Erosion per Profile", .y)))
 
-
-for (i in seq_along(t)) {
+for (i in seq_along(toplot)) {
   file_name = paste("figures/midpoint_plots/midpoint_plot_", i, ".png", sep="")
   png(file_name)
-  print(t[[i]])
+  print(toplot[[i]])
   dev.off()
 }
 
 
-# ###
-# 
-# t <- mtcars %>% 
-#   group_by(cyl) %>%
-#   group_map(
-#     .f = ~ ggplot(.x, aes(x = mpg, y = disp, color = factor(.y$cyl))) +
-#       geom_point() +
-#       scale_color_manual(values = c("4" = "purple", "6" = "firebrick3", "8" = "deepskyblue"))
-#   )
-# 
-# 
-# for (i in seq_along(t)) {
-#   file_name = paste("figures/midpoint_plots/iris_plot_", i, ".png", sep="")
-#   png(file_name)
-#   print(t[[i]])
-#   dev.off()
-# }
-# 
-# ###
+
