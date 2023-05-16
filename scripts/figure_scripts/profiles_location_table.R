@@ -2,8 +2,6 @@ library(knitr)
 library(kableExtra)
 library(magrittr)
 
-updateR()
-
 
 profiles.w.location <- read.csv("data_secondary/profiles_with_location.csv")
 

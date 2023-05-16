@@ -1,7 +1,0 @@
-For the duplicates, we are using only the more recent file.
-
-The vertical datum is NAVD88 and the horizontal is WA State Plane South. All of the units are in meters.
-
-
-Rough plan:
-Take a series of points along the (regression?) line and plot euclidean distance between each point and the base point. Use that as the change rate. 
