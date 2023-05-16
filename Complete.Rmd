@@ -102,7 +102,6 @@ profiles.w.location %>%
     )
 ```
 
-
 # Individual profiles, single year visualization
 
 Below is a rendering of a single profile for a single year (in this case, profile 17, located near Westport Light State Park).
