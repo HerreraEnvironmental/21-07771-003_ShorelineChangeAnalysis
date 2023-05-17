@@ -69,8 +69,25 @@ t <- euclidean %>%
   select(profile, year, euc_dist_to_BP, shoreline_profile)
 
 t$year <- as.Date(t$year, format="%y")
-t$profile <- as.numeric(t$profile)
-mytitles <- unique(t$profile)
+t$profile <- factor(t$profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                        "8", "9", "10", "48", "11", "12",
+                                        "13", "14", "15", "16", "17", "18",
+                                        "19", "20", "21", "22", "23", "24",
+                                        "25", "26", "27", "28", "29", "30",
+                                        "31", "32", "33", "34", "35", "36",
+                                        "37", "49", "38", "50", "39", "40",
+                                        "51", "52", "41", "53", "54", "42",
+                                        "43", "44", "45", "46", "47"))
+
+levels = c("1", "2", "3", "4", "5", "6", "7",
+           "8", "9", "10", "48", "11", "12",
+           "13", "14", "15", "16", "17", "18",
+           "19", "20", "21", "22", "23", "24",
+           "25", "26", "27", "28", "29", "30",
+           "31", "32", "33", "34", "35", "36",
+           "37", "49", "38", "50", "39", "40",
+           "51", "52", "41", "53", "54", "42",
+           "43", "44", "45", "46", "47")
 
 toplot <- t %>%
   group_by(profile) %>%
@@ -89,14 +106,10 @@ toplot <- t %>%
       theme(axis.text.x = element_blank(),
             axis.text.y = element_blank()) +
       guides(fill = guide_legend(title="")) +
-      ggtitle(paste("Net Accretion or Erosion per Profile", .y)))
+      ggtitle(paste("Net Accretion or Erosion per Profile", .y$profile)))
 
-for (i in seq_along(toplot)) {
-  file_name = paste("figures/midpoint_plots/midpoint_plot_", i, ".png", sep="")
-  png(file_name)
-  print(toplot[[i]])
-  dev.off()
-}
-
-
+names(toplot) <- order(unique(t$profile))
+lapply(names(toplot), 
+       function(x) ggsave(filename = paste("figures/midpoint_plots/midpoint_plot_", 
+                                           x, ".png", sep = ""), plot = toplot[[x]]))
 
