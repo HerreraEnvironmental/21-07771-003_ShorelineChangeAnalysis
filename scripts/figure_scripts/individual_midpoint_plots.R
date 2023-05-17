@@ -7,6 +7,16 @@ profile.pattern <- "prof"
 source("scripts/src/load_packages.R")
 source("scripts/src/assign_profile_parks.R")
 
+levels = c("1", "2", "3", "4", "5", "6", "7",
+           "8", "9", "10", "48", "11", "12",
+           "13", "14", "15", "16", "17", "18",
+           "19", "20", "21", "22", "23", "24",
+           "25", "26", "27", "28", "29", "30",
+           "31", "32", "33", "34", "35", "36",
+           "37", "49", "38", "50", "39", "40",
+           "51", "52", "41", "53", "54", "42",
+           "43", "44", "45", "46", "47")
+
 
 ## Euclidean distances
 euclidean <- complete.profile %>%
@@ -21,15 +31,7 @@ euclidean <- complete.profile %>%
   drop_na() %>%
   mutate(net_profile_slope = ifelse(euc_dist_to_BP[which.min(year)] < euc_dist_to_BP[which.max(year)],
                                     "Accretion", "Erosion")) %>%
-  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
-                                              "8", "9", "10", "48", "11", "12",
-                                              "13", "14", "15", "16", "17", "18",
-                                              "19", "20", "21", "22", "23", "24",
-                                              "25", "26", "27", "28", "29", "30",
-                                              "31", "32", "33", "34", "35", "36",
-                                              "37", "49", "38", "50", "39", "40",
-                                              "51", "52", "41", "53", "54", "42",
-                                              "43", "44", "45", "46", "47")))
+  mutate(profile = factor(profile, levels = levels))
 
 
 ## Extract equation parameters
@@ -47,18 +49,10 @@ equation.details <- euclidean %>%
          pvalue = glance(model)$p.value) %>%
   mutate(profile_direction = ifelse(slope > 0, "Accretion", "Erosion")) %>%
   select(profile, slope, rsq, se, pvalue) %>%
-  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
-                                              "8", "9", "10", "48", "11", "12",
-                                              "13", "14", "15", "16", "17", "18",
-                                              "19", "20", "21", "22", "23", "24",
-                                              "25", "26", "27", "28", "29", "30",
-                                              "31", "32", "33", "34", "35", "36",
-                                              "37", "49", "38", "50", "39", "40",
-                                              "51", "52", "41", "53", "54", "42",
-                                              "43", "44", "45", "46", "47")))
+  mutate(profile = factor(profile, levels = levels))
 
 
-
+#### Successful plot, y axis is a little messed up
 t <- euclidean %>%
   left_join(equation.details, by = "profile") %>%
   mutate(shoreline_profile = ifelse(pvalue < 0.05 & slope > 0, "Significant Accretion",
@@ -69,25 +63,7 @@ t <- euclidean %>%
   select(profile, year, euc_dist_to_BP, shoreline_profile)
 
 t$year <- as.Date(t$year, format="%y")
-t$profile <- factor(t$profile, levels = c("1", "2", "3", "4", "5", "6", "7",
-                                        "8", "9", "10", "48", "11", "12",
-                                        "13", "14", "15", "16", "17", "18",
-                                        "19", "20", "21", "22", "23", "24",
-                                        "25", "26", "27", "28", "29", "30",
-                                        "31", "32", "33", "34", "35", "36",
-                                        "37", "49", "38", "50", "39", "40",
-                                        "51", "52", "41", "53", "54", "42",
-                                        "43", "44", "45", "46", "47"))
-
-levels = c("1", "2", "3", "4", "5", "6", "7",
-           "8", "9", "10", "48", "11", "12",
-           "13", "14", "15", "16", "17", "18",
-           "19", "20", "21", "22", "23", "24",
-           "25", "26", "27", "28", "29", "30",
-           "31", "32", "33", "34", "35", "36",
-           "37", "49", "38", "50", "39", "40",
-           "51", "52", "41", "53", "54", "42",
-           "43", "44", "45", "46", "47")
+t$profile <- factor(t$profile, levels = levels)
 
 toplot <- t %>%
   group_by(profile) %>%
@@ -95,21 +71,35 @@ toplot <- t %>%
     .f = ~ggplot(.x, aes(x = year, y = euc_dist_to_BP, fill = shoreline_profile)) +
       geom_col(position = position_dodge(width = 1)) +
       scale_fill_manual(values = c("Non Significant Accretion" = "grey55",
-                                    "Non Significant Erosion" = "grey54",
-                                    "Significant Accretion" = "#04A1FF",
-                                    "Significant Erosion" = "tomato2")) +
+                                   "Non Significant Erosion" = "grey54",
+                                   "Significant Accretion" = "#04A1FF",
+                                   "Significant Erosion" = "tomato2")) +
       geom_smooth(method = "lm", se = TRUE, color = "black") +
-
-
+      facet_wrap(~profile, scales = "free") %>%
       xlab("Year") +
       ylab("Distance in meters from BasePoint") +
-      theme(axis.text.x = element_blank(),
-            axis.text.y = element_blank()) +
+      coord_cartesian(ylim=c(130, 1400)) +
       guides(fill = guide_legend(title="")) +
-      ggtitle(paste("Net Accretion or Erosion per Profile", .y$profile)))
+      ggtitle(paste("Net Accretion or Erosion: Profile", .y$profile)))
 
 names(toplot) <- order(unique(t$profile))
 lapply(names(toplot), 
        function(x) ggsave(filename = paste("figures/midpoint_plots/midpoint_plot_", 
                                            x, ".png", sep = ""), plot = toplot[[x]]))
 
+## try this at some point
+# Fit smooth manually
+fit  = loess(qsec ~ wt, data=mtcars)
+newx = data.frame(wt=with(mtcars, seq(min(wt), max(wt), len=100)))
+pred = predict(fit, newdata=newx, se=T)
+pred = cbind(wt=newx, qsec=pred$fit, se=pred$se.fit)
+
+# Calculate limits based on extent of smooth geom
+ylims = with(pred, c(floor(min(qsec-se)), ceiling(max(qsec+se))))
+
+# Plot
+dev.new(width=5, height=4)
+ggplot(data=mtcars, aes(y=qsec, x=wt)) + 
+  geom_point() +
+  geom_smooth(aes(ymax=qsec+se, ymin=qsec-se), data=pred, stat='identity') +
+  coord_cartesian(ylim = ylims)
