@@ -7,16 +7,6 @@ profile.pattern <- "prof"
 source("scripts/src/load_packages.R")
 source("scripts/src/assign_profile_parks.R")
 
-levels = c("1", "2", "3", "4", "5", "6", "7",
-           "8", "9", "10", "48", "11", "12",
-           "13", "14", "15", "16", "17", "18",
-           "19", "20", "21", "22", "23", "24",
-           "25", "26", "27", "28", "29", "30",
-           "31", "32", "33", "34", "35", "36",
-           "37", "49", "38", "50", "39", "40",
-           "51", "52", "41", "53", "54", "42",
-           "43", "44", "45", "46", "47")
-
 
 ## Euclidean distances
 euclidean <- complete.profile %>%
@@ -31,7 +21,15 @@ euclidean <- complete.profile %>%
   drop_na() %>%
   mutate(net_profile_slope = ifelse(euc_dist_to_BP[which.min(year)] < euc_dist_to_BP[which.max(year)],
                                     "Accretion", "Erosion")) %>%
-  mutate(profile = factor(profile, levels = levels))
+  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                              "8", "9", "10", "48", "11", "12",
+                                              "13", "14", "15", "16", "17", "18",
+                                              "19", "20", "21", "22", "23", "24",
+                                              "25", "26", "27", "28", "29", "30",
+                                              "31", "32", "33", "34", "35", "36",
+                                              "37", "49", "38", "50", "39", "40",
+                                              "51", "52", "41", "53", "54", "42",
+                                              "43", "44", "45", "46", "47")))
 
 
 ## Extract equation parameters
@@ -49,10 +47,18 @@ equation.details <- euclidean %>%
          pvalue = glance(model)$p.value) %>%
   mutate(profile_direction = ifelse(slope > 0, "Accretion", "Erosion")) %>%
   select(profile, slope, rsq, se, pvalue) %>%
-  mutate(profile = factor(profile, levels = levels))
+  mutate(profile = factor(profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                              "8", "9", "10", "48", "11", "12",
+                                              "13", "14", "15", "16", "17", "18",
+                                              "19", "20", "21", "22", "23", "24",
+                                              "25", "26", "27", "28", "29", "30",
+                                              "31", "32", "33", "34", "35", "36",
+                                              "37", "49", "38", "50", "39", "40",
+                                              "51", "52", "41", "53", "54", "42",
+                                              "43", "44", "45", "46", "47")))
 
 
-#### Successful plot, y axis is a little messed up
+
 t <- euclidean %>%
   left_join(equation.details, by = "profile") %>%
   mutate(shoreline_profile = ifelse(pvalue < 0.05 & slope > 0, "Significant Accretion",
@@ -63,8 +69,25 @@ t <- euclidean %>%
   select(profile, year, euc_dist_to_BP, shoreline_profile)
 
 t$year <- as.Date(t$year, format="%y")
-t$profile <- factor(t$profile, levels = levels) %>%
-  sort()
+t$profile <- factor(t$profile, levels = c("1", "2", "3", "4", "5", "6", "7",
+                                          "8", "9", "10", "48", "11", "12",
+                                          "13", "14", "15", "16", "17", "18",
+                                          "19", "20", "21", "22", "23", "24",
+                                          "25", "26", "27", "28", "29", "30",
+                                          "31", "32", "33", "34", "35", "36",
+                                          "37", "49", "38", "50", "39", "40",
+                                          "51", "52", "41", "53", "54", "42",
+                                          "43", "44", "45", "46", "47"))
+
+levels = c("1", "2", "3", "4", "5", "6", "7",
+           "8", "9", "10", "48", "11", "12",
+           "13", "14", "15", "16", "17", "18",
+           "19", "20", "21", "22", "23", "24",
+           "25", "26", "27", "28", "29", "30",
+           "31", "32", "33", "34", "35", "36",
+           "37", "49", "38", "50", "39", "40",
+           "51", "52", "41", "53", "54", "42",
+           "43", "44", "45", "46", "47")
 
 toplot <- t %>%
   group_by(profile) %>%
@@ -76,14 +99,13 @@ toplot <- t %>%
                                    "Significant Accretion" = "#04A1FF",
                                    "Significant Erosion" = "tomato2")) +
       geom_smooth(method = "lm", se = TRUE, color = "black") +
-      facet_wrap(~profile, scales = "free") +
       xlab("Year") +
       ylab("Distance in meters from BasePoint") +
-      coord_cartesian(ylim=c(130, 1400)) +
       guides(fill = guide_legend(title="")) +
-      ggtitle(paste("Net Accretion or Erosion: Profile", .y$profile)))
+      ggtitle(paste("Net Accretion or Erosion per Profile", .y$profile)))
 
-names(toplot) <- order(unique(t$profile))
+names(toplot) <- sort(unique(t$profile))
 lapply(names(toplot), 
        function(x) ggsave(filename = paste("figures/midpoint_plots/midpoint_plot_", 
                                            x, ".png", sep = ""), plot = toplot[[x]]))
+
