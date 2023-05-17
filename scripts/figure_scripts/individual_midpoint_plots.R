@@ -63,7 +63,8 @@ t <- euclidean %>%
   select(profile, year, euc_dist_to_BP, shoreline_profile)
 
 t$year <- as.Date(t$year, format="%y")
-t$profile <- factor(t$profile, levels = levels)
+t$profile <- factor(t$profile, levels = levels) %>%
+  sort()
 
 toplot <- t %>%
   group_by(profile) %>%
@@ -75,7 +76,7 @@ toplot <- t %>%
                                    "Significant Accretion" = "#04A1FF",
                                    "Significant Erosion" = "tomato2")) +
       geom_smooth(method = "lm", se = TRUE, color = "black") +
-      facet_wrap(~profile, scales = "free") %>%
+      facet_wrap(~profile, scales = "free") +
       xlab("Year") +
       ylab("Distance in meters from BasePoint") +
       coord_cartesian(ylim=c(130, 1400)) +
@@ -86,20 +87,3 @@ names(toplot) <- order(unique(t$profile))
 lapply(names(toplot), 
        function(x) ggsave(filename = paste("figures/midpoint_plots/midpoint_plot_", 
                                            x, ".png", sep = ""), plot = toplot[[x]]))
-
-## try this at some point
-# Fit smooth manually
-fit  = loess(qsec ~ wt, data=mtcars)
-newx = data.frame(wt=with(mtcars, seq(min(wt), max(wt), len=100)))
-pred = predict(fit, newdata=newx, se=T)
-pred = cbind(wt=newx, qsec=pred$fit, se=pred$se.fit)
-
-# Calculate limits based on extent of smooth geom
-ylims = with(pred, c(floor(min(qsec-se)), ceiling(max(qsec+se))))
-
-# Plot
-dev.new(width=5, height=4)
-ggplot(data=mtcars, aes(y=qsec, x=wt)) + 
-  geom_point() +
-  geom_smooth(aes(ymax=qsec+se, ymin=qsec-se), data=pred, stat='identity') +
-  coord_cartesian(ylim = ylims)

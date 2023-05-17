@@ -1,0 +1,24 @@
+---
+title: "README"
+author: "Regina Lionheart"
+date: "2023-05-17"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Tags
+dumbbell plots
+linear model fitting
+regression
+significance
+clustering
+HCA
+boxplots
+3d regression
+extract plot linear model
+quartiles

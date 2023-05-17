@@ -7,7 +7,7 @@ profile.pattern <- "prof"
 year.pattern <- c("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10")
 
 source("scripts/src/load_packages.R")
-source("scripts/src/import_profiles.R")
+source("scripts/src/import_profiles2.R")
 
 
 ## Import erosion file for Base Point data
