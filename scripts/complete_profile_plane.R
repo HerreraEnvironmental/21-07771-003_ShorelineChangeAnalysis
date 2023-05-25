@@ -29,4 +29,4 @@ complete.profile.plot <- plot_ly(complete.profile %>% drop_na(), x = ~x, y = ~y,
                  zaxis = list(title = "z")),
     scene = list(xaxis = element_blank),
     title = list(text = paste("Profile:", profile.pattern), y = 0.9),
-    legend = levels(year))
+    showlegend = FALSE)
