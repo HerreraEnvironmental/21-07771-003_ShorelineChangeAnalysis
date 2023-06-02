@@ -40,6 +40,8 @@ Site](https://herrerainc.sharepoint.com/teams/21-07771-002)**
 
 **Vantagepoint Site: TODO: what’s the best way to link here?**
 
+------------------------------------------------------------------------
+
 ### Project Description
 
 This analysis aims to characterize approximately 25 years of shoreline
@@ -47,34 +49,7 @@ profile transect data, provided by NANOOS (Northwest Association of
 Networked Ocean Observing Systems). Using this data combined with area
 expertise, the relevant coastal areas have been delineated into reaches.
 
-The raw data consists of approximately 4500 individual profiles across
-54 coastal sites in Washington and Oregon. The profiles are in x y z
-format (Easting Northing elevation).The naming convention is
-prof_X\_ssYY.out where prof is short for profile, X is the profile
-number, ss is a season code (e.g. f = fall) and YY is the year, in the
-format of the last two digits (e.g. “98” is 1998”, “00” is 2000, “08” is
-2008, etc).
-
-#### Data discrepancies
-
-Quite a few profiles are null (empty) and have been removed and noted.
-See the “Explore Profiles” section for more information.
-
-A small portion of the profiles had non-conforming filenames: “BigE06”,
-“beachface”, etc. These files do not represent a large percentage of the
-files and have not been included in the analysis.
-
-Profiles 42 - 47 are in Oregon and have been excluded from most of the
-analysis.
-
-*Geographically, profiles do not proceed sequentially.*
-
-#### Metadata
-
-The vertical datum is NAVD88. The horizontal is WA State Plane South.
-All of the units are in meters.
-
-### Location in Herrera Database
+### :droplet: Location in Herrera Database
 
 The raw data used in this project is located in the “data_raw” folder.
 All of the information in the data_raw folder is located TODO: Fill this
@@ -105,36 +80,38 @@ access to the tools listed below.
 | [`R`](https://www.r-project.org/)                            | Programming language used for this project.                                                                      |
 | [`NANOOS Profile Data`](https://nvs.nanoos.org/BeachMapping) | The raw data for analysis. If you do not have access to this data, please contact the owners of this repository. |
 
+The raw data consists of approximately 4500 individual profiles across
+54 coastal sites in Washington and Oregon. The profiles are in x y z
+format (Easting Northing elevation).The naming convention is
+prof_X\_ssYY.out where prof is short for profile, X is the profile
+number, ss is a season code (e.g. f = fall) and YY is the year, in the
+format of the last two digits (e.g. “98” is 1998”, “00” is 2000, “08” is
+2008, etc).
+
+#### :exclamation: Data discrepancies
+
+Quite a few profiles are null (empty) and have been removed and noted.
+See the “Explore Profiles” section for more information.
+
+A small portion of the profiles had non-conforming filenames: “BigE06”,
+“beachface”, etc. These files do not represent a large percentage of the
+files and have not been included in the analysis.
+
+Profiles 42 - 47 are in Oregon and have been excluded from most of the
+analysis.
+
+*Geographically, profiles do not proceed sequentially.*
+
+#### Metadata
+
+The vertical datum is NAVD88. The horizontal is WA State Plane South.
+All of the units are in meters.
+
+------------------------------------------------------------------------
+
 ### Installation and Usage
 
-Please ensure you have R and Rstudio installed on your computer. This
-project was built and run under the following conditions:
-
-    ## R version 4.3.0 (2023-04-21 ucrt)
-    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
-    ## Running under: Windows 10 x64 (build 19045)
-    ## 
-    ## Matrix products: default
-    ## 
-    ## 
-    ## locale:
-    ## [1] LC_COLLATE=English_United States.utf8 
-    ## [2] LC_CTYPE=en_US.UTF-8                  
-    ## [3] LC_MONETARY=English_United States.utf8
-    ## [4] LC_NUMERIC=C                          
-    ## [5] LC_TIME=English_United States.utf8    
-    ## 
-    ## time zone: America/Los_Angeles
-    ## tzcode source: internal
-    ## 
-    ## attached base packages:
-    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
-    ## 
-    ## loaded via a namespace (and not attached):
-    ##  [1] compiler_4.3.0  fastmap_1.1.1   cli_3.6.1       tools_4.3.0    
-    ##  [5] htmltools_0.5.5 rstudioapi_0.14 yaml_2.3.7      rmarkdown_2.21 
-    ##  [9] knitr_1.42      xfun_0.39       digest_0.6.31   rlang_1.1.1    
-    ## [13] evaluate_0.21
+Please ensure you have R and Rstudio installed on your computer.
 
 #### Layout of directory and data
 

@@ -48,34 +48,16 @@ Seashore Conservation Area
 **Vantagepoint Site: TODO: what's the best way to link here?**
 
 
+------------------------------------------------------------------------
+
+
 ### Project Description {#project-description}
 
 This analysis aims to characterize approximately 25 years of shoreline profile transect data, provided by NANOOS (Northwest Association of Networked Ocean Observing Systems).
 Using this data combined with area expertise, the relevant coastal areas have been delineated into reaches.
 
-The raw data consists of approximately 4500 individual profiles across 54 coastal sites in Washington and Oregon.
-The profiles are in x y z format (Easting Northing elevation).The naming convention is prof_X_ssYY.out where prof is short for profile, X is the profile number, ss is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (e.g. "98" is 1998", "00" is 2000, "08" is 2008, etc).
 
-#### Data discrepancies {#data-discrepancies}
-
-Quite a few profiles are null (empty) and have been removed and noted.
-See the "Explore Profiles" section for more information.
-
-A small portion of the profiles had non-conforming filenames: "BigE06", "beachface", etc.
-These files do not represent a large percentage of the files and have not been included in the analysis.
-
-Profiles 42 - 47 are in Oregon and have been excluded from most of the analysis.
-
-*Geographically, profiles do not proceed sequentially.*
-
-
-#### Metadata {#metadata}
-
-The vertical datum is NAVD88.
-The horizontal is WA State Plane South.
-All of the units are in meters.
-
-### Location in Herrera Database {#location-in-herrera-database}
+### :droplet: Location in Herrera Database {#location-in-herrera-database}
 
 The raw data used in this project is located in the "data_raw" folder.
 All of the information in the data_raw folder is located TODO: Fill this in. Best to use O drive?
@@ -108,7 +90,30 @@ cat(packages.table)
 ```
 
 
-### Installation and Usage {#installation-and-usage}
+The raw data consists of approximately 4500 individual profiles across 54 coastal sites in Washington and Oregon.
+The profiles are in x y z format (Easting Northing elevation).The naming convention is prof_X_ssYY.out where prof is short for profile, X is the profile number, ss is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (e.g. "98" is 1998", "00" is 2000, "08" is 2008, etc).
+
+#### :exclamation: Data discrepancies {#data-discrepancies}
+
+Quite a few profiles are null (empty) and have been removed and noted.
+See the "Explore Profiles" section for more information.
+
+A small portion of the profiles had non-conforming filenames: "BigE06", "beachface", etc.
+These files do not represent a large percentage of the files and have not been included in the analysis.
+
+Profiles 42 - 47 are in Oregon and have been excluded from most of the analysis.
+
+*Geographically, profiles do not proceed sequentially.*
+
+#### Metadata {#metadata}
+
+The vertical datum is NAVD88.
+The horizontal is WA State Plane South.
+All of the units are in meters.
+
+------------------------------------------------------------------------
+
+### :computer: Installation and Usage {#installation-and-usage}
 
 Please ensure you have R and Rstudio installed on your computer. 
 
