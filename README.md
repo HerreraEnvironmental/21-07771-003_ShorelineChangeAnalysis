@@ -1,11 +1,20 @@
 21-07771-003: Shoreline Change Analysis
 ================
 Regina Lionheart
-2023-05-24
+2023-06-02
 
-## R Markdown
+![dumbbell_plot](https://img.shields.io/badge/plot-dumbbell-%231D455C)
+![HCA_clustering](https://img.shields.io/badge/stats-HCA%20clustering-%233ECDA3)
+![linear_model](https://img.shields.io/badge/stats-linear%20model-%231D455C)
+![boxplot](https://img.shields.io/badge/plot-boxplot-%231D455C)
+![3D_regression](https://img.shields.io/badge/plot-3D%20regression-%231D455C)
+![quartiles](https://img.shields.io/badge/stats-quartiles-%233ECDA3)
 
-Tags quartiles
+![code_style](https://img.shields.io/badge/style-needs%20checking-red)
+
+------------------------------------------------------------------------
+
+TODO: Marketing needs to go over this to ensure it looks good!
 
 > Herrera Environmental Consultants
 
@@ -15,16 +24,23 @@ Tags quartiles
   - [Data Discrepancies](#-Data-Discrepancies)
   - [Metadata](#-Metadata)
 - [Location in Herrera Database](#-Location-in-Herrera-Database)  
-- [Requirements](#-Requirements)
-- [Usage](#-Usage)
+- [Requirements and Dependencies](#-Requirements-and-Dependencies)
+- [Installation and Usage](#-Installation-and-Usage)
   - [Layout of Directory and Data](#-Layout-of-Directory-and-Data)
 - [Visualizations](#-Visualization)
 
 ------------------------------------------------------------------------
 
-### Description
+# Project 21-07771 - Task 003
 
-**Important:** *Link to VantagePoint somehow here*
+Seashore Conservation Area
+
+**SharePoint Site: [SharePoint
+Site](https://herrerainc.sharepoint.com/teams/21-07771-002)**
+
+**Vantagepoint Site: TODO: what’s the best way to link here?**
+
+### Project Description
 
 This analysis aims to characterize approximately 25 years of shoreline
 profile transect data, provided by NANOOS (Northwest Association of
@@ -58,71 +74,78 @@ analysis.
 The vertical datum is NAVD88. The horizontal is WA State Plane South.
 All of the units are in meters.
 
-### 📦 Requirements
+### Location in Herrera Database
 
-Below is a list of packages and external sofwares that this project
+The raw data used in this project is located in the “data_raw” folder.
+All of the information in the data_raw folder is located TODO: Fill this
+in. Best to use O drive? Or SharePoint?
+
+If you do not have access to the data, please contact the emails listed
+at the bottom of the repository.
+
+### 📦 Requirements and Dependencies
+
+TODO: Installation tips will be helpful for libraries/packages, but less
+so for workflows, and for PMs. How should we handle this section? It was
+suggested from Paul/Clark to include a “typical imports” section.
+
+Install from <library repository> (repeat as necessary) Install from
+source Install from source for development (including add’l
+dependencies)
+
+TODO: This was something I involved in my previous READMEs, but might be
+more trouble than it’s worth. Thoughts?
+
+Below is a list of packages and external softwares that this project
 utilizes. Please ensure you have the package(s) installed and have
 access to the tools listed below.
 
-| Name                                                                                       | Description                                                                                                                                       |
-|:-------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`R`](https://www.r-project.org/)                                                          | Programming language used for this project.                                                                                                       |
-| [`Example Data`](https://drive.google.com/drive/folders/1E-B4dyDTkwOfupHJK0uL8BgKj586OU31) | Pretidied data from the Ingalls Lab for learning purposes. If you do not have access to this drive, please contact the owners of this repository. |
+| Name                                                         | Description                                                                                                      |
+|:-------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------|
+| [`R`](https://www.r-project.org/)                            | Programming language used for this project.                                                                      |
+| [`NANOOS Profile Data`](https://nvs.nanoos.org/BeachMapping) | The raw data for analysis. If you do not have access to this data, please contact the owners of this repository. |
 
-### Usage
+### Installation and Usage
 
-The first few chunks of the Control.Rmd script will create empty folders
-for different types of data (raw, processed, extra, intermediate). Some
-of this data will be produced by the script (processed, intermediate)
-and some needs to be moved into those folders before proceeding. Because
-this is a template script, the data has been modified for easy input,
-which will NEVER be the case in a real run.
+Please ensure you have R and Rstudio installed on your computer. This
+project was built and run under the following conditions:
 
-All the necessary example data can be downloaded here:
-<https://drive.google.com/drive/folders/1E-B4dyDTkwOfupHJK0uL8BgKj586OU31>
+    ## R version 4.3.0 (2023-04-21 ucrt)
+    ## Platform: x86_64-w64-mingw32/x64 (64-bit)
+    ## Running under: Windows 10 x64 (build 19045)
+    ## 
+    ## Matrix products: default
+    ## 
+    ## 
+    ## locale:
+    ## [1] LC_COLLATE=English_United States.utf8 
+    ## [2] LC_CTYPE=en_US.UTF-8                  
+    ## [3] LC_MONETARY=English_United States.utf8
+    ## [4] LC_NUMERIC=C                          
+    ## [5] LC_TIME=English_United States.utf8    
+    ## 
+    ## time zone: America/Los_Angeles
+    ## tzcode source: internal
+    ## 
+    ## attached base packages:
+    ## [1] stats     graphics  grDevices utils     datasets  methods   base     
+    ## 
+    ## loaded via a namespace (and not attached):
+    ##  [1] compiler_4.3.0  fastmap_1.1.1   cli_3.6.1       tools_4.3.0    
+    ##  [5] htmltools_0.5.5 rstudioapi_0.14 yaml_2.3.7      rmarkdown_2.21 
+    ##  [9] knitr_1.42      xfun_0.39       digest_0.6.31   rlang_1.1.1    
+    ## [13] evaluate_0.21
 
-If you do not have access to this drive, please contact the owners of
-this repository.
+#### Layout of directory and data
 
-> #### User-Defined QC Parameters
-
-These parameters will change depending on your data and level of
-stringency. Below are the “default” values.
-
-**area.min**: The minimum area of an integrated peak to be considered a
-real peak. HILIC - 1000, Reverse Phase - 5000.
-
-**RT.flex**: Flexibility of the deviation of the sample retention time
-from the appropriate standard. HILIC +/- 0.4 min, Reverse Phase +/- 0.2
-min.
-
-**blk.thresh**: Cutoff ratio value of sample area to a blank reference
-sample. HILIC +/-0.3, Reverse Phase +/- 0.2.
-
-**SN.min**: Cutoff ratio value for Signal to Noise. HILIC +/- 4, Reverse
-Phase +/- 4.
-
-#### Additional QC parameters for Skyline
-
-**height.min**: Minimum height for a peak. 1000, HILIC and Reverse
-Phase.
-
-**height.max**: Maximum height for a peak. 1.0e8, HILIC and Reverse
-Phase.
-
-#### Additional QC parameter for TQS
-
-**IR.flex**: The TQS produces quantitative and secondary trace values.
-Find the Ion Ratio by dividing the area of the quantitative trace by the
-area of the secondary trace for standards, and use these ratios to
-create a reference table. Deviations from this reference table that are
-larger than the user-defined values will be flagged. 0.3, HILIC and
-Reverse Phase.
+This analysis is run by the Control.Rmd script. The folders included in
+this repository are data_raw, data_secondary, figures, scripts, and
+archive. The data_raw and archive folders are backed up to TODO add
+location here.
 
 ## Visualization
 
-![Click on me to see a visual layout of the Targeted
-Pipeline!](visual/Targeted_Pipeline_Visualization.pdf)
+TODO: Put any helpful images here. Should maybe go at the top?
 
 ------------------------------------------------------------------------
 
@@ -131,15 +154,11 @@ Pipeline!](visual/Targeted_Pipeline_Visualization.pdf)
 Pull requests are welcome. For major changes, please open an issue
 first.
 
+All functioning code is located on the main branch. Dev branches are to
+be named with
+
 ## 💬 Contributors + Contact Information
 
 - [Regina Lionheart](https://github.com/R-Lionheart)
-
-------------------------------------------------------------------------
-
-![dumbbell_plot](https://img.shields.io/badge/plot-dumbbell-%231D455C)
-![HCA_clustering](https://img.shields.io/badge/stats-HCA%20clustering-%233ECDA3)
-![linear_model](https://img.shields.io/badge/stats-linear%20model-%231D455C)
-![boxplot](https://img.shields.io/badge/plot-boxplot-%231D455C)
-![3D_regression](https://img.shields.io/badge/plot-3D%20regression-%231D455C)
-![quartiles](https://img.shields.io/badge/stats-quartiles-%233ECDA3)
+- [Andrea
+  MacLennan](https://www.herrerainc.com/team-member/andrea-maclennan/)
