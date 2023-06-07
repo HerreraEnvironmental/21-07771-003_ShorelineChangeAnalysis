@@ -1,15 +1,16 @@
 ## RLionheart
-## 21-0771-001
-## February 2023
+## 21-0771-003
 ## Shoreline Conservation Areas, Washington State Parks
 
 
 ## Where does the "shore" line cross the MHHW plane? 
 
 # -------------------------------------------------------------------------
-
+## Modify the year and profile patterns to change selection
 # year.pattern <- c("00")
 # profile.pattern <- "prof_6"
+
+## Source the required scripts
 source("scripts/src/load_packages.R")
 source("scripts/src/import_profiles.R")
 source("scripts/src/assign_profile_parks.R")

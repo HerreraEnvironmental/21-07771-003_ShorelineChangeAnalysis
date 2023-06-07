@@ -1,4 +1,4 @@
-## kableExtra function for seeing tables against dark background
+## kableExtra function allows tables to be seen against dark background
 
 print.kableExtra <- function (x, ...) {
   view_html <- getOption("kableExtra_view_html", TRUE)

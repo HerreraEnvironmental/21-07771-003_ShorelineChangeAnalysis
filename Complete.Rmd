@@ -56,25 +56,19 @@ The horizontal is WA State Plane South.
 All of the units are in meters.
 
 ```{r knit_setup, include=FALSE}
-
 ## Script Setup
-
 source("scripts/src/kableExtrafunction.R")
-```
 
-
-```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
   message = FALSE
   )
-options(knitr.kable.NA = '') 
+options(knitr.kable.NA = "") 
 ```
 
 ```{r load_packages, include=FALSE, echo=FALSE, results='hide'}
 ## Load required packages
-
 source("scripts/src/load_packages.R")
 ```
 
@@ -111,10 +105,13 @@ It is *not* a geographic representation of the data.
 
 ![Profile 17 near Westport Light State Park, from the year 1999.](figures/pdf_plots/Profile17_1999.png)
 ```{r single_profile_visualization, include=FALSE, echo=FALSE}
-
+## Modify profile.pattern to select a given profile
 profile.pattern <- "prof_17"
+
+## Modify year.pattern to select a given year
 year.pattern <- c("99")
 
+## Render the chosen profile in 3D
 source("scripts/single_profile_3D.R")
 
 suppressWarnings(single.profile.plot)
@@ -132,7 +129,7 @@ profile.pattern <- "prof_17"
 
 source("scripts/complete_profile_plane.R")
 
-#suppressWarnings(print(complete.profile.plot))
+suppressWarnings(print(complete.profile.plot))
 ```
 
 ## Times series representation

@@ -1,9 +1,9 @@
 ## RLionheart
-## P21-0771-001
-## January 2023
+## 21-0771-003
 ## Shoreline Conservation Areas, Washington State Parks
 
-
+## Uncomment the profile.pattern and year.pattern variables 
+## to select and render a single year.
 # profile.pattern <- "prof_2_"
 # year.pattern <- c("00")
 
@@ -33,7 +33,8 @@ single.profile.plot <- plot_ly(prof.data, x = ~x, y = ~y, z = ~z,
     scene = list(xaxis = list(title = "x"),
                  yaxis = list(title = "y"),
                  zaxis = list(title = "z")),
-    title = list(text = paste("Profile:", sub("^[^_]*_", "", profile.pattern), "Year:", year.pattern), y = 0.9),
+    title = list(text = paste("Profile:", sub("^[^_]*_", "", profile.pattern),
+                              "Year:", year.pattern), y = 0.9),
     legend = levels(year))
 
 single.profile.plot

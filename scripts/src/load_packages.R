@@ -1,19 +1,18 @@
 ## RLionheart
-## 21-0771-001
-## January 2023
+## 21-0771-003
 ## Shoreline Conservation Areas, Washington State Parks
 
-required_Packages_Install <- c("broom",
-                               "cluster",
+required_Packages_Install <- c(#"broom",
+                               # "cluster",
                                "data.table",
-                               "factoextra",
-                               "ggmap",
-                               "gtsummary",
-                               "kableExtra",
-                               "patchwork",
-                               "rgl",
-                               "scatterplot3d",
-                               "stringr",
+                               # "factoextra",
+                               # "ggmap",
+                               # "gtsummary",
+                               # "kableExtra",
+                               # "patchwork",
+                               # "rgl",
+                               # "scatterplot3d",
+                               # "stringr",
                                "plotly",
                                "tidyverse")
 
