@@ -44,13 +44,14 @@ Seashore Conservation Area
 
 **SharePoint Site:** [SharePoint
 Site](https://herrerainc.sharepoint.com/teams/21-07771-002)
+
 **Vantagepoint Site:** TODO: what’s the best way to link here?
 
 **Site of Deliverable/Final Report if Applicable:** TODO
 
 ------------------------------------------------------------------------
 
-### Project Description
+## Project Description
 
 *Be as succinct as possible in this section*
 
@@ -98,7 +99,7 @@ have R and Rstudio installed on your computer. All the data produced by
 this analysis can be found in the data_secondary/ folder, while all
 figures can be found in the figures/ directory.
 
-### Layout of directory and data
+### :arrows_counterclockwise: Layout of directory and data
 
 TODO: I think a general layout should be considered part of the
 repository template.
@@ -115,7 +116,7 @@ or modify data used throughout the analysis.
 The data_raw/ folder is **READ ONLY** and should never be modified or
 deleted.
 
-### Detailed description of data and analysis
+### :heavy_check_mark: Detailed description of data and analysis
 
 The raw data consists of approximately 4500 individual profiles across
 54 coastal sites in Washington and Oregon, stretching from Moclips to
@@ -147,7 +148,7 @@ by this script, only the clustering that informed the final decision.**
 The Control.Rmd script contains comments and detailed description of
 each step.
 
-### Metadata
+### :information_source: Metadata
 
 The vertical datum is NAVD88. The horizontal is WA State Plane South.
 All of the units are in meters.

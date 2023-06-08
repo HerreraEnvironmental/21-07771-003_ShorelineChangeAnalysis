@@ -48,6 +48,7 @@ TODO: Marketing needs to go over this to ensure it looks good!
 Seashore Conservation Area 
 
 **SharePoint Site:** [SharePoint Site](https://herrerainc.sharepoint.com/teams/21-07771-002)
+
 **Vantagepoint Site:** TODO: what's the best way to link here?
 
 **Site of Deliverable/Final Report if Applicable:** TODO
@@ -56,7 +57,7 @@ Seashore Conservation Area
 ------------------------------------------------------------------------
 
 
-### Project Description {#project-description}
+## Project Description {#project-description}
 *Be as succinct as possible in this section*
 
 This analysis aims to characterize approximately 25 years of shoreline profile transect data, provided by NANOOS (Northwest Association of Networked Ocean Observing Systems).
@@ -93,7 +94,7 @@ TODO: Installation tips will be helpful for libraries/packages, but not sure the
 
 In order to run this script and recreate the analysis, you will need to have R and Rstudio installed on your computer. All the data produced by this analysis can be found in the data_secondary/ folder, while all figures can be found in the figures/ directory.
 
-### Layout of directory and data
+### :arrows_counterclockwise: Layout of directory and data
 
 TODO: I think a general layout should be considered part of the repository template. 
 
@@ -101,7 +102,7 @@ This repository is organized into a main Control.Rmd markdown script, which prod
 
 The data_raw/ folder is **READ ONLY** and should never be modified or deleted.
 
-### Detailed description of data and analysis
+### :heavy_check_mark: Detailed description of data and analysis
 
 The raw data consists of approximately 4500 individual profiles across 54 coastal sites in Washington and Oregon, stretching from Moclips to Cape Disappointment.
 The profiles are in x y z format (Easting Northing elevation). The naming convention is prof_X_ssYY.out where prof is short for profile, X is the profile number, ss is a season code (e.g. f = fall) and YY is the year, in the format of the last two digits (e.g. "98" is 1998", "00" is 2000, "08" is 2008, etc).
@@ -114,7 +115,7 @@ Finally, profiles are clustered into subreaches using a combination of hierarchi
 
 The Control.Rmd script contains comments and detailed description of each step.
 
-### Metadata {#metadata}
+### :information_source: Metadata {#metadata}
 
 The vertical datum is NAVD88.
 The horizontal is WA State Plane South.
