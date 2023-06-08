@@ -172,7 +172,7 @@ analysis.
 ## Visualization
 
 ![Geographic Location of all NANOOS
-Profiles](figures/Fig1_ShorelineTransects1024_1.png)
+Profiles](visuals/Fig1_ShorelineTransects1024_1.png)
 
 ------------------------------------------------------------------------
 
