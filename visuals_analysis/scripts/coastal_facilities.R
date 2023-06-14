@@ -13,7 +13,7 @@
 library(tidyverse)
 source("visuals_analysis/scripts/src/functions.R")
 
-file.pattern <- "Scored"
+file.pattern <- "20230511"
 
 relevant.column <- c("OID_", "ParkName", "Asset_Broad", "Asset_Detail", "Z_relToMHHW_FT", 
                      "SensitivityScore", "CoastEros_Score", "CoastInund_Score", "ExposureScore", "VulnerabilityScore",
@@ -109,7 +109,7 @@ currently.impacted <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Er
   xlab("Coastal Facility Type") +
   ylab("Number of Coastal Facilities") +
   labs(fill = "Hazard Type") +
-  ggtitle("Coastal Facilities Currently Impacted")
+  ggtitle("Coastal Facilities Exposed Currently to Inundation and/or Erosion")
 currently.impacted
 
 ggsave("~/Downloads/CoastalFacilitiesCurrentlyImpacted.png", currently.impacted, width = 130,

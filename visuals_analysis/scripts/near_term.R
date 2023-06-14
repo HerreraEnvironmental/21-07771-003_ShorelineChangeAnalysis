@@ -12,7 +12,7 @@
 library(tidyverse)
 source("visuals_analysis/scripts/src/functions.R")
 
-file.pattern <- "Scored"
+file.pattern <- "20230511"
 
 relevant.column <- c("OID_", "ParkName", "Asset_Broad", "Asset_Detail", "Z_relToMHHW_FT", 
                      "SensitivityScore", "CoastEros_Score", "CoastInund_Score", "ExposureScore", "VulnerabilityScore",
@@ -117,7 +117,7 @@ near.term <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Erosion", "
   xlab("Coastal Facility Type") +
   ylab("Number of Coastal Facilities") +
   labs(fill = "Hazard Type") +
-  ggtitle("Coastal Facilities Impacted in the Near-Term")
+  ggtitle("Coastal Facilities Exposed in the Near-Term to Inundation and/or Erosion")
 near.term
 
 ggsave("~/Downloads/CoastalFacilitiesImpactNearTerm.png", near.term, width = 130,
