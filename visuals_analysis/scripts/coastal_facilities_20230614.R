@@ -45,9 +45,27 @@ points <- Scored_WA_Parks_Facilities_20230614_points %>%
 parks.data <- polygons %>%
   rbind(lines) %>%
   rbind(points) 
+parks.data <- parks.data[!(parks.data$ParkName=="" | parks.data$Asset_Broad=="" | parks.data$Asset_Detail==""), ]
+
+
+class.one <- c("Admin_Buildings", "Admin_Storage_NonHaz", "Admin_Storage_Haz",
+                    "DayUse_Utilities", "Accom_Roofed", "Sanitary_Utilities", "Sanitary_NoUtil")
+class.two <- c("Circ_Bridges", "Circ_Emergency", "Circ_Parking", "Circ_Roads", "Circ_Trails")
+class.three <- c("DayUse_NoUtil", "Accom_Camp_NoUtil", "Accom_Camp_Utilities", "Shore_Hard")
+class.four <- c("Marine_LandBased", "Marine_Overwater")
+class.five <- c("Util_Communication", "Util_Electric", "Util_Emergency", "Util_gas", "Util_WW",
+                "Util_Stormwater", "Util_Water")
+
+testdf <- parks.data %>%
+  mutate(Asset_Broad = ifelse(Asset_Detail %in% class.one, 1,
+                           ifelse(Asset_Detail %in% class.two, 2,
+                                  ifelse(Asset_Detail %in% class.three, 3,
+                                         ifelse(Asset_Detail %in% class.four, 4,
+                                                ifelse(Asset_Detail %in% class.five, 5, NA)))))) 
+
 
 ## Define facilities vulnerable to Erosion
-erosion <- parks.data %>%
+erosion <- testdf %>%
   select(Asset_Broad, CoastEros_Score) %>%
   filter(CoastEros_Score == 20) %>%
   group_by(Asset_Broad) %>%
@@ -57,7 +75,7 @@ erosion <- parks.data %>%
   unique()
 
 ## Define facilities vulnerable to Inundation
-inundation <-  parks.data %>%
+inundation <-  testdf %>%
   select(Asset_Broad, CoastInund_Score) %>%
   filter(CoastInund_Score %in% c(18, 20)) %>%
   group_by(Asset_Broad) %>%
@@ -67,7 +85,7 @@ inundation <-  parks.data %>%
   unique()
 
 ## Define facilities vulnerable to Both
-both <- parks.data %>%
+both <- testdf %>%
   select(Asset_Broad, CoastEros_Score,CoastInund_Score) %>%
   filter(CoastInund_Score %in% c(18, 20) & CoastEros_Score == 20) %>%
   group_by(Asset_Broad) %>%
