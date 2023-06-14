@@ -98,7 +98,7 @@ In order to run this script and recreate the analysis, you will need to have R a
 
 TODO: I think a general layout should be considered part of the repository template. 
 
-This repository is organized into a main Control.Rmd markdown script, which produces the results from scratch when run in its entirety. The Control script references folders of raw data (data_raw/), and produces results data that has been modified or created by the analysis (data_secondary/). All analysis scripts are contained in the scripts/ directory, which also contains the src/ subdirectory. The src/ subdirectory contains package loading scripts and scripts that produce or modify data used throughout the analysis. 
+This repository is organized into a main Complete.Rmd markdown script, which produces the results from scratch when run in its entirety. The Complete script references folders of raw data (data_raw/), and produces results data that has been modified or created by the analysis (data_secondary/). All analysis scripts are contained in the scripts/ directory, which also contains the src/ subdirectory. The src/ subdirectory contains package loading scripts and scripts that produce or modify data used throughout the analysis. 
 
 The data_raw/ folder is **READ ONLY** and should never be modified or deleted.
 
@@ -113,7 +113,7 @@ These profiles are also compared to the [Washington Coastal Erosion and Hazard A
 
 Finally, profiles are clustered into subreaches using a combination of hierarchical agglomerative clustering and area knowledge. **Please be aware that the final csv of subreach characterization CANNOT be produced by this script, only the clustering that informed the final decision.**
 
-The Control.Rmd script contains comments and detailed description of each step.
+The Complete.Rmd script contains comments and detailed description of each step.
 
 ### :information_source: Metadata {#metadata}
 
@@ -138,7 +138,7 @@ Profiles 42 - 47 are in Oregon and have been excluded from most of the analysis.
 
 ## Visualization {#visualization}
 
-![Geographic Location of all NANOOS Profiles](visuals/Fig1_ShorelineTransects1024_1.png)
+![Geographic Location of all NANOOS Profiles](images_output//Fig1_ShorelineTransects1024_1.png)
 
 ------------------------------------------------------------------------
 

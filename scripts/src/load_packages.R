@@ -2,17 +2,10 @@
 ## 21-0771-003
 ## Shoreline Conservation Areas, Washington State Parks
 
-required_Packages_Install <- c(#"broom",
-                               # "cluster",
+required_Packages_Install <- c("broom",
                                "data.table",
-                               # "factoextra",
-                               # "ggmap",
-                               # "gtsummary",
-                               # "kableExtra",
-                               # "patchwork",
-                               # "rgl",
-                               # "scatterplot3d",
-                               # "stringr",
+                               "factoextra",
+                               "kableExtra",
                                "plotly",
                                "tidyverse")
 
