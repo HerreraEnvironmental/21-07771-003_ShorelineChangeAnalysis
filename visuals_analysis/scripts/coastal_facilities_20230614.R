@@ -12,10 +12,13 @@
 
 library(tidyverse)
 source("visuals_analysis/scripts/src/functions.R")
+group.colors <- c(Erosion = "#DBA827", Inundation = "#04A1FF", Both ='#3ECDA3')
 
+
+## Set file pattern
 file.pattern <- "20230614"
 
-relevant.column <- c("OID_", "ParkName", "Asset_Broad", "Asset_Detail", "Z_relToMHHW_FT",
+relevant.column <- c("ParkName", "Asset_Broad", "Asset_Detail",
                      "SensitivityScore", "CoastEros_Score", "CoastInund_Score", "ExposureScore", "VulnerabilityScore",
                      "Hazard_Erosion",  "Hazard_Inundation", "Hazard_FEMA", "Hazard_Any")
 
@@ -27,45 +30,24 @@ for (i in filenames) {
   assign(make.names(i), read.csv(filepath, stringsAsFactors = FALSE, check.names = TRUE))
 }
 
-
-polygons <- Scored_WA_Parks_Facilities_20230511_polygons %>%
+## Select columns and create feature class
+polygons <- Scored_WA_Parks_Facilities_20230614_polygons %>%
   select(any_of(relevant.column)) %>%
   mutate(feature_class = "polygon")
-lines <- Scored_WA_Parks_Facilities_20230511_lines %>%
+lines <- Scored_WA_Parks_Facilities_20230614_lines %>%
   select(any_of(relevant.column)) %>%
   mutate(feature_class = "line")
-points <- Scored_WA_Parks_Facilities_20230511_points %>%
-  select(2, any_of(relevant.column)) %>%
-  rename(ParkLocation = 1) %>%
+points <- Scored_WA_Parks_Facilities_20230614_points %>%
+  select(any_of(relevant.column)) %>%
   mutate(feature_class = "point")
 
-## Analyze
-locations <- points %>%
-  select(ParkLocation, ParkName) %>%
-  unique()
-
+## Combine to one df
 parks.data <- polygons %>%
   rbind(lines) %>%
-  rbind(points %>% select(-ParkLocation)) %>%
-  left_join(locations, by = "ParkName") %>%
-  select(OID_, ParkName, ParkLocation, everything()) %>%
-  arrange(SensitivityScore) %>%
-  mutate(ParkLocation2 = case_when(
-    (ParkName == "Clallam Bay") ~ "Pacific Coast",
-    (ParkName == "Lilliwaup Tidelands") ~ "Puget Sound",
-    (ParkName == "North Jetty") ~ "Pacific Coast",
-    (ParkName == "Shine Tidelands") ~ "Puget Sound")) %>%
-  mutate(ParkLocation = ifelse(is.na(ParkLocation), ParkLocation2, ParkLocation))
+  rbind(points) 
 
-group.colors <- c(Erosion = "#DBA827", Inundation = "#04A1FF", Both ='#3ECDA3')
-
-asset <- parks.data %>%
-  select(-OID_, -feature_class, -ParkLocation2, -Hazard_Inundation,
-         -Asset_Detail, -ParkName, -ParkLocation, -Z_relToMHHW_FT,
-         -SensitivityScore, -ExposureScore, -VulnerabilityScore,
-         -Hazard_FEMA, -Hazard_Erosion, -Hazard_Any)
-
-erosion <- asset %>%
+## Define facilities vulnerable to Erosion
+erosion <- parks.data %>%
   select(Asset_Broad, CoastEros_Score) %>%
   filter(CoastEros_Score == 20) %>%
   group_by(Asset_Broad) %>%
@@ -74,7 +56,8 @@ erosion <- asset %>%
   select(Asset_Broad, facility_count, hazard_type) %>%
   unique()
 
-inundation <-  asset %>%
+## Define facilities vulnerable to Inundation
+inundation <-  parks.data %>%
   select(Asset_Broad, CoastInund_Score) %>%
   filter(CoastInund_Score %in% c(18, 20)) %>%
   group_by(Asset_Broad) %>%
@@ -83,7 +66,8 @@ inundation <-  asset %>%
   select(Asset_Broad, facility_count, hazard_type) %>%
   unique()
 
-both <- asset %>%
+## Define facilities vulnerable to Both
+both <- parks.data %>%
   select(Asset_Broad, CoastEros_Score,CoastInund_Score) %>%
   filter(CoastInund_Score %in% c(18, 20) & CoastEros_Score == 20) %>%
   group_by(Asset_Broad) %>%
@@ -92,6 +76,7 @@ both <- asset %>%
   select(Asset_Broad, facility_count, hazard_type) %>%
   unique()
 
+## Combine to plot
 toplot <- both %>%
   rbind(erosion) %>%
   rbind(inundation) %>%
@@ -99,6 +84,7 @@ toplot <- both %>%
   mutate(complete_count = sum(facility_count))
 toplot[toplot == "Shoreline"] <- "Shoreline Armor"
 
+## Plot complete figure
 currently.impacted <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
                                          y=facility_count, 
                                          x=reorder(Asset_Broad, - complete_count)),
@@ -112,5 +98,6 @@ currently.impacted <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Er
   ggtitle("Coastal Facilities Exposed Currently to Inundation and/or Erosion")
 currently.impacted
 
-ggsave("~/Downloads/20230614_CoastalFacilitiesCurrentlyImpacted.png", currently.impacted, width = 130,
+## Save output
+ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesCurrentlyImpacted.png", currently.impacted, width = 130,
        height = 130, units = "mm")
