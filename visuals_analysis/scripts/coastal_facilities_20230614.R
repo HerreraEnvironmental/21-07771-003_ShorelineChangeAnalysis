@@ -13,9 +13,9 @@
 library(tidyverse)
 source("visuals_analysis/scripts/src/functions.R")
 
-file.pattern <- "20230511"
+file.pattern <- "20230614"
 
-relevant.column <- c("OID_", "ParkName", "Asset_Broad", "Asset_Detail", "Z_relToMHHW_FT", 
+relevant.column <- c("OID_", "ParkName", "Asset_Broad", "Asset_Detail", "Z_relToMHHW_FT",
                      "SensitivityScore", "CoastEros_Score", "CoastInund_Score", "ExposureScore", "VulnerabilityScore",
                      "Hazard_Erosion",  "Hazard_Inundation", "Hazard_FEMA", "Hazard_Any")
 
@@ -101,8 +101,8 @@ toplot[toplot == "Shoreline"] <- "Shoreline Armor"
 
 currently.impacted <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
                                          y=facility_count, 
-                   x=reorder(Asset_Broad, - complete_count)),
-       labels = labels) + 
+                                         x=reorder(Asset_Broad, - complete_count)),
+                             labels = labels) + 
   geom_bar(position="stack", stat="identity") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1)) +
   scale_fill_manual(values=group.colors) +
@@ -112,5 +112,5 @@ currently.impacted <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Er
   ggtitle("Coastal Facilities Exposed Currently to Inundation and/or Erosion")
 currently.impacted
 
-ggsave("~/Downloads/CoastalFacilitiesCurrentlyImpacted.png", currently.impacted, width = 130,
+ggsave("~/Downloads/20230614_CoastalFacilitiesCurrentlyImpacted.png", currently.impacted, width = 130,
        height = 130, units = "mm")
