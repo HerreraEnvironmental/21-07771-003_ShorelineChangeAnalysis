@@ -121,3 +121,4 @@ currently.impacted
 ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesCurrentlyImpacted.png", 
        plot = currently.impacted, width = 130,
        height = 130, units = "mm")
+write.csv(toplot, "visuals_analysis/data_secondary/20230614_CoastalFacilitesCurrent_counts.csv", row.names = FALSE)
