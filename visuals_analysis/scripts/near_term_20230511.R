@@ -120,5 +120,5 @@ near.term <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Erosion", "
   ggtitle("Coastal Facilities Exposed in the Near-Term to Inundation and/or Erosion")
 near.term
 
-ggsave("~/Downloads/CoastalFacilitiesImpactNearTerm.png", near.term, width = 130,
+ggsave("visuals_analysis/figures/20230511_NearTermInundation.png", near.term, width = 130,
        height = 130, units = "mm")

@@ -56,16 +56,17 @@ class.four <- c("Marine_LandBased", "Marine_Overwater")
 class.five <- c("Util_Communication", "Util_Electric", "Util_Emergency", "Util_gas", "Util_WW",
                 "Util_Stormwater", "Util_Water")
 
-testdf <- parks.data %>%
-  mutate(Asset_Broad = ifelse(Asset_Detail %in% class.one, 1,
-                           ifelse(Asset_Detail %in% class.two, 2,
-                                  ifelse(Asset_Detail %in% class.three, 3,
-                                         ifelse(Asset_Detail %in% class.four, 4,
-                                                ifelse(Asset_Detail %in% class.five, 5, NA)))))) 
+parks.new.classes <- parks.data %>%
+  mutate(Asset_Broad = ifelse(Asset_Detail %in% class.one, "Building",
+                           ifelse(Asset_Detail %in% class.two, "Circulation",
+                                  ifelse(Asset_Detail %in% class.three, "Infrastructure",
+                                         ifelse(Asset_Detail %in% class.four, "Marine",
+                                                ifelse(Asset_Detail %in% class.five, "Utility", NA)))))) %>%
+  drop_na(Asset_Broad)
 
 
 ## Define facilities vulnerable to Erosion
-erosion <- testdf %>%
+erosion <- parks.new.classes %>%
   select(Asset_Broad, CoastEros_Score) %>%
   filter(CoastEros_Score == 20) %>%
   group_by(Asset_Broad) %>%
@@ -75,7 +76,7 @@ erosion <- testdf %>%
   unique()
 
 ## Define facilities vulnerable to Inundation
-inundation <-  testdf %>%
+inundation <-  parks.new.classes %>%
   select(Asset_Broad, CoastInund_Score) %>%
   filter(CoastInund_Score %in% c(18, 20)) %>%
   group_by(Asset_Broad) %>%
@@ -85,7 +86,7 @@ inundation <-  testdf %>%
   unique()
 
 ## Define facilities vulnerable to Both
-both <- testdf %>%
+both <- parks.new.classes %>%
   select(Asset_Broad, CoastEros_Score,CoastInund_Score) %>%
   filter(CoastInund_Score %in% c(18, 20) & CoastEros_Score == 20) %>%
   group_by(Asset_Broad) %>%
@@ -113,9 +114,10 @@ currently.impacted <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Er
   xlab("Coastal Facility Type") +
   ylab("Number of Coastal Facilities") +
   labs(fill = "Hazard Type") +
-  ggtitle("Coastal Facilities Exposed Currently to Inundation and/or Erosion")
+  ggtitle("Coastal Facilities Currently Exposed")
 currently.impacted
 
 ## Save output
-ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesCurrentlyImpacted.png", currently.impacted, width = 130,
+ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesCurrentlyImpacted.png", 
+       plot = currently.impacted, width = 130,
        height = 130, units = "mm")
