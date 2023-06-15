@@ -46,12 +46,18 @@ parks.new.classes <- parks.data %>%
 ## Identify which facilities are vulnerable to erosion, inundation, xor both
 at.risk <- parks.new.classes %>%
   select(ID_col, Asset_Broad, Hazard_Erosion, Hazard_FEMA, Hazard_Inundation) %>%
+  # Erosion (Select all features with Hazard_Erosion,
+  # but exclude any erosion ones that have Hazard_Inundation OR Hazard_FEMA)
   mutate(Erosion = ifelse(Hazard_Erosion == 1 & Hazard_FEMA != 1 & Hazard_Inundation != 1,
                           "Erosion", NA)) %>%
+  # Inundation (Select all with Hazard_Inundation OR Hazard_FEMA, 
+  # but exclude any inundation ones that have Hazard_Erosion)
   mutate(Inundation = ifelse(Hazard_Erosion != 1 & (Hazard_Inundation == 1 | Hazard_FEMA == 1), 
          "Inundation", NA)) %>%
+  # Both (Select those with Hazard_Erosion AND Hazard_Inundation OR Hazard_FEMA)
   mutate(Both = ifelse(Hazard_Inundation == 1 & Hazard_Erosion == 1, "Both", NA)) %>%
   filter_at(vars(Erosion, Inundation, Both), any_vars(!is.na(.)))
+
 
 ## Drop any facilities that have no risk, pivot longer, and count total facilities
 to.plot <- at.risk %>%
@@ -82,3 +88,25 @@ ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesImpactNearTerm.png", 
        height = 130, units = "mm")
 
 write.csv(to.plot, "visuals_analysis/data_secondary/20230614_CoastalFacilitesNearTerm_counts.csv", row.names = FALSE)
+
+
+
+##############################################
+#check with another method:
+at.risk_check <- parks.new.classes %>%
+  select(ID_col, Asset_Broad, Hazard_Erosion, Hazard_FEMA, Hazard_Inundation) %>%
+  mutate(across(Hazard_Erosion:Hazard_Inundation,~ifelse(is.na(.x),0,.x))) %>%
+  mutate(Hazard_Type=ifelse((Hazard_Erosion +(Hazard_Inundation|Hazard_FEMA))>=2,'Both',
+                            ifelse((Hazard_Inundation+Hazard_FEMA)>=1,'Inudation',
+                                   ifelse(Hazard_Erosion==1,'Erosion',
+                                          'DROP')))) %>%
+  filter(Hazard_Type!='DROP')
+
+nrow(at.risk)
+#1621
+nrow(at.risk_check)
+#1672
+
+at.risk_check %>% 
+  filter(!(ID_col %in% at.risk$ID_col)) #what's missing
+#looks like your "Both" didn't include Hazard_FEma, do you want it to?
