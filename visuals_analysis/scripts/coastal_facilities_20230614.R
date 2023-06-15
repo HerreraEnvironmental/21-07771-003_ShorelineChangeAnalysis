@@ -4,8 +4,8 @@
 # •	Y-axis: Number of Facilities
 # •	Symbolize by three colors: Erosion, Inundation, and Both
 # o	First, filter data for only features where Hazard_Erosion = 20 OR Hazard_Inundation = 18 OR 20
-# o	Erosion (Select all features with Hazard_Erosion, but exclude any erosion ones that have Hazard_Inundation)
-# o	Inundation (Select all with Hazard_Inundation, but exclude any inundation ones that have Hazard_Erosion)
+# o	Erosion (Select all features with Hazard_Erosion, but exclude any Erosion ones that have Hazard_Inundation)
+# o	Inundation (Select all with Hazard_Inundation, but exclude any Inundation ones that have Hazard_Erosion)
 # o	Both (Select those with Hazard_Erosion AND Hazard_Inundation)
 
 ## Graphs for GIS Inundation/Attribute Table
@@ -47,7 +47,7 @@ parks.data <- polygons %>%
   rbind(points) 
 parks.data <- parks.data[!(parks.data$ParkName=="" | parks.data$Asset_Broad=="" | parks.data$Asset_Detail==""), ]
 
-
+## Assign custom classes
 class.one <- c("Admin_Buildings", "Admin_Storage_NonHaz", "Admin_Storage_Haz",
                     "DayUse_Utilities", "Accom_Roofed", "Sanitary_Utilities", "Sanitary_NoUtil")
 class.two <- c("Circ_Bridges", "Circ_Emergency", "Circ_Parking", "Circ_Roads", "Circ_Trails")
@@ -62,49 +62,71 @@ parks.new.classes <- parks.data %>%
                                   ifelse(Asset_Detail %in% class.three, "Infrastructure",
                                          ifelse(Asset_Detail %in% class.four, "Marine",
                                                 ifelse(Asset_Detail %in% class.five, "Utility", NA)))))) %>%
-  drop_na(Asset_Broad)
+  drop_na(Asset_Broad) %>%
+  mutate(ID_col = row_number())
 
+## Identify which facilities are vulnerable to erosion, inundation, or both
+at.risk <- parks.new.classes %>%
+  select(ID_col, Asset_Broad, CoastEros_Score, CoastInund_Score) %>%
+  mutate(Erosion = ifelse(CoastEros_Score == 20, "Erosion", NA)) %>%
+  mutate(Inundation = ifelse(CoastInund_Score %in% c(18, 20), "Inundation", NA)) %>%
+  mutate(Both = ifelse(!is.na(Erosion) & !is.na(Inundation), "Both", NA)) %>%
+  mutate(Erosion = ifelse(!is.na(Both), NA, Erosion)) %>%
+  mutate(Inundation = ifelse(!is.na(Both), NA, Inundation)) %>%
+  filter_at(vars(Erosion, Inundation, Both), any_vars(!is.na(.)))
 
-## Define facilities vulnerable to Erosion
-erosion <- parks.new.classes %>%
-  select(Asset_Broad, CoastEros_Score) %>%
-  filter(CoastEros_Score == 20) %>%
-  group_by(Asset_Broad) %>%
+to.plot <- at.risk %>%
+  pivot_longer(cols = c(5:7), names_to = "names", values_to = "hazard_type") %>%
+  select(-names, -CoastEros_Score, -CoastInund_Score, -ID_col) %>%
+  drop_na() %>%
+  group_by(Asset_Broad, hazard_type) %>%
   mutate(facility_count = n()) %>%
-  mutate(hazard_type = "Erosion") %>%
-  select(Asset_Broad, facility_count, hazard_type) %>%
-  unique()
-
-## Define facilities vulnerable to Inundation
-inundation <-  parks.new.classes %>%
-  select(Asset_Broad, CoastInund_Score) %>%
-  filter(CoastInund_Score %in% c(18, 20)) %>%
-  group_by(Asset_Broad) %>%
-  mutate(facility_count = n()) %>%
-  mutate(hazard_type = "Inundation") %>%
-  select(Asset_Broad, facility_count, hazard_type) %>%
-  unique()
-
-## Define facilities vulnerable to Both
-both <- parks.new.classes %>%
-  select(Asset_Broad, CoastEros_Score,CoastInund_Score) %>%
-  filter(CoastInund_Score %in% c(18, 20) & CoastEros_Score == 20) %>%
-  group_by(Asset_Broad) %>%
-  mutate(facility_count = n()) %>%
-  mutate(hazard_type = "Both") %>%
-  select(Asset_Broad, facility_count, hazard_type) %>%
-  unique()
-
-## Combine to plot
-toplot <- both %>%
-  rbind(erosion) %>%
-  rbind(inundation) %>%
+  unique() %>%
   group_by(Asset_Broad) %>%
   mutate(complete_count = sum(facility_count))
-toplot[toplot == "Shoreline"] <- "Shoreline Armor"
+
+
+
+# ## Define facilities vulnerable to Erosion
+# Erosion <- parks.new.classes %>%
+#   select(ID_col, Asset_Broad, CoastEros_Score) %>%
+#   filter(CoastEros_Score == 20) %>%
+#   group_by(Asset_Broad) %>%
+#   mutate(facility_count = n()) %>%
+#   mutate(hazard_type = "Erosion") %>%
+#   select(Asset_Broad, facility_count, hazard_type) %>%
+#   unique()
+# 
+# ## Define facilities vulnerable to Inundation
+# Inundation <-  parks.new.classes %>%
+#   select(Asset_Broad, CoastInund_Score) %>%
+#   filter(CoastInund_Score %in% c(18, 20)) %>%
+#   group_by(Asset_Broad) %>%
+#   mutate(facility_count = n()) %>%
+#   mutate(hazard_type = "Inundation") %>%
+#   select(Asset_Broad, facility_count, hazard_type) %>%
+#   unique()
+# 
+# ## Define facilities vulnerable to Both
+# Both <- parks.new.classes %>%
+#   select(Asset_Broad, CoastEros_Score,CoastInund_Score) %>%
+#   filter(CoastInund_Score %in% c(18, 20) & CoastEros_Score == 20) %>%
+#   group_by(Asset_Broad) %>%
+#   mutate(facility_count = n()) %>%
+#   mutate(hazard_type = "Both") %>%
+#   select(Asset_Broad, facility_count, hazard_type) %>%
+#   unique()
+# 
+# ## Combine to plot
+# toplot <- Both %>%
+#   rbind(Erosion) %>%
+#   rbind(Inundation) %>%
+#   group_by(Asset_Broad) %>%
+#   mutate(complete_count = sum(facility_count))
+# toplot[toplot == "Shoreline"] <- "Shoreline Armor"
 
 ## Plot complete figure
-currently.impacted <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
+currently.impacted <- ggplot(to.plot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
                                          y=facility_count, 
                                          x=reorder(Asset_Broad, - complete_count)),
                              labels = labels) + 

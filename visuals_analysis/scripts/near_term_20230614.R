@@ -37,7 +37,34 @@ parks.new.classes <- parks.data %>%
                                      ifelse(Asset_Detail %in% class.three, "Infrastructure",
                                             ifelse(Asset_Detail %in% class.four, "Marine",
                                                    ifelse(Asset_Detail %in% class.five, "Utility", NA)))))) %>%
-  drop_na(Asset_Broad)
+  drop_na(Asset_Broad) %>%
+  mutate(ID_col = row_number())
+
+
+
+## Identify which facilities are vulnerable to erosion, inundation, or both
+at.risk <- parks.new.classes %>%
+  select(ID_col, Asset_Broad, Hazard_Erosion, Hazard_FEMA, Hazard_Inundation) %>%
+  mutate(Erosion = ifelse(Hazard_Erosion == 1 & Hazard_FEMA != 1 & Hazard_Inundation != 1,
+                          "Erosion", NA)) %>%
+  mutate(Inundation = ifelse(Hazard_Erosion != 1 & (Hazard_Inundation == 1 | Hazard_FEMA == 1), 
+         "Inundation", NA)) %>%
+  mutate(Both = ifelse(Hazard_Inundation == 1 & Hazard_Erosion == 1, "Both", NA)) %>%
+  filter_at(vars(Erosion, Inundation, Both), any_vars(!is.na(.)))
+
+to.plot <- at.risk %>%
+  pivot_longer(cols = c(6:8), names_to = "names", values_to = "hazard_type") %>%
+  select(-c(Hazard_Erosion:names), -ID_col) %>%
+  drop_na() %>%
+  group_by(Asset_Broad, hazard_type) %>%
+  mutate(facility_count = n()) %>%
+  unique() %>%
+  group_by(Asset_Broad) %>%
+  mutate(complete_count = sum(facility_count))
+
+
+
+
 
 # o	Erosion 
 # Select all features with Hazard_Erosion, 
@@ -84,7 +111,7 @@ toplot <- both %>%
 toplot[toplot == "Shoreline"] <- "Shoreline Armor"
 
 
-near.term <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
+near.term <- ggplot(to.plot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
                                 y=facility_count, 
                                 x=reorder(Asset_Broad, - complete_count)),
                     labels = labels) + 
@@ -94,7 +121,7 @@ near.term <- ggplot(toplot, aes(fill=factor(hazard_type, levels = c("Erosion", "
   xlab("Coastal Facility Type") +
   ylab("Number of Coastal Facilities") +
   labs(fill = "Hazard Type") +
-  ggtitle("Coastal Facilities Impacted in the Near-Term")
+  ggtitle("Coastal Facilities Exposed in the Near-Term")
 near.term
 
 ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesImpactNearTerm.png", near.term, width = 130,
