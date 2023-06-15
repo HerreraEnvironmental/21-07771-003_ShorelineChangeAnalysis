@@ -2,9 +2,13 @@ library(tidyverse)
 
 group.colors <- c(Erosion = "#DBA827", Inundation = "#04A1FF", Both ='#3ECDA3')
 
-relevant_column <- c("ParkName", "Asset_Broad", "Asset_Detail",
+# Imports + tidying -------------------------------------------------------------------
+
+## Name relevant columns to choose
+relevant_column <- c("Asset_Broad", "Asset_Detail",
                      "Hazard_Erosion",  "Hazard_Inundation", "Hazard_FEMA")
 
+## Import csvs
 polygons <- read.csv("visuals_analysis/data_raw/Scored_WA_Parks_Facilities_20230614_polygons.csv") %>%
   select(any_of(relevant_column)) %>%
   mutate(feature_class = "polygon")
@@ -15,14 +19,13 @@ points <- read.csv("visuals_analysis/data_raw/Scored_WA_Parks_Facilities_2023061
   select(any_of(relevant_column)) %>%
   mutate(feature_class = "point")
 
-
+## Create complete dataframe
 parks.data <- polygons %>%
   rbind(lines) %>%
   rbind(points)
 
 
-# Graph -------------------------------------------------------------------
-
+# Assign new classes -------------------------------------------------------------------
 class.one <- c("Admin_Buildings", "Admin_Storage_NonHaz", "Admin_Storage_Haz",
                "DayUse_Utilities", "Accom_Roofed", "Sanitary_Utilities", "Sanitary_NoUtil")
 class.two <- c("Circ_Bridges", "Circ_Emergency", "Circ_Parking", "Circ_Roads", "Circ_Trails")
@@ -40,9 +43,7 @@ parks.new.classes <- parks.data %>%
   drop_na(Asset_Broad) %>%
   mutate(ID_col = row_number())
 
-
-
-## Identify which facilities are vulnerable to erosion, inundation, or both
+## Identify which facilities are vulnerable to erosion, inundation, xor both
 at.risk <- parks.new.classes %>%
   select(ID_col, Asset_Broad, Hazard_Erosion, Hazard_FEMA, Hazard_Inundation) %>%
   mutate(Erosion = ifelse(Hazard_Erosion == 1 & Hazard_FEMA != 1 & Hazard_Inundation != 1,
@@ -52,6 +53,7 @@ at.risk <- parks.new.classes %>%
   mutate(Both = ifelse(Hazard_Inundation == 1 & Hazard_Erosion == 1, "Both", NA)) %>%
   filter_at(vars(Erosion, Inundation, Both), any_vars(!is.na(.)))
 
+## Drop any facilities that have no risk, pivot longer, and count total facilities
 to.plot <- at.risk %>%
   pivot_longer(cols = c(6:8), names_to = "names", values_to = "hazard_type") %>%
   select(-c(Hazard_Erosion:names), -ID_col) %>%
@@ -62,55 +64,7 @@ to.plot <- at.risk %>%
   group_by(Asset_Broad) %>%
   mutate(complete_count = sum(facility_count))
 
-
-
-
-
-# o	Erosion 
-# Select all features with Hazard_Erosion, 
-# but exclude any erosion ones that have Hazard_Inundation OR Hazard_FEMA)
-erosion <- parks.new.classes %>%
-  select(-ParkName) %>%
-  filter(Hazard_Erosion == 1) %>%
-  filter(Hazard_FEMA != 1) %>%
-  filter(Hazard_Inundation != 1) %>%
-  group_by(Asset_Broad) %>%
-  mutate(facility_count = n()) %>%
-  mutate(hazard_type = "Erosion") %>%
-  unique() %>%
-  select(Asset_Broad, facility_count, hazard_type)
-
-# o	Inundation 
-# Select all with Hazard_Inundation OR Hazard_FEMA, 
-# but exclude any inundation ones that have Hazard_Erosion)
-inundation <- parks.new.classes %>%
-  select(-ParkName) %>%
-  filter(Hazard_Inundation == 1 | Hazard_FEMA == 1) %>%
-  filter(Hazard_Erosion != 1) %>%
-  group_by(Asset_Broad) %>%
-  mutate(facility_count = n()) %>%
-  mutate(hazard_type = "Inundation") %>%
-  select(Asset_Broad, facility_count, hazard_type) %>%
-  unique()
-
-# o	Both (Select those with Hazard_Erosion AND Hazard_Inundation OR Hazard_FEMA)
-both <- parks.new.classes %>%
-  select(-ParkName) %>%
-  filter(Hazard_Inundation == 1 & Hazard_Erosion == 1) %>%
-  group_by(Asset_Broad) %>%
-  mutate(facility_count = n()) %>%
-  mutate(hazard_type = "Both") %>%
-  select(Asset_Broad, facility_count, hazard_type) %>%
-  unique()
-
-toplot <- both %>%
-  rbind(erosion) %>%
-  rbind(inundation) %>%
-  group_by(Asset_Broad) %>%
-  mutate(complete_count = sum(facility_count))
-toplot[toplot == "Shoreline"] <- "Shoreline Armor"
-
-
+## Graph
 near.term <- ggplot(to.plot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
                                 y=facility_count, 
                                 x=reorder(Asset_Broad, - complete_count)),
@@ -127,4 +81,4 @@ near.term
 ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesImpactNearTerm.png", near.term, width = 130,
        height = 130, units = "mm")
 
-write.csv(toplot, "visuals_analysis/data_secondary/20230614_CoastalFacilitesNearTerm_counts.csv", row.names = FALSE)
+write.csv(to.plot, "visuals_analysis/data_secondary/20230614_CoastalFacilitesNearTerm_counts.csv", row.names = FALSE)
