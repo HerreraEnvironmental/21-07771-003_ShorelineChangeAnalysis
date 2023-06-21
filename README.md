@@ -1,7 +1,7 @@
 21-07771-003: Shoreline Change Analysis
 ================
 Regina Lionheart
-2023-06-08
+2023-06-21
 
 ![dumbbell_plot](https://img.shields.io/badge/plot-dumbbell-%231D455C)
 ![boxplot](https://img.shields.io/badge/plot-boxplot-%231D455C)
@@ -11,7 +11,11 @@ Regina Lionheart
 ![HCA_clustering](https://img.shields.io/badge/stats-HCA%20clustering-%233ECDA3)
 ![linear_model](https://img.shields.io/badge/stats-linear%20model-%233ECDA3)
 
-![code_style](https://img.shields.io/badge/style-needs%20checking-red)
+<figure>
+<img src="https://img.shields.io/badge/style-needs%20checking-red"
+alt="code_style" />
+<figcaption aria-hidden="true">code_style</figcaption>
+</figure>
 
 ------------------------------------------------------------------------
 
@@ -104,9 +108,9 @@ figures can be found in the figures/ directory.
 TODO: I think a general layout should be considered part of the
 repository template.
 
-This repository is organized into a main Control.Rmd markdown script,
+This repository is organized into a main Complete.Rmd markdown script,
 which produces the results from scratch when run in its entirety. The
-Control script references folders of raw data (data_raw/), and produces
+Complete script references folders of raw data (data_raw/), and produces
 results data that has been modified or created by the analysis
 (data_secondary/). All analysis scripts are contained in the scripts/
 directory, which also contains the src/ subdirectory. The src/
@@ -121,9 +125,9 @@ deleted.
 The raw data consists of approximately 4500 individual profiles across
 54 coastal sites in Washington and Oregon, stretching from Moclips to
 Cape Disappointment. The profiles are in x y z format (Easting Northing
-elevation). The naming convention is prof_X\_ssYY.out where prof is
-short for profile, X is the profile number, ss is a season code (e.g. f
-= fall) and YY is the year, in the format of the last two digits
+elevation). The naming convention is prof_X_ssYY.out where prof is short
+for profile, X is the profile number, ss is a season code (e.g. f =
+fall) and YY is the year, in the format of the last two digits
 (e.g. “98” is 1998”, “00” is 2000, “08” is 2008, etc).
 
 Throughout the course of the analysis, the Control script loads and
@@ -145,7 +149,7 @@ hierarchical agglomerative clustering and area knowledge. **Please be
 aware that the final csv of subreach characterization CANNOT be produced
 by this script, only the clustering that informed the final decision.**
 
-The Control.Rmd script contains comments and detailed description of
+The Complete.Rmd script contains comments and detailed description of
 each step.
 
 ### :information_source: Metadata
@@ -171,8 +175,12 @@ analysis.
 
 ## Visualization
 
-![Geographic Location of all NANOOS
-Profiles](visuals/Fig1_ShorelineTransects1024_1.png)
+<figure>
+<img src="images_output/Fig1_ShorelineTransects1024_1.png"
+alt="Geographic Location of all NANOOS Profiles" />
+<figcaption aria-hidden="true">Geographic Location of all NANOOS
+Profiles</figcaption>
+</figure>
 
 ------------------------------------------------------------------------
 
