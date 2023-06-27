@@ -20,6 +20,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ------------------------------------------------------------------------
 
+SHAREPOINT SHOULD BE THE DEFAULT BACKUP
+
 TODO: Marketing needs to go over this to ensure it looks good!
 
 > Herrera Environmental Consultants: Placeholder for our logo or consistent header
