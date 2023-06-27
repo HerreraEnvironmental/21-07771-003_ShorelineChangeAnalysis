@@ -73,18 +73,20 @@ to.plot <- at.risk %>%
 ## Graph
 near.term <- ggplot(to.plot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
                                 y=facility_count, 
-                                x=reorder(Asset_Broad, - complete_count)),
-                    labels = labels) + 
+                                x=Asset_Broad)) +
+                                #x=reorder(Asset_Broad, - complete_count)),
+                    #labels = labels) + 
   geom_bar(position="stack", stat="identity") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1)) +
   scale_fill_manual(values=group.colors) +
   xlab("Coastal Facility Type") +
   ylab("Number of Coastal Facilities") +
+  ylim(0, 600) +
   labs(fill = "Hazard Type") +
   ggtitle("Coastal Facilities Exposed in the Near-Term")
 near.term
 
-ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesImpactNearTerm.png", near.term, width = 130,
+ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesImpactNearTerm_alphabetical.png", near.term, width = 130,
        height = 130, units = "mm")
 
 write.csv(to.plot, "visuals_analysis/data_secondary/20230614_CoastalFacilitesNearTerm_counts.csv", row.names = FALSE)

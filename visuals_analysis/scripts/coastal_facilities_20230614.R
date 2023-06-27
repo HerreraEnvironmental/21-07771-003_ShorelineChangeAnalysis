@@ -88,20 +88,21 @@ to.plot <- at.risk %>%
 
 ## Plot complete figure
 currently.impacted <- ggplot(to.plot, aes(fill=factor(hazard_type, levels = c("Erosion", "Inundation", "Both")),
-                                         y=facility_count, 
-                                         x=reorder(Asset_Broad, - complete_count)),
-                             labels = labels) + 
+                                         y=facility_count, x = Asset_Broad)) +
+                                         #x=reorder(Asset_Broad, - complete_count)),
+                             #labels = labels) + 
   geom_bar(position="stack", stat="identity") +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1)) +
   scale_fill_manual(values=group.colors) +
   xlab("Coastal Facility Type") +
   ylab("Number of Coastal Facilities") +
+  ylim(0, 600) +
   labs(fill = "Hazard Type") +
   ggtitle("Coastal Facilities Currently Exposed")
 currently.impacted
 
 ## Save output
-ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesCurrentlyImpacted.png", 
+ggsave("visuals_analysis/figures/20230614_CoastalFacilitiesCurrentlyImpacted_alphabetical.png", 
        plot = currently.impacted, width = 130,
        height = 130, units = "mm")
 write.csv(to.plot, "visuals_analysis/data_secondary/20230614_CoastalFacilitesCurrent_counts.csv", row.names = FALSE)
