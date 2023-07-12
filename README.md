@@ -11,15 +11,7 @@ Regina Lionheart
 ![HCA_clustering](https://img.shields.io/badge/stats-HCA%20clustering-%233ECDA3)
 ![linear_model](https://img.shields.io/badge/stats-linear%20model-%233ECDA3)
 
-<figure>
-<img src="https://img.shields.io/badge/style-needs%20checking-red"
-alt="code_style" />
-<figcaption aria-hidden="true">code_style</figcaption>
-</figure>
-
 ------------------------------------------------------------------------
-
-> Herrera Environmental Consultants
 
 ![](images_output/Herrera_lockup_4c.png)
 
@@ -48,15 +40,12 @@ Seashore Conservation Area
 **SharePoint Site:** [SharePoint
 Site](https://herrerainc.sharepoint.com/teams/21-07771-002)
 
-**Vantagepoint Site:** TODO: what’s the best way to link here?
-
-**Site of Deliverable/Final Report if Applicable:** TODO
+**Vantagepoint Site:** [Vantagepoint
+Site](https://herrerainc.deltekfirst.com/HerreraInc/app/#!ProjectView/view/0/0/21-07771-002/presentation)
 
 ------------------------------------------------------------------------
 
 ## Project Description
-
-*Be as succinct as possible in this section*
 
 This analysis aims to characterize approximately 25 years of shoreline
 profile transect data, provided by NANOOS (Northwest Association of
@@ -68,7 +57,7 @@ delineated into “reaches”.
 
 The original, unmodified data used in this project is located in the
 “data_raw” folder within this repository. That folder is backed up to
-TODO: Fill this in. Best to use O drive? Or SharePoint?
+[SharePoint](https://herrerainc.sharepoint.com/teams/21-07771-002-InternalDocs/Shared%20Documents/Forms/AllItems.aspx?FolderCTID=0x0120008C8FFE1D422C224DA4CA697C7E7BF5DF&id=%2Fteams%2F21%2D07771%2D002%2DInternalDocs%2FShared%20Documents%2FInternal%20Docs%2FProject%2DFiles%2FTask%203%20Synthesis%20Shoreline%2FShorelineSynthesis%5Fdata%5Fraw&viewid=91d991bd%2De61d%2D4a39%2Dae3a%2Dac3ba8123673).
 
 If you do not have access to the data, please contact the emails listed
 at the bottom of the repository.
@@ -77,10 +66,7 @@ at the bottom of the repository.
 
 Below is a list of packages and external softwares that this project
 utilizes. Please ensure you have the package(s) installed and have
-access to the tools listed below. TODO: This was something I involved in
-my previous READMEs, but might be more trouble than it’s worth. Original
-table(s) included all packages required, and then a separate table for
-external data with its location, either URl or location on drive.
+access to the tools listed below.
 
 | Name                                                                                                                                            | Description                                                                                                      |
 |:------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------|
@@ -90,31 +76,21 @@ external data with its location, either URl or location on drive.
 
 ## :computer: Installation and Usage
 
-TODO: Installation tips will be helpful for libraries/packages, but not
-sure they need to be included in basic analysis scripts, especially for
-PMs. Suggestions for this section? It was suggested from Paul/Clark to
-include a “typical imports” section. A load_packages/import_packages
-script could be included in the template repository (that is the case
-for this analysis.)
-
 In order to run this script and recreate the analysis, you will need to
 have R and Rstudio installed on your computer. All the data produced by
 this analysis can be found in the data_secondary/ folder, while all
-figures can be found in the figures/ directory.
+figures can be found in the figures/ directory.s
 
 ### :arrows_counterclockwise: Layout of directory and data
 
-TODO: I think a general layout should be considered part of the
-repository template.
-
 This repository is organized into a main Complete.Rmd markdown script,
 which produces the results from scratch when run in its entirety. The
-Complete script references folders of raw data (data_raw/), and produces
-results data that has been modified or created by the analysis
+Complete.Rmd script references folders of raw data (data_raw/), and
+produces results data that has been modified or created by the analysis
 (data_secondary/). All analysis scripts are contained in the scripts/
-directory, which also contains the src/ subdirectory. The src/
-subdirectory contains package loading scripts and scripts that produce
-or modify data used throughout the analysis.
+directory, which also contains the src/ sub directory. The src/ sub
+directory contains package loading scripts and scripts that produce or
+modify data used throughout the analysis.
 
 The data_raw/ folder is **READ ONLY** and should never be modified or
 deleted.
