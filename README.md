@@ -21,7 +21,7 @@ alt="code_style" />
 
 > Herrera Environmental Consultants
 
-![](images_output/Herrera_lockup_BW.png)
+![](images_output/Herrera_lockup_4c.png)
 
 ## Table of Contents
 
