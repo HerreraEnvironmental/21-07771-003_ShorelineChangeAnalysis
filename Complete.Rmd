@@ -153,7 +153,7 @@ In order to quantify shoreline change, an arbitrary "BasePoint" reference line, 
 
 The NANOOS profiles are perpendicular to this BasePoint, allowing for a reference against which to calculate spatial change.
 
-In order to visualize this concept, the images below display 1) a simplified selection of profiles (plotted in black) compared to the BasePoint (plotted in red) and 2) an individual profile (plotted in black) and its BasePoint (plotted in red).
+To visualize this concept, the images below display 1) a simplified selection of profiles (plotted in black) compared to the BasePoint (plotted in red) and 2) an individual profile (plotted in black) and its BasePoint (plotted in red).
 
 ```{r profiles_BasePoint, echo=FALSE, include=FALSE}
 source("scripts/profiles_and_BasePoint.R")

@@ -1,7 +1,7 @@
 21-07771-003: Shoreline Change Analysis
 ================
 Regina Lionheart
-2023-06-21
+2023-07-12
 
 ![dumbbell_plot](https://img.shields.io/badge/plot-dumbbell-%231D455C)
 ![boxplot](https://img.shields.io/badge/plot-boxplot-%231D455C)
@@ -19,10 +19,9 @@ alt="code_style" />
 
 ------------------------------------------------------------------------
 
-TODO: Marketing needs to go over this to ensure it looks good!
+> Herrera Environmental Consultants
 
-> Herrera Environmental Consultants: Placeholder for our logo or
-> consistent header
+![](images_output/Herrera_lockup_BW.png)
 
 ## Table of Contents
 
