@@ -1,0 +1,55 @@
+"profile","Park","cluster_id","first_delineation","clustering_notes"
+"1","Haynisisoos Park, North Beach",NA,"X","Missing lots of data, could probably be in subreach A"
+"2","Santiago, North Beach",1,"A",NA
+"3","L443, North Beach",2,"A",NA
+"4","B1, North Beach",2,"A",NA
+"5","A1.5, North Beach",1,"A",NA
+"6","Moclips, North Beach",1,"A",NA
+"7","Pacific Beach, North Beach",1,"A",NA
+"8","Roosevelt Beach Rd OBA, North Beach",1,"A",NA
+"9","Griffiths-Priday State Park, North Beach",2,"A",NA
+"10","Ocean City OBA, North Beach",1,"A",NA
+"48","Quinault Beach, North Beach",1,"A",NA
+"11","Ocean Shores SR 115 OBA, North Beach",1,"A",NA
+"12","Ocean Shores Pacific Blvd OBA, North Beach",1,"A",NA
+"13","Ocean Shores Butter Clam St OBA, North Beach",3,"B",NA
+"14","Ocean Shores North Jetty North, North Beach",3,"B",NA
+"15","Ocean Shores North Jetty South, North Beach",3,"B",NA
+"16","Westport Light North, Grayland Plains",4,"B",NA
+"17","Westport Light South, Grayland Plains",4,"B",NA
+"18","Westport Ocean Ave OBA, Grayland Plains",3,"B",NA
+"19","Bonge Ave OBA, Grayland Plains",4,"B",NA
+"20","Marine Drive OBA, Grayland Plains",1,"C",NA
+"21","Cranberry Beach Road OBA, Grayland Plains",NA,"D","Own subreach of outliers"
+"22","Midway Beach Rd OBA, Grayland Plains",NA,"D","Own subreach of outliers"
+"23","Warrenton Cannery Rd OBA, Grayland Plains",NA,"D","Own subreach of outliers"
+"24","North Cove, Grayland Plains",NA,"D","Own subreach of outliers"
+"25","Leadbetter Point North, Long Beach",NA,"D","Own subreach of outliers"
+"26","Leadbetter Point South, Long Beach",NA,"D","Own subreach of outliers"
+"27","Leadbetter Point Bearberry Trail, Long Beach",1,"E",NA
+"28","Leadbetter Point Hines, Long Beach",1,"E",NA
+"29","Leadbetter Point 357th Pl, Long Beach",1,"E",NA
+"30","Oysterville Rd OBA, Long Beach",1,"E",NA
+"31","Oysterville Beach 311th St, Long Beach",1,"E",NA
+"32","Oysterville Beach 295th St, Long Beach",4,"F",NA
+"33","Pacific Pines, Long Beach",4,"F",NA
+"34","Klipsan Beach, Long Beach",1,"G",NA
+"35","Loomis Lake State Park, Long Beach",4,"H",NA
+"36","Oceanside 156th Pl, Long Beach",4,"H",NA
+"37","Oceanside 115th Ln, Long Beach",1,"I",NA
+"49","Chautauqua Resort, Long Beach",1,"I",NA
+"38","Long Beach 11th St, Long Beach",4,"J","Could probably be grouped together as one"
+"50","Seaview, Long Beach",4,"K","Could probably be grouped together as one"
+"39","Holman, Long Beach",4,"L","Could probably be grouped together as one"
+"40","Oceanview South, Long Beach",4,"L","Could probably be grouped together as one"
+"51","Beard's Hollow Cape Disappointment, Long Beach",4,"L","Could probably be grouped together as one"
+"52","A Loop Cape Disappointment, Long Beach",3,"M",NA
+"41","Cape Disappointment CANBY, Long Beach",3,"N",NA
+"53","Benson Beach North Cape Disappointment, Long Beach",3,"N",NA
+"54","Benson Beach South Cape Disappointment, Long Beach",3,"N",NA
+"42","Clatsop Spit",3,"Oregon",NA
+"43","Peter Iredale Rd OBA",3,"Oregon",NA
+"44","Delaura Beach Rd OBA",4,"Oregon",NA
+"45","Slusher Lake Rd OBA",1,"Oregon",NA
+"46","Del Rey Beach Rd OBA",NA,"Oregon",NA
+"47","Seaside Beach",NA,"Oregon",NA
